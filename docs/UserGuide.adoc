@@ -17,7 +17,7 @@ endif::[]
 By: `Team THRIFT`      Since: `Sept 2019`      Licence: `MIT`
 
 == Introduction
-THRIFT is for money-conscious NUS students who wish to track their spending, in order to make better informed decisions when it comes to saving money. Set your monthly budget, maintain records of your daily incoming and outgoing transactions, and constantly keep track of your remaining budget for the month! THRIFT is optimized for those who prefer to work with a Command Line Interface (CLI) while still enjoying the benefits of having a Graphical User Interface (GUI). If you want a simple, no-frills finance tracker, look no further than THRIFT!
+THRIFT is for money-conscious NUS students who wish to track their spending, in order to make better informed decisions when it comes to saving money. Maintain records of your daily incoming and outgoing transactions and constantly keep track of your spending and income! THRIFT is optimized for those who prefer to work with a Command Line Interface (CLI) while still enjoying the benefits of having a Graphical User Interface (GUI). If you want a simple, no-frills finance tracker, look no further than THRIFT!
 
 
 
@@ -29,7 +29,7 @@ THRIFT is for money-conscious NUS students who wish to track their spending, in 
 5. Type the command in the command box and press `Enter` to execute it. e.g. typing `help` and pressing `Enter` will open the help window.
 6. Some example commands you can try:
 *   `add expense n/Apple Airpods c/200`: adds an expense called `Apple Airpods` which cost $`200`.
-*   `add income n/Bursary Award c/350`: adds an income called `Bursary Award` which incremented your budget by $`350`
+*   `add income n/Bursary Award c/350`: adds an income called `Bursary Award` which incremented your budget by $`350`.
 *   `delete i/1`: deletes the 1st transaction in the current list.
 
 
@@ -38,7 +38,7 @@ THRIFT is for money-conscious NUS students who wish to track their spending, in 
 Command format:
 
 *   Words in `UPPER_CASE` are parameters to be supplied by the user e.g. `expense n/EXPENSE_NAME c/COST`.
-*   Items in square brackets `[ ]` are optional e.g. `n/EXPENSE_NAME [t/TAG]` can be used as `n/Laksa t/Food`
+*   Items in square brackets `[ ]` are optional e.g. `n/EXPENSE_NAME [t/TAG]` can be used as `n/Laksa t/Food`.
 *   Items in round brackets `( )` with `|` are mandatory parameters where a selection is needed e.g. `tag (add | delete)`.
 *   Items with `...` after them can be used multiple times including zero times e.g. `[t/TAG] …` can be used as ` ` (i.e. 0 times), `t/Food t/Dinner` etc.
 *   Parameters can be in any order e.g. if the command specifies `n/EXPENSE_NAME c/COST`, `c/COST n/EXPENSE_NAME` will achieve the same outcome.
@@ -47,6 +47,8 @@ Command format:
 === Adding an expense: `add expense`
 
 Format: `add expense n/EXPENSE_NAME c/COST [t/TAG]...`
+
+TIP: The default currency is in Singapore Dollars (SGD). You are recommended to `convert` foreign currencies to SGD before adding the value as the COST.
 
 Examples:
 
@@ -75,6 +77,10 @@ Expected output:
 
 Format: `delete i/EXPENSE_INDEX`
 
+* Deletes the transaction at the specified `EXPENSE_INDEX`.
+* The index refers to the index number shown in the entire expenses list.
+* The index *must be a positive integer* 1, 2, 3, ...
+
 Examples:
 
 *   `delete i/1`
@@ -97,3 +103,17 @@ Depending on your remaining budget and the remaining days to the end of the mont
 === Encryption of THRIFT data `[coming in v2.0]`
 
 If you are especially conscious about having your data spied on, this function will definitely ease your worries. With encryption enabled, your data will not be known to the intruder should they steal your THRIFT application data.
+
+== FAQ
+
+*Q*: How do I transfer my data to another Computer?
+
+*A*: Install the application in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous THRIFT installation.
+
+== Command summary
+* *Expense*:  `add expense n/EXPENSE_NAME c/COST [t/TAG]...` +
+Example: `add expense n/Laksa c/10.50 t/Lunch t/Food`
+* *Income*: `add income n/INCOME_NAME c/COST [t/TAG]...` +
+Example: `add income n/Allowance c/1000 t/Monthly`
+* *Delete*: `delete i/EXPENSE_INDEX` +
+Example: `delete i/1`

@@ -14,6 +14,7 @@ We are a team based in the http://www.comp.nus.edu.sg[School of Computing, Natio
 image::limerencee.png[width="150", align="left"]
 {empty}[https://github.com/limerencee[github]] [<<limerencee#, portfolio>>]
 
-Role: Developer, Deliverables and Deadlines
+Role: Project Manager/Developer +
+Responsibilities: Deliverables and Deadlines
 
 '''
