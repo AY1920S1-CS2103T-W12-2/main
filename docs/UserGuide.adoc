@@ -30,7 +30,7 @@ THRIFT is for money-conscious NUS students who wish to track their spending, in 
 6. Some example commands you can try:
 *   `add expense n/Apple Airpods c/200`: adds an expense called `Apple Airpods` which cost $`200`.
 *   `add income n/Bursary Award c/350`: adds an income called `Bursary Award` which incremented your budget by $`350`.
-*   `delete i/1`: deletes the 1st transaction in the current list.
+*   `delete i/1`: deletes the 1st transaction in the current list shown in the UI.
 
 
 == Features:
@@ -39,7 +39,7 @@ Command format:
 
 *   Words in `UPPER_CASE` are parameters to be supplied by the user e.g. `expense n/EXPENSE_NAME c/COST`.
 *   Items in square brackets `[ ]` are optional e.g. `n/EXPENSE_NAME [t/TAG]` can be used as `n/Laksa t/Food`.
-*   Items in round brackets `( )` with `|` are mandatory parameters where a selection is needed e.g. `tag (add | delete)`.
+*   Items in round brackets `( )` with `|` are mandatory parameters where a selection is needed e.g. `tag (add | delete)` means you need to input either `tag add` or `tag delete`.
 *   Items with `...` after them can be used multiple times including zero times e.g. `[t/TAG] …` can be used as ` ` (i.e. 0 times), `t/Food t/Dinner` etc.
 *   Parameters can be in any order e.g. if the command specifies `n/EXPENSE_NAME c/COST`, `c/COST n/EXPENSE_NAME` will achieve the same outcome.
 
@@ -75,12 +75,12 @@ Expected output:
 
 === Deleting a Transaction: `delete`
 
-Format: `delete i/EXPENSE_INDEX`
+Format: `delete i/INDEX`
 
 ****
-* Deletes the transaction at the specified `EXPENSE_INDEX`.
-* The index refers to the index number currently shown in the UI (after filtering, if any).
-* The index *must be a positive integer* 1, 2, 3, ...
+* Deletes the transaction at the specified `INDEX`.
+* `INDEX` refers to the index number currently shown in the UI (after filtering, if any).
+* `INDEX` *must be a positive integer* 1, 2, 3, ...
 ****
 
 Examples:
@@ -117,5 +117,5 @@ If you are especially conscious about having your data spied on, this function w
 Example: `add expense n/Laksa c/10.50 t/Lunch t/Food`
 * *Income*: `add income n/INCOME_NAME c/COST [t/TAG]...` +
 Example: `add income n/Allowance c/1000 t/Monthly`
-* *Delete*: `delete i/EXPENSE_INDEX` +
+* *Delete*: `delete i/INDEX` +
 Example: `delete i/1`
