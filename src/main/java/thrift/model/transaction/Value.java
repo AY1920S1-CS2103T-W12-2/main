@@ -13,9 +13,11 @@ import thrift.model.util.CurrencyUtil;
  */
 public class Value {
 
-    public static final String MESSAGE_CONSTRAINTS =
+    public static final String VALUE_CONSTRAINTS =
             "Cost should only contain numbers and an optional decimal point, which if specified, accepts up to 2"
             + " decimal digits";
+    public static final String CURRENCY_CONSTRAINTS =
+            "Currency should only be 'SGD', 'MYR', 'USD' OR 'EUR'!";
     public static final String VALIDATION_REGEX = "^\\d{1,}\\.{0,1}\\d{1,2}$";
     public static final String DEFAULT_CURRENCY = "SGD";
     public final Double amount;
@@ -24,12 +26,12 @@ public class Value {
     /**
      * Constructs a {@code Value} with the default currency {@link #DEFAULT_CURRENCY}.
      *
-     * @param amount Monetary cost describing the value.
+     * @param value Monetary cost describing the value.
      */
-    public Value(String amount) {
-        requireNonNull(amount);
-        checkArgument(isValidValue(amount), MESSAGE_CONSTRAINTS);
-        this.amount = Double.parseDouble(amount);
+    public Value(String value) {
+        requireNonNull(value);
+        checkArgument(isValidValue(value), VALUE_CONSTRAINTS);
+        this.amount = Double.parseDouble(value);
         this.currency = DEFAULT_CURRENCY;
     }
 
@@ -42,13 +44,27 @@ public class Value {
     public Value(String amount, String currency) {
         requireNonNull(amount);
         requireNonNull(currency);
-        checkArgument(isValidValue(amount), MESSAGE_CONSTRAINTS);
+        checkArgument(isValidValue(amount), VALUE_CONSTRAINTS);
+        checkArgument(isValidCurrency(currency), CURRENCY_CONSTRAINTS);
         this.amount = Double.parseDouble(amount);
         this.currency = currency;
     }
 
     /**
+     * Returns rue if a given String is a valid currency type.
+     *
+     * @param currency Currency type to check if it is valid.
+     * @return true if Currency type is supported.
+     */
+    public static boolean isValidCurrency(String currency) {
+        Map<String, Double> currencyMappings = CurrencyUtil.getCurrencyMap();
+        return currencyMappings.containsKey(currency);
+    }
+
+    /**
      * Returns true if a given String is a valid monetary value.
+     *
+     * @return true if amount is a valid double.
      */
     public static boolean isValidValue(String test) {
         return test.matches(VALIDATION_REGEX);

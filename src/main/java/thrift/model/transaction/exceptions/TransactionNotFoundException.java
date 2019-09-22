@@ -3,4 +3,4 @@ package thrift.model.transaction.exceptions;
 /**
  * Signals that the operation is unable to find the specified transaction.
  */
-public class PersonNotFoundException extends RuntimeException {}
+public class TransactionNotFoundException extends RuntimeException {}

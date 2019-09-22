@@ -8,7 +8,7 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import thrift.model.transaction.exceptions.PersonNotFoundException;
+import thrift.model.transaction.exceptions.TransactionNotFoundException;
 
 /**
  * A list of persons that enforces uniqueness between its elements and does not allow nulls.
@@ -55,7 +55,7 @@ public class UniquePersonList implements Iterable<Person> {
 
         int index = internalList.indexOf(target);
         if (index == -1) {
-            throw new PersonNotFoundException();
+            throw new TransactionNotFoundException();
         }
 
         internalList.set(index, editedPerson);
@@ -68,7 +68,7 @@ public class UniquePersonList implements Iterable<Person> {
     public void remove(Person toRemove) {
         requireNonNull(toRemove);
         if (!internalList.remove(toRemove)) {
-            throw new PersonNotFoundException();
+            throw new TransactionNotFoundException();
         }
     }
 

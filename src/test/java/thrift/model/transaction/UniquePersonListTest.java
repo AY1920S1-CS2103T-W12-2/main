@@ -11,7 +11,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import thrift.logic.commands.CommandTestUtil;
-import thrift.model.transaction.exceptions.PersonNotFoundException;
+import thrift.model.transaction.exceptions.TransactionNotFoundException;
 import thrift.testutil.PersonBuilder;
 import thrift.testutil.TypicalPersons;
 
@@ -61,7 +61,7 @@ public class UniquePersonListTest {
 
     @Test
     public void setPerson_targetPersonNotInList_throwsPersonNotFoundException() {
-        assertThrows(PersonNotFoundException.class, () -> uniquePersonList
+        assertThrows(TransactionNotFoundException.class, () -> uniquePersonList
                 .setPerson(TypicalPersons.ALICE, TypicalPersons.ALICE));
     }
 
@@ -102,7 +102,7 @@ public class UniquePersonListTest {
 
     @Test
     public void remove_personDoesNotExist_throwsPersonNotFoundException() {
-        assertThrows(PersonNotFoundException.class, () -> uniquePersonList.remove(TypicalPersons.ALICE));
+        assertThrows(TransactionNotFoundException.class, () -> uniquePersonList.remove(TypicalPersons.ALICE));
     }
 
     @Test
