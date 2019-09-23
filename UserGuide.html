@@ -16,9 +16,13 @@
 <li><a href="#adding-an-expense-code-add-expense-code">3.1. Adding an expense: <code>add expense</code></a></li>
 <li><a href="#adding-an-income-code-add-income-code">3.2. Adding an income: <code>add income</code></a></li>
 <li><a href="#deleting-a-transaction-code-delete-code">3.3. Deleting a Transaction: <code>delete</code></a></li>
-<li><a href="#generate-an-external-report-code-coming-in-v2-0-code">3.4. Generate an external report <code>[coming in v2.0]</code></a></li>
-<li><a href="#recommend-dining-options-based-on-budget-code-coming-in-v2-0-code">3.5. Recommend dining options based on budget <code>[coming in v2.0]</code></a></li>
-<li><a href="#encryption-of-thrift-data-code-coming-in-v2-0-code">3.6. Encryption of THRIFT data <code>[coming in v2.0]</code></a></li>
+<li><a href="#undoing-the-previous-undoable-command-code-undo-code">3.4. Undoing the previous undoable command: <code>undo</code></a></li>
+<li><a href="#redoing-the-undone-command-code-redo-code">3.5. Redoing the undone command: <code>redo</code></a></li>
+<li><a href="#displaying-help-page-code-help-code">3.6. Displaying help page: <code>help</code></a></li>
+<li><a href="#exiting-thrift-application-code-exit-code">3.7. Exiting THRIFT application: <code>exit</code></a></li>
+<li><a href="#generating-an-external-report-code-coming-in-v2-0-code">3.8. Generating an external report <code>[coming in v2.0]</code></a></li>
+<li><a href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.9. Recommending dining options based on budget <code>[coming in v2.0]</code></a></li>
+<li><a href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.10. Encrypting THRIFT data <code>[coming in v2.0]</code></a></li>
 </ul>
 </li>
 <li><a href="#faq">4. FAQ</a></li>
@@ -213,19 +217,158 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 </div>
 </div>
 <div class="sect2">
-<h3 id="generate-an-external-report-code-coming-in-v2-0-code"><a class="link" href="#generate-an-external-report-code-coming-in-v2-0-code">3.4. Generate an external report <code>[coming in v2.0]</code></a></h3>
+<h3 id="undoing-the-previous-undoable-command-code-undo-code"><a class="link" href="#undoing-the-previous-undoable-command-code-undo-code">3.4. Undoing the previous undoable command: <code>undo</code></a></h3>
+<div class="paragraph">
+<p>Format: <code>undo</code></p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Undoable commands are commands that modify the data of THRIFT application.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<div class="title">List of undoable commands<a id="Undoable"></a>:</div>
+<ul>
+<li>
+<p><a href="#adding-an-expense-code-add-expense-code">add expense</a></p>
+</li>
+<li>
+<p><a href="#adding-an-income-code-add-income-code">add income</a></p>
+</li>
+<li>
+<p><a href="#deleting-a-transaction-code-delete-code">delete</a></p>
+</li>
+<li>
+<p>update</p>
+</li>
+<li>
+<p>clone</p>
+</li>
+<li>
+<p>tag</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>add expense n/Laksa c/10.50 t/Lunch t/Food</code><br>
+<code>undo</code></p>
+</li>
+<li>
+<p><code>add income n/Allowance c/1000 t/Monthly</code><br>
+<code>list</code><br>
+<code>undo</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Expected output:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Deletes the expense spent on Laksa from THRIFT.</p>
+</li>
+<li>
+<p>Deletes the allowance income from THRIFT.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="redoing-the-undone-command-code-redo-code"><a class="link" href="#redoing-the-undone-command-code-redo-code">3.5. Redoing the undone command: <code>redo</code></a></h3>
+<div class="paragraph">
+<p>Redo the <a href="#Undoable">undoable command</a> that was previously undone by the user.</p>
+</div>
+<div class="paragraph">
+<p>Format: <code>redo</code></p>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>add expense n/Laksa c/10.50 t/Lunch t/Food</code><br>
+<code>undo</code><br>
+<code>redo</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Expected output:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Adds the expense spent on Laksa back to THRIFT.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="displaying-help-page-code-help-code"><a class="link" href="#displaying-help-page-code-help-code">3.6. Displaying help page: <code>help</code></a></h3>
+<div class="paragraph">
+<p>Format: <code>help [COMMAND]</code></p>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>help</code></p>
+</li>
+<li>
+<p><code>help delete</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Expected output:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Displays a detailed list of information regarding all the THRIFT commands.</p>
+</li>
+<li>
+<p>Returns syntax of <code>delete</code> command.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="exiting-thrift-application-code-exit-code"><a class="link" href="#exiting-thrift-application-code-exit-code">3.7. Exiting THRIFT application: <code>exit</code></a></h3>
+<div class="paragraph">
+<p>Format: <code>exit</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="generating-an-external-report-code-coming-in-v2-0-code"><a class="link" href="#generating-an-external-report-code-coming-in-v2-0-code">3.8. Generating an external report <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>With this feature, you will be able to save your monthly budget report into an external file for your record purposes. The report will clearly state your expenditure, income and remaining budget for the month.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="recommend-dining-options-based-on-budget-code-coming-in-v2-0-code"><a class="link" href="#recommend-dining-options-based-on-budget-code-coming-in-v2-0-code">3.5. Recommend dining options based on budget <code>[coming in v2.0]</code></a></h3>
+<h3 id="recommending-dining-options-based-on-budget-code-coming-in-v2-0-code"><a class="link" href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.9. Recommending dining options based on budget <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>Depending on your remaining budget and the remaining days to the end of the month, THRIFT will recommend you dining places in NUS which will suit your budget. For example, if you are running low on funds, you might get recommended to travel to the Arts canteen to eat since there are really cheap options there.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="encryption-of-thrift-data-code-coming-in-v2-0-code"><a class="link" href="#encryption-of-thrift-data-code-coming-in-v2-0-code">3.6. Encryption of THRIFT data <code>[coming in v2.0]</code></a></h3>
+<h3 id="encrypting-thrift-data-code-coming-in-v2-0-code"><a class="link" href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.10. Encrypting THRIFT data <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>If you are especially conscious about having your data spied on, this function will definitely ease your worries. With encryption enabled, your data will not be known to the intruder should they steal your THRIFT application data.</p>
 </div>
@@ -239,7 +382,7 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 <p><strong>Q</strong>: How do I transfer my data to another Computer?</p>
 </div>
 <div class="paragraph">
-<p><strong>A</strong>: Install the application in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous THRIFT installation.</p>
+<p><strong>A</strong>: Runs the application in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous THRIFT application.</p>
 </div>
 </div>
 </div>
@@ -260,7 +403,20 @@ Example: <code>add income n/Allowance c/1000 t/Monthly</code></p>
 <p><strong>Delete</strong>: <code>delete i/INDEX</code><br>
 Example: <code>delete i/1</code></p>
 </li>
+<li>
+<p><strong>Undo</strong>: <code>undo</code></p>
+</li>
+<li>
+<p><strong>Redo</strong>: <code>redo</code></p>
+</li>
+<li>
+<p><strong>Help</strong>: <code>help [COMMAND]</code><br>
+Example: <code>help delete</code></p>
+</li>
+<li>
+<p><strong>Exit</strong>: <code>exit</code></p>
+</li>
 </ul>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-09-22 03:48:40 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-09-23 19:55:56 UTC</div></div></div></body></html>
