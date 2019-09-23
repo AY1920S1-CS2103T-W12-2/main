@@ -15,11 +15,12 @@ import thrift.logic.commands.exceptions.CommandException;
 import thrift.logic.parser.CliSyntax;
 import thrift.model.Model;
 import thrift.model.tag.Tag;
-import thrift.model.transaction.Address;
-import thrift.model.transaction.Email;
-import thrift.model.transaction.Name;
-import thrift.model.transaction.Person;
-import thrift.model.transaction.Phone;
+import thrift.model.transaction.Description;
+import thrift.model.transaction.Expense;
+import thrift.model.transaction.Income;
+import thrift.model.transaction.Transaction;
+import thrift.model.transaction.TransactionDate;
+import thrift.model.transaction.Value;
 
 /**
  * Edits the details of an existing transaction in the address book.
@@ -32,69 +33,67 @@ public class EditCommand extends Command {
             + "by the index number used in the displayed transaction list. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + "[" + CliSyntax.PREFIX_NAME + "NAME] "
-            + "[" + CliSyntax.PREFIX_PHONE + "PHONE] "
-            + "[" + CliSyntax.PREFIX_EMAIL + "EMAIL] "
-            + "[" + CliSyntax.PREFIX_ADDRESS + "ADDRESS] "
+            + "[" + CliSyntax.PREFIX_NAME + "NAME DESCRIPTION] "
+            + "[" + CliSyntax.PREFIX_COST + "COST] "
             + "[" + CliSyntax.PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
-            + CliSyntax.PREFIX_PHONE + "91234567 "
-            + CliSyntax.PREFIX_EMAIL + "johndoe@example.com";
+            + CliSyntax.PREFIX_NAME + "Mee Siam "
+            + CliSyntax.PREFIX_COST + "3.00";
 
-    public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
+    public static final String MESSAGE_EDIT_TRANSACTION_SUCCESS = "Edited Transaction: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This transaction already exists in the address book.";
 
     private final Index index;
-    private final EditPersonDescriptor editPersonDescriptor;
+    private final EditTransactionDescriptor editTransactionDescriptor;
 
     /**
      * @param index of the transaction in the filtered transaction list to edit
-     * @param editPersonDescriptor details to edit the transaction with
+     * @param editTransactionDescriptor details to edit the transaction with
      */
-    public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
+    public EditCommand(Index index, EditTransactionDescriptor editTransactionDescriptor) {
         requireNonNull(index);
-        requireNonNull(editPersonDescriptor);
+        requireNonNull(editTransactionDescriptor);
 
         this.index = index;
-        this.editPersonDescriptor = new EditPersonDescriptor(editPersonDescriptor);
+        this.editTransactionDescriptor = new EditTransactionDescriptor(editTransactionDescriptor);
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        List<Person> lastShownList = model.getFilteredPersonList();
+        List<Transaction> lastShownList = model.getFilteredTransactionList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            throw new CommandException(Messages.MESSAGE_INVALID_TRANSACTION_DISPLAYED_INDEX);
         }
 
-        Person personToEdit = lastShownList.get(index.getZeroBased());
-        Person editedPerson = createEditedPerson(personToEdit, editPersonDescriptor);
+        Transaction transactionToEdit = lastShownList.get(index.getZeroBased());
+        Transaction editedTransaction = createEditedTransaction(transactionToEdit, editTransactionDescriptor);
 
-        if (!personToEdit.isSamePerson(editedPerson) && model.hasPerson(editedPerson)) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
-        }
-
-        model.setPerson(personToEdit, editedPerson);
-        model.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_EDIT_PERSON_SUCCESS, editedPerson));
+        model.setTransaction(transactionToEdit, editedTransaction);
+        model.updateFilteredTransactionList(Model.PREDICATE_SHOW_ALL_TRANSACTIONS);
+        return new CommandResult(String.format(MESSAGE_EDIT_TRANSACTION_SUCCESS, editedTransaction));
     }
 
     /**
-     * Creates and returns a {@code Person} with the details of {@code personToEdit}
-     * edited with {@code editPersonDescriptor}.
+     * Creates and returns a {@code Transaction} with the details of {@code transactionToEdit}
+     * edited with {@code editTransactionDescriptor}.
      */
-    private static Person createEditedPerson(Person personToEdit, EditPersonDescriptor editPersonDescriptor) {
-        assert personToEdit != null;
+    private static Transaction createEditedTransaction(Transaction transactionToEdit,
+                                                       EditTransactionDescriptor editTransactionDescriptor) {
+        assert transactionToEdit != null;
 
-        Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
-        Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
-        Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
-        Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
-        Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
+        Description updatedDescription = editTransactionDescriptor.getDescription()
+                .orElse(transactionToEdit.getDescription());
+        Value updatedValue = editTransactionDescriptor.getValue().orElse(transactionToEdit.getValue());
+        TransactionDate updatedDate = editTransactionDescriptor.getDate().orElse(transactionToEdit.getDate());
+        Set<Tag> updatedTags = editTransactionDescriptor.getTags().orElse(transactionToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+        if (transactionToEdit instanceof Expense) {
+            return new Expense(updatedDescription, updatedValue, updatedDate, updatedTags);
+        } else {
+            return new Income(updatedDescription, updatedValue, updatedDate, updatedTags);
+        }
     }
 
     @Override
@@ -112,31 +111,29 @@ public class EditCommand extends Command {
         // state check
         EditCommand e = (EditCommand) other;
         return index.equals(e.index)
-                && editPersonDescriptor.equals(e.editPersonDescriptor);
+                && editTransactionDescriptor.equals(e.editTransactionDescriptor);
     }
 
     /**
      * Stores the details to edit the transaction with. Each non-empty field value will replace the
      * corresponding field value of the transaction.
      */
-    public static class EditPersonDescriptor {
-        private Name name;
-        private Phone phone;
-        private Email email;
-        private Address address;
+    public static class EditTransactionDescriptor {
+        private Description description;
+        private Value value;
+        private TransactionDate date;
         private Set<Tag> tags;
 
-        public EditPersonDescriptor() {}
+        public EditTransactionDescriptor() {}
 
         /**
          * Copy constructor.
          * A defensive copy of {@code tags} is used internally.
          */
-        public EditPersonDescriptor(EditPersonDescriptor toCopy) {
-            setName(toCopy.name);
-            setPhone(toCopy.phone);
-            setEmail(toCopy.email);
-            setAddress(toCopy.address);
+        public EditTransactionDescriptor(EditTransactionDescriptor toCopy) {
+            setDescription(toCopy.description);
+            setValue(toCopy.value);
+            setDate(toCopy.date);
             setTags(toCopy.tags);
         }
 
@@ -144,39 +141,31 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, tags);
+            return CollectionUtil.isAnyNonNull(description, value, date, tags);
         }
 
-        public void setName(Name name) {
-            this.name = name;
+        public void setDescription(Description description) {
+            this.description = description;
         }
 
-        public Optional<Name> getName() {
-            return Optional.ofNullable(name);
+        public Optional<Description> getDescription() {
+            return Optional.ofNullable(description);
         }
 
-        public void setPhone(Phone phone) {
-            this.phone = phone;
+        public void setValue(Value value) {
+            this.value = value;
         }
 
-        public Optional<Phone> getPhone() {
-            return Optional.ofNullable(phone);
+        public Optional<Value> getValue() {
+            return Optional.ofNullable(value);
         }
 
-        public void setEmail(Email email) {
-            this.email = email;
+        public void setDate(TransactionDate date) {
+            this.date = date;
         }
 
-        public Optional<Email> getEmail() {
-            return Optional.ofNullable(email);
-        }
-
-        public void setAddress(Address address) {
-            this.address = address;
-        }
-
-        public Optional<Address> getAddress() {
-            return Optional.ofNullable(address);
+        public Optional<TransactionDate> getDate() {
+            return Optional.ofNullable(date);
         }
 
         /**
@@ -204,17 +193,16 @@ public class EditCommand extends Command {
             }
 
             // instanceof handles nulls
-            if (!(other instanceof EditPersonDescriptor)) {
+            if (!(other instanceof EditTransactionDescriptor)) {
                 return false;
             }
 
             // state check
-            EditPersonDescriptor e = (EditPersonDescriptor) other;
+            EditTransactionDescriptor e = (EditTransactionDescriptor) other;
 
-            return getName().equals(e.getName())
-                    && getPhone().equals(e.getPhone())
-                    && getEmail().equals(e.getEmail())
-                    && getAddress().equals(e.getAddress())
+            return getDescription().equals(e.getDescription())
+                    && getValue().equals(e.getValue())
+                    && getDate().equals(e.getDate())
                     && getTags().equals(e.getTags());
         }
     }

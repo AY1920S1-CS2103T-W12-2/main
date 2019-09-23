@@ -17,6 +17,7 @@ public class TransactionDate {
             "Date should be specified in dd/MM/yyyy format";
     public static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd/MM/yyyy");
     private Date date;
+    private String rawDate;
 
     /**
      * Constructs a {@code TransactionDate}.
@@ -25,10 +26,15 @@ public class TransactionDate {
      * @throws ParseException If invalid date String is supplied, but it will be handled in
      * {@link #isValidDate(String)}.
      */
-    public TransactionDate(String date) throws ParseException {
+    public TransactionDate(String date) {
         requireNonNull(date);
         checkArgument(isValidDate(date), DATE_CONSTRAINTS);
-        this.date = DATE_FORMATTER.parse(date);
+        try {
+            this.date = DATE_FORMATTER.parse(date);
+            rawDate = date;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -58,7 +64,7 @@ public class TransactionDate {
 
     @Override
     public String toString() {
-        return date.toString();
+        return rawDate;
     }
 
     @Override

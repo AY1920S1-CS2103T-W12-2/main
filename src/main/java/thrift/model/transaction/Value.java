@@ -15,10 +15,10 @@ public class Value {
 
     public static final String VALUE_CONSTRAINTS =
             "Cost should only contain numbers and an optional decimal point, which if specified, accepts up to 2"
-            + " decimal digits";
+            + " decimal digits.";
     public static final String CURRENCY_CONSTRAINTS =
             "Currency should only be 'SGD', 'MYR', 'USD' OR 'EUR'!";
-    public static final String VALIDATION_REGEX = "^\\d{1,}\\.{0,1}\\d{1,2}$";
+    public static final String VALIDATION_REGEX = "^\\d+\\.?\\d{0,2}$";
     public static final String DEFAULT_CURRENCY = "SGD";
     public final Double amount;
     public final String currency;
@@ -30,6 +30,7 @@ public class Value {
      */
     public Value(String value) {
         requireNonNull(value);
+        System.out.println(value);
         checkArgument(isValidValue(value), VALUE_CONSTRAINTS);
         this.amount = Double.parseDouble(value);
         this.currency = DEFAULT_CURRENCY;
@@ -78,7 +79,7 @@ public class Value {
      */
     public double getMonetaryValue() {
         Map<String, Double> currencyMappings = CurrencyUtil.getCurrencyMap();
-        return (amount * CurrencyUtil.convertFromDefaultCurrency(currencyMappings, amount, currency));
+        return CurrencyUtil.convertFromDefaultCurrency(currencyMappings, amount, currency);
     }
 
     @Override

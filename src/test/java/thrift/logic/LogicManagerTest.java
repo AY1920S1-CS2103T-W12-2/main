@@ -1,7 +1,7 @@
 package thrift.logic;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static thrift.commons.core.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
+import static thrift.commons.core.Messages.MESSAGE_INVALID_TRANSACTION_DISPLAYED_INDEX;
 import static thrift.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static thrift.testutil.Assert.assertThrows;
 
@@ -12,9 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import thrift.logic.commands.AddCommand;
 import thrift.logic.commands.CommandResult;
-import thrift.logic.commands.CommandTestUtil;
 import thrift.logic.commands.ListCommand;
 import thrift.logic.commands.exceptions.CommandException;
 import thrift.logic.parser.exceptions.ParseException;
@@ -22,12 +20,9 @@ import thrift.model.Model;
 import thrift.model.ModelManager;
 import thrift.model.ReadOnlyAddressBook;
 import thrift.model.UserPrefs;
-import thrift.model.transaction.Person;
 import thrift.storage.JsonAddressBookStorage;
 import thrift.storage.JsonUserPrefsStorage;
 import thrift.storage.StorageManager;
-import thrift.testutil.PersonBuilder;
-import thrift.testutil.TypicalPersons;
 
 public class LogicManagerTest {
     private static final IOException DUMMY_IO_EXCEPTION = new IOException("dummy exception");
@@ -56,7 +51,7 @@ public class LogicManagerTest {
     @Test
     public void execute_commandExecutionError_throwsCommandException() {
         String deleteCommand = "delete 9";
-        assertCommandException(deleteCommand, MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        assertCommandException(deleteCommand, MESSAGE_INVALID_TRANSACTION_DISPLAYED_INDEX);
     }
 
     @Test
@@ -66,29 +61,8 @@ public class LogicManagerTest {
     }
 
     @Test
-    public void execute_storageThrowsIoException_throwsCommandException() {
-        // Setup LogicManager with JsonAddressBookIoExceptionThrowingStub
-        JsonAddressBookStorage addressBookStorage =
-                new JsonAddressBookIoExceptionThrowingStub(temporaryFolder.resolve("ioExceptionAddressBook.json"));
-        JsonUserPrefsStorage userPrefsStorage =
-                new JsonUserPrefsStorage(temporaryFolder.resolve("ioExceptionUserPrefs.json"));
-        StorageManager storage = new StorageManager(addressBookStorage, userPrefsStorage);
-        logic = new LogicManager(model, storage);
-
-        // Execute add command
-        String addCommand = AddCommand.COMMAND_WORD + CommandTestUtil.NAME_DESC_AMY
-                + CommandTestUtil.PHONE_DESC_AMY + CommandTestUtil.EMAIL_DESC_AMY
-                + CommandTestUtil.ADDRESS_DESC_AMY;
-        Person expectedPerson = new PersonBuilder(TypicalPersons.AMY).withTags().build();
-        ModelManager expectedModel = new ModelManager();
-        expectedModel.addPerson(expectedPerson);
-        String expectedMessage = LogicManager.FILE_OPS_ERROR_MESSAGE + DUMMY_IO_EXCEPTION;
-        assertCommandFailure(addCommand, CommandException.class, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredPersonList().remove(0));
+    public void getFilteredTransactionList_modifyList_throwsUnsupportedOperationException() {
+        assertThrows(UnsupportedOperationException.class, () -> logic.getFilteredTransactionList().remove(0));
     }
 
     /**

@@ -6,7 +6,7 @@ import static thrift.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import thrift.logic.commands.AddCommand;
+import thrift.logic.commands.AddExpenseCommand;
 import thrift.logic.commands.ClearCommand;
 import thrift.logic.commands.Command;
 import thrift.logic.commands.DeleteCommand;
@@ -44,8 +44,8 @@ public class AddressBookParser {
         final String arguments = matcher.group("arguments");
         switch (commandWord) {
 
-        case AddCommand.COMMAND_WORD:
-            return new AddCommandParser().parse(arguments);
+        case AddExpenseCommand.COMMAND_WORD:
+            return new AddExpenseCommandParser().parse(arguments);
 
         case EditCommand.COMMAND_WORD:
             return new EditCommandParser().parse(arguments);

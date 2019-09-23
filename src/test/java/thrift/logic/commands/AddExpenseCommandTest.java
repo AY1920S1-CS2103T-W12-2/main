@@ -15,63 +15,55 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.ObservableList;
 import thrift.commons.core.GuiSettings;
-import thrift.logic.commands.exceptions.CommandException;
 import thrift.model.AddressBook;
 import thrift.model.Model;
 import thrift.model.ReadOnlyAddressBook;
 import thrift.model.ReadOnlyUserPrefs;
-import thrift.model.transaction.Person;
-import thrift.testutil.PersonBuilder;
+import thrift.model.transaction.Expense;
+import thrift.model.transaction.Income;
+import thrift.model.transaction.Transaction;
+import thrift.testutil.ExpenseBuilder;
 
-public class AddCommandTest {
+public class AddExpenseCommandTest {
 
     @Test
-    public void constructor_nullPerson_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new AddCommand(null));
+    public void constructor_nullExpense_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new AddExpenseCommand(null));
     }
 
     @Test
-    public void execute_personAcceptedByModel_addSuccessful() throws Exception {
+    public void execute_expenseAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingPersonAdded modelStub = new ModelStubAcceptingPersonAdded();
-        Person validPerson = new PersonBuilder().build();
+        Expense validExpense = new ExpenseBuilder().build();
 
-        CommandResult commandResult = new AddCommand(validPerson).execute(modelStub);
+        CommandResult commandResult = new AddExpenseCommand(validExpense).execute(modelStub);
 
-        assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validPerson), commandResult.getFeedbackToUser());
-        assertEquals(Arrays.asList(validPerson), modelStub.personsAdded);
-    }
-
-    @Test
-    public void execute_duplicatePerson_throwsCommandException() {
-        Person validPerson = new PersonBuilder().build();
-        AddCommand addCommand = new AddCommand(validPerson);
-        ModelStub modelStub = new ModelStubWithPerson(validPerson);
-
-        assertThrows(CommandException.class, AddCommand.MESSAGE_DUPLICATE_PERSON, () -> addCommand.execute(modelStub));
+        assertEquals(String.format(AddExpenseCommand.MESSAGE_SUCCESS, validExpense), commandResult.getFeedbackToUser());
+        assertEquals(Arrays.asList(validExpense), modelStub.transactionsAdded);
     }
 
     @Test
     public void equals() {
-        Person alice = new PersonBuilder().withName("Alice").build();
-        Person bob = new PersonBuilder().withName("Bob").build();
-        AddCommand addAliceCommand = new AddCommand(alice);
-        AddCommand addBobCommand = new AddCommand(bob);
+        Expense one = new ExpenseBuilder().withDescription("Expense One").build();
+        Expense two = new ExpenseBuilder().withDescription("Expense Two").build();
+        AddExpenseCommand addOneCommand = new AddExpenseCommand(one);
+        AddExpenseCommand addTwoCommand = new AddExpenseCommand(two);
 
         // same object -> returns true
-        assertTrue(addAliceCommand.equals(addAliceCommand));
+        assertTrue(addOneCommand.equals(addOneCommand));
 
         // same values -> returns true
-        AddCommand addAliceCommandCopy = new AddCommand(alice);
-        assertTrue(addAliceCommand.equals(addAliceCommandCopy));
+        AddExpenseCommand addOneCommandCopy = new AddExpenseCommand(one);
+        assertTrue(addOneCommand.equals(addOneCommandCopy));
 
         // different types -> returns false
-        assertFalse(addAliceCommand.equals(1));
+        assertFalse(addOneCommand.equals(1));
 
         // null -> returns false
-        assertFalse(addAliceCommand.equals(null));
+        assertFalse(addOneCommand.equals(null));
 
         // different transaction -> returns false
-        assertFalse(addAliceCommand.equals(addBobCommand));
+        assertFalse(addOneCommand.equals(addTwoCommand));
     }
 
     /**
@@ -109,8 +101,13 @@ public class AddCommandTest {
         }
 
         @Override
-        public void addPerson(Person person) {
+        public void addExpense(Expense expense) {
             throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void addIncome(Income income) {
+            throw new AssertionError("This method should not be called");
         }
 
         @Override
@@ -124,27 +121,27 @@ public class AddCommandTest {
         }
 
         @Override
-        public boolean hasPerson(Person person) {
+        public boolean hasTransaction(Transaction transaction) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void deletePerson(Person target) {
+        public void deleteTransaction(Transaction transaction) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void setPerson(Person target, Person editedPerson) {
+        public void setTransaction(Transaction target, Transaction editedTransaction) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public ObservableList<Person> getFilteredPersonList() {
+        public ObservableList<Transaction> getFilteredTransactionList() {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void updateFilteredPersonList(Predicate<Person> predicate) {
+        public void updateFilteredTransactionList(Predicate<Transaction> predicate) {
             throw new AssertionError("This method should not be called.");
         }
     }
@@ -152,18 +149,18 @@ public class AddCommandTest {
     /**
      * A Model stub that contains a single transaction.
      */
-    private class ModelStubWithPerson extends ModelStub {
-        private final Person person;
+    private class ModelStubWithTransaction extends ModelStub {
+        private final Transaction transaction;
 
-        ModelStubWithPerson(Person person) {
-            requireNonNull(person);
-            this.person = person;
+        ModelStubWithTransaction(Transaction transaction) {
+            requireNonNull(transaction);
+            this.transaction = transaction;
         }
 
         @Override
-        public boolean hasPerson(Person person) {
-            requireNonNull(person);
-            return this.person.isSamePerson(person);
+        public boolean hasTransaction(Transaction transaction) {
+            requireNonNull(transaction);
+            return this.transaction.isSameTransaction(transaction);
         }
     }
 
@@ -171,18 +168,18 @@ public class AddCommandTest {
      * A Model stub that always accept the transaction being added.
      */
     private class ModelStubAcceptingPersonAdded extends ModelStub {
-        final ArrayList<Person> personsAdded = new ArrayList<>();
+        final ArrayList<Transaction> transactionsAdded = new ArrayList<>();
 
         @Override
-        public boolean hasPerson(Person person) {
-            requireNonNull(person);
-            return personsAdded.stream().anyMatch(person::isSamePerson);
+        public boolean hasTransaction(Transaction transaction) {
+            requireNonNull(transaction);
+            return transactionsAdded.stream().anyMatch(transaction::isSameTransaction);
         }
 
         @Override
-        public void addPerson(Person person) {
-            requireNonNull(person);
-            personsAdded.add(person);
+        public void addExpense(Expense expense) {
+            requireNonNull(expense);
+            transactionsAdded.add(expense);
         }
 
         @Override

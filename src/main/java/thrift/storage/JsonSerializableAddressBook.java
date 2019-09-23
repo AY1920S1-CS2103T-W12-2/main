@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import thrift.commons.exceptions.IllegalValueException;
 import thrift.model.AddressBook;
 import thrift.model.ReadOnlyAddressBook;
-import thrift.model.transaction.Person;
+import thrift.model.transaction.Transaction;
 
 /**
  * An Immutable AddressBook that is serializable to JSON format.
@@ -19,16 +19,14 @@ import thrift.model.transaction.Person;
 @JsonRootName(value = "addressbook")
 class JsonSerializableAddressBook {
 
-    public static final String MESSAGE_DUPLICATE_PERSON = "Persons list contains duplicate transaction(s).";
-
-    private final List<JsonAdaptedPerson> persons = new ArrayList<>();
+    private final List<JsonAdaptedTransaction> transactions = new ArrayList<>();
 
     /**
-     * Constructs a {@code JsonSerializableAddressBook} with the given persons.
+     * Constructs a {@code JsonSerializableAddressBook} with the given transactions.
      */
     @JsonCreator
-    public JsonSerializableAddressBook(@JsonProperty("persons") List<JsonAdaptedPerson> persons) {
-        this.persons.addAll(persons);
+    public JsonSerializableAddressBook(@JsonProperty("transactions") List<JsonAdaptedTransaction> transactions) {
+        this.transactions.addAll(transactions);
     }
 
     /**
@@ -37,7 +35,8 @@ class JsonSerializableAddressBook {
      * @param source future changes to this will not affect the created {@code JsonSerializableAddressBook}.
      */
     public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
-        persons.addAll(source.getPersonList().stream().map(JsonAdaptedPerson::new).collect(Collectors.toList()));
+        transactions.addAll(source.getTransactionList().stream().map(JsonAdaptedTransaction::new)
+                .collect(Collectors.toList()));
     }
 
     /**
@@ -47,12 +46,9 @@ class JsonSerializableAddressBook {
      */
     public AddressBook toModelType() throws IllegalValueException {
         AddressBook addressBook = new AddressBook();
-        for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
-            Person person = jsonAdaptedPerson.toModelType();
-            if (addressBook.hasPerson(person)) {
-                throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
-            }
-            addressBook.addPerson(person);
+        for (JsonAdaptedTransaction jsonAdaptedTransaction : transactions) {
+            Transaction transaction = jsonAdaptedTransaction.toModelType();
+            addressBook.addTransaction(transaction);
         }
         return addressBook;
     }

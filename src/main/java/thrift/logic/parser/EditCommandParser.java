@@ -10,7 +10,6 @@ import java.util.Set;
 
 import thrift.commons.core.index.Index;
 import thrift.logic.commands.EditCommand;
-import thrift.logic.commands.EditCommand.EditPersonDescriptor;
 import thrift.logic.parser.exceptions.ParseException;
 import thrift.model.tag.Tag;
 
@@ -27,8 +26,7 @@ public class EditCommandParser implements Parser<EditCommand> {
     public EditCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_PHONE, CliSyntax.PREFIX_EMAIL,
-                        CliSyntax.PREFIX_ADDRESS, CliSyntax.PREFIX_TAG);
+                ArgumentTokenizer.tokenize(args, CliSyntax.PREFIX_NAME, CliSyntax.PREFIX_COST, CliSyntax.PREFIX_TAG);
 
         Index index;
 
@@ -38,27 +36,20 @@ public class EditCommandParser implements Parser<EditCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE), pe);
         }
 
-        EditPersonDescriptor editPersonDescriptor = new EditPersonDescriptor();
+        EditCommand.EditTransactionDescriptor editTransactionDescriptor = new EditCommand.EditTransactionDescriptor();
+        /*
+        * Uncomment and edit to make it suitable for updating Description and possibly Cost.
         if (argMultimap.getValue(CliSyntax.PREFIX_NAME).isPresent()) {
-            editPersonDescriptor.setName(ParserUtil.parseName(argMultimap.getValue(CliSyntax.PREFIX_NAME).get()));
-        }
-        if (argMultimap.getValue(CliSyntax.PREFIX_PHONE).isPresent()) {
-            editPersonDescriptor.setPhone(ParserUtil.parsePhone(argMultimap.getValue(CliSyntax.PREFIX_PHONE).get()));
-        }
-        if (argMultimap.getValue(CliSyntax.PREFIX_EMAIL).isPresent()) {
-            editPersonDescriptor.setEmail(ParserUtil.parseEmail(argMultimap.getValue(CliSyntax.PREFIX_EMAIL).get()));
-        }
-        if (argMultimap.getValue(CliSyntax.PREFIX_ADDRESS).isPresent()) {
-            editPersonDescriptor.setAddress(ParserUtil.parseAddress(
-                    argMultimap.getValue(CliSyntax.PREFIX_ADDRESS).get()));
-        }
-        parseTagsForEdit(argMultimap.getAllValues(CliSyntax.PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
+            editTransactionDescriptor.setDescription(ParserUtil.parseDescription(
+                argMultimap.getValue(CliSyntax.PREFIX_NAME).get()));
+        }*/
+        parseTagsForEdit(argMultimap.getAllValues(CliSyntax.PREFIX_TAG)).ifPresent(editTransactionDescriptor::setTags);
 
-        if (!editPersonDescriptor.isAnyFieldEdited()) {
+        if (!editTransactionDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditCommand.MESSAGE_NOT_EDITED);
         }
 
-        return new EditCommand(index, editPersonDescriptor);
+        return new EditCommand(index, editTransactionDescriptor);
     }
 
     /**

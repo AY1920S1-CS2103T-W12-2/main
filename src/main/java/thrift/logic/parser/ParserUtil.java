@@ -10,10 +10,8 @@ import thrift.commons.core.index.Index;
 import thrift.commons.util.StringUtil;
 import thrift.logic.parser.exceptions.ParseException;
 import thrift.model.tag.Tag;
-import thrift.model.transaction.Address;
-import thrift.model.transaction.Email;
-import thrift.model.transaction.Name;
-import thrift.model.transaction.Phone;
+import thrift.model.transaction.Description;
+import thrift.model.transaction.Value;
 
 /**
  * Contains utility methods used for parsing strings in the various *Parser classes.
@@ -36,63 +34,30 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String name} into a {@code Name}.
+     * Parses a {@code String description} into a {@code Description}.
      * Leading and trailing whitespaces will be trimmed.
      *
-     * @throws ParseException if the given {@code name} is invalid.
      */
-    public static Name parseName(String name) throws ParseException {
-        requireNonNull(name);
-        String trimmedName = name.trim();
-        if (!Name.isValidName(trimmedName)) {
-            throw new ParseException(Name.MESSAGE_CONSTRAINTS);
-        }
-        return new Name(trimmedName);
+    public static Description parseDescription(String description) {
+        requireNonNull(description);
+        String trimmedDescription = description.trim();
+        return new Description(trimmedDescription);
     }
 
     /**
-     * Parses a {@code String phone} into a {@code Phone}.
+     * Parses a {@code String value} into a {@code Value}.
      * Leading and trailing whitespaces will be trimmed.
      *
-     * @throws ParseException if the given {@code phone} is invalid.
+     * @throws ParseException if the given {@code value} is invalid.
      */
-    public static Phone parsePhone(String phone) throws ParseException {
-        requireNonNull(phone);
-        String trimmedPhone = phone.trim();
-        if (!Phone.isValidPhone(trimmedPhone)) {
-            throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
+    public static Value parseValue(String value) throws ParseException {
+        requireNonNull(value);
+        String trimmedValue = value.trim();
+        System.out.println(trimmedValue);
+        if (!Value.isValidValue(trimmedValue)) {
+            throw new ParseException(Value.VALUE_CONSTRAINTS);
         }
-        return new Phone(trimmedPhone);
-    }
-
-    /**
-     * Parses a {@code String address} into an {@code Address}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code address} is invalid.
-     */
-    public static Address parseAddress(String address) throws ParseException {
-        requireNonNull(address);
-        String trimmedAddress = address.trim();
-        if (!Address.isValidAddress(trimmedAddress)) {
-            throw new ParseException(Address.MESSAGE_CONSTRAINTS);
-        }
-        return new Address(trimmedAddress);
-    }
-
-    /**
-     * Parses a {@code String email} into an {@code Email}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code email} is invalid.
-     */
-    public static Email parseEmail(String email) throws ParseException {
-        requireNonNull(email);
-        String trimmedEmail = email.trim();
-        if (!Email.isValidEmail(trimmedEmail)) {
-            throw new ParseException(Email.MESSAGE_CONSTRAINTS);
-        }
-        return new Email(trimmedEmail);
+        return new Value(trimmedValue);
     }
 
     /**

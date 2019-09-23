@@ -3,8 +3,6 @@ package thrift.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static thrift.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
-import static thrift.logic.commands.CommandTestUtil.VALID_TAG_HUSBAND;
 import static thrift.testutil.Assert.assertThrows;
 
 import java.util.Collection;
@@ -14,9 +12,8 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import thrift.model.transaction.Person;
-import thrift.testutil.PersonBuilder;
-import thrift.testutil.TypicalPersons;
+import thrift.model.transaction.Transaction;
+import thrift.testutil.TypicalTransactions;
 
 public class AddressBookTest {
 
@@ -24,7 +21,7 @@ public class AddressBookTest {
 
     @Test
     public void constructor() {
-        assertEquals(Collections.emptyList(), addressBook.getPersonList());
+        assertEquals(Collections.emptyList(), addressBook.getTransactionList());
     }
 
     @Test
@@ -34,53 +31,45 @@ public class AddressBookTest {
 
     @Test
     public void resetData_withValidReadOnlyAddressBook_replacesData() {
-        AddressBook newData = TypicalPersons.getTypicalAddressBook();
+        AddressBook newData = TypicalTransactions.getTypicalAddressBook();
         addressBook.resetData(newData);
         assertEquals(newData, addressBook);
     }
 
     @Test
-    public void hasPerson_nullPerson_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> addressBook.hasPerson(null));
+    public void hasTransaction_nullTransaction_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> addressBook.hasTransaction(null));
     }
 
     @Test
-    public void hasPerson_personNotInAddressBook_returnsFalse() {
-        assertFalse(addressBook.hasPerson(TypicalPersons.ALICE));
+    public void hasTransaction_transactionNotInAddressBook_returnsFalse() {
+        assertFalse(addressBook.hasTransaction(TypicalTransactions.LAKSA));
     }
 
     @Test
-    public void hasPerson_personInAddressBook_returnsTrue() {
-        addressBook.addPerson(TypicalPersons.ALICE);
-        assertTrue(addressBook.hasPerson(TypicalPersons.ALICE));
-    }
-
-    @Test
-    public void hasPerson_personWithSameIdentityFieldsInAddressBook_returnsTrue() {
-        addressBook.addPerson(TypicalPersons.ALICE);
-        Person editedAlice = new PersonBuilder(TypicalPersons.ALICE).withAddress(VALID_ADDRESS_BOB)
-                .withTags(VALID_TAG_HUSBAND).build();
-        assertTrue(addressBook.hasPerson(editedAlice));
+    public void hasTransaction_transactionInAddressBook_returnsTrue() {
+        addressBook.addTransaction(TypicalTransactions.LAKSA);
+        assertTrue(addressBook.hasTransaction(TypicalTransactions.LAKSA));
     }
 
     @Test
     public void getPersonList_modifyList_throwsUnsupportedOperationException() {
-        assertThrows(UnsupportedOperationException.class, () -> addressBook.getPersonList().remove(0));
+        assertThrows(UnsupportedOperationException.class, () -> addressBook.getTransactionList().remove(0));
     }
 
     /**
-     * A stub ReadOnlyAddressBook whose persons list can violate interface constraints.
+     * A stub ReadOnlyAddressBook whose transaction list can violate interface constraints.
      */
     private static class AddressBookStub implements ReadOnlyAddressBook {
-        private final ObservableList<Person> persons = FXCollections.observableArrayList();
+        private final ObservableList<Transaction> transactions = FXCollections.observableArrayList();
 
-        AddressBookStub(Collection<Person> persons) {
-            this.persons.setAll(persons);
+        AddressBookStub(Collection<Transaction> transactions) {
+            this.transactions.setAll(transactions);
         }
 
         @Override
-        public ObservableList<Person> getPersonList() {
-            return persons;
+        public ObservableList<Transaction> getTransactionList() {
+            return transactions;
         }
     }
 

@@ -1,7 +1,7 @@
 package thrift.testutil;
 
 import thrift.model.AddressBook;
-import thrift.model.transaction.Person;
+import thrift.model.transaction.Transaction;
 
 /**
  * A utility class to help with building Addressbook objects.
@@ -23,8 +23,8 @@ public class AddressBookBuilder {
     /**
      * Adds a new {@code Person} to the {@code AddressBook} that we are building.
      */
-    public AddressBookBuilder withPerson(Person person) {
-        addressBook.addPerson(person);
+    public AddressBookBuilder withDescription(Transaction transaction) {
+        addressBook.addTransaction(transaction);
         return this;
     }
 
