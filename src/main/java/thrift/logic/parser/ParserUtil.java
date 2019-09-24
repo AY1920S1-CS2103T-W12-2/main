@@ -53,7 +53,6 @@ public class ParserUtil {
     public static Value parseValue(String value) throws ParseException {
         requireNonNull(value);
         String trimmedValue = value.trim();
-        System.out.println(trimmedValue);
         if (!Value.isValidValue(trimmedValue)) {
             throw new ParseException(Value.VALUE_CONSTRAINTS);
         }

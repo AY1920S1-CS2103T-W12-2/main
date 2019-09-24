@@ -13,14 +13,14 @@ import thrift.model.transaction.Transaction;
 /**
  * Panel containing the list of persons.
  */
-public class PersonListPanel extends UiPart<Region> {
+public class TransactionListPanel extends UiPart<Region> {
     private static final String FXML = "TransactionListPanel.fxml";
-    private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
+    private final Logger logger = LogsCenter.getLogger(TransactionListPanel.class);
 
     @FXML
     private ListView<Transaction> transactionListView;
 
-    public PersonListPanel(ObservableList<Transaction> transactionList) {
+    public TransactionListPanel(ObservableList<Transaction> transactionList) {
         super(FXML);
         transactionListView.setItems(transactionList);
         transactionListView.setCellFactory(listView -> new TransactionListViewCell());
