@@ -75,7 +75,9 @@ Expected output:
 *   `New entry added: 3. [+] Allowance ($1000) [Monthly]`
 
 
+
 [[DeleteTag]]
+
 === Deleting a Transaction: `delete`
 
 Format: `delete i/INDEX`
@@ -93,6 +95,7 @@ Examples:
 Expected output:
 
 *   `Entry deleted: 1. Laksa ($10.50) [Lunch][Food]`
+
 
 [[UpdateTag]]
 === Updating a Transaction’s details: `update`
@@ -123,6 +126,7 @@ Original cost was: $10.50`
 
 //tag::tag[]
 [[TagTag]]
+
 === Tag transaction: `tag`
 
 Format: `tag i/INDEX t/TAG_NAME`
@@ -140,9 +144,11 @@ Examples:
 Expected output:
 
 *   `Entry tagged: 8. Student Loan ($12000.00) [Debt]`
+
 // end::tag[]
 
 // tag::untag[]
+
 === Tag transaction: `untag`
 
 Format: `untag i/INDEX t/TAG_NAME`
@@ -154,14 +160,17 @@ Format: `untag i/INDEX t/TAG_NAME`
 ****
 
 Examples:
+
 *   `untag i/7 t/Important`
 
 Expected output:
 
 *   `Entry untagged: 7. DoTA Arcanas ($49.00) [Game]`
+
 // end::untag[]
 
 // tag::convert[]
+
 === Convert currency: `convert`
 
 Format: `convert f/ORIGIN_CURRENCY t/TARGET_CURRENCY (v/VALUE|i/INDEX)`
@@ -177,11 +186,13 @@ Format: `convert f/ORIGIN_CURRENCY t/TARGET_CURRENCY (v/VALUE|i/INDEX)`
 Examples:
 
 *   `convert f/SGD t/USD v/1000`
+
 *   `convert f/SGD t/JPY i/8`
 
 Expected output:
 
 *   `Value converted: SGD1000 = USD725.82`
+
 *   `Entry converted: 8. Student Loan (¥934,566.00) [Debt]`
 // end::convert[]
 
@@ -204,6 +215,11 @@ NOTE: Assume entry at index 1 is `1. [-] Laksa ($10.50) [Lunch][Food]` and there
 
 *   `New entry added: 2. [-] Laksa ($10.50) [Lunch][Food]`
 // end::clone[]
+
+
+*   `Entry converted: 8. Student Loan (¥934,566.00) [Debt]`
+
+
 
 === Undoing the previous undoable command: `undo`
 
@@ -233,6 +249,7 @@ Expected output:
 * Deletes the expense spent on Laksa from THRIFT.
 * Deletes the allowance income from THRIFT.
 
+
 [[RedoTag]]
 === Redoing the undone command: `redo`
 
@@ -250,6 +267,7 @@ Expected output:
 
 * Adds the expense spent on Laksa back to THRIFT.
 
+
 [[ListTag]]
 === List expenses for the month: `list`
 
@@ -266,6 +284,8 @@ Expected output:
 * Returns a list of all food expenses for the specified month.
 
 [[HelpTag]]
+
+
 === Displaying help page: `help`
 
 Format: `help [COMMAND]`
@@ -333,5 +353,6 @@ Examples: +
 * <<UndoTag, *Undo*>>: `undo`
 * <<RedoTag, *Redo*>>: `redo`
 * <<HelpTag, *Help*>>: `help [COMMAND]` +
+
 Example: `help delete`
 * <<ExitTag, *Exit*>>: `exit`
