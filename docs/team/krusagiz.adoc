@@ -1,15 +1,7 @@
-<<<<<<< HEAD
 = Ang Chin Guan Melvin - Project Portfolio
 :site-section: AboutUs
 :imagesDir: ../images
 :stylesDir: ../stylesheets
 
 == PROJECT: THRIFT
-=======
-= Ang Chin Guan Melvin - Project Portfolio
-:site-section: AboutUs
-:imagesDir: ../images
-:stylesDir: ../stylesheets
 
-== PROJECT: THRIFT
->>>>>>> Added photo, Modified AboutUs and UserGuide
