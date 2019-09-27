@@ -5,14 +5,16 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import thrift.commons.core.GuiSettings;
-import thrift.model.transaction.Person;
+import thrift.model.transaction.Expense;
+import thrift.model.transaction.Income;
+import thrift.model.transaction.Transaction;
 
 /**
  * The API of the Model component.
  */
 public interface Model {
     /** {@code Predicate} that always evaluate to true */
-    Predicate<Person> PREDICATE_SHOW_ALL_PERSONS = unused -> true;
+    Predicate<Transaction> PREDICATE_SHOW_ALL_TRANSACTIONS = unused -> true;
 
     /**
      * Replaces user prefs data with the data in {@code userPrefs}.
@@ -53,36 +55,38 @@ public interface Model {
     ReadOnlyAddressBook getAddressBook();
 
     /**
-     * Returns true if a transaction with the same identity as {@code transaction} exists in the address book.
+     * Returns true if a transaction with the same identity as {@code transaction} exists in the transactions list.
      */
-    boolean hasPerson(Person person);
+    boolean hasTransaction(Transaction transaction);
 
     /**
      * Deletes the given transaction.
-     * The transaction must exist in the address book.
+     * The transaction must exist in the transactions list.
      */
-    void deletePerson(Person target);
+    void deleteTransaction(Transaction transaction);
 
     /**
-     * Adds the given transaction.
-     * {@code transaction} must not already exist in the address book.
+     * Adds the given expense.
      */
-    void addPerson(Person person);
+    void addExpense(Expense expense);
 
     /**
-     * Replaces the given transaction {@code target} with {@code editedPerson}.
-     * {@code target} must exist in the address book.
-     * The transaction identity of {@code editedPerson} must not be the same as another existing transaction in
-     * the address book.
+     * Adds teh given income.
      */
-    void setPerson(Person target, Person editedPerson);
+    void addIncome(Income income);
+
+    /**
+     * Replaces the given transaction {@code target} with {@code editedTransaction}.
+     * {@code target} must exist in the transactions list.
+     */
+    void setTransaction(Transaction target, Transaction editedTransaction);
 
     /** Returns an unmodifiable view of the filtered transaction list */
-    ObservableList<Person> getFilteredPersonList();
+    ObservableList<Transaction> getFilteredTransactionList();
 
     /**
      * Updates the filter of the filtered transaction list to filter by the given {@code predicate}.
      * @throws NullPointerException if {@code predicate} is null.
      */
-    void updateFilteredPersonList(Predicate<Person> predicate);
+    void updateFilteredTransactionList(Predicate<Transaction> predicate);
 }

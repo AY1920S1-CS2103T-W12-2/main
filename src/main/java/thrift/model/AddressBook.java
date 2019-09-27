@@ -5,8 +5,8 @@ import static java.util.Objects.requireNonNull;
 import java.util.List;
 
 import javafx.collections.ObservableList;
-import thrift.model.transaction.Person;
-import thrift.model.transaction.UniquePersonList;
+import thrift.model.transaction.Transaction;
+import thrift.model.transaction.TransactionList;
 
 /**
  * Wraps all data at the address-book level
@@ -14,7 +14,7 @@ import thrift.model.transaction.UniquePersonList;
  */
 public class AddressBook implements ReadOnlyAddressBook {
 
-    private final UniquePersonList persons;
+    private final TransactionList transactions;
 
     /*
      * The 'unusual' code block below is a non-static initialization block, sometimes used to avoid duplication
@@ -24,7 +24,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      *   among constructors.
      */
     {
-        persons = new UniquePersonList();
+        transactions = new TransactionList();
     }
 
     public AddressBook() {}
@@ -40,38 +40,28 @@ public class AddressBook implements ReadOnlyAddressBook {
     //// list overwrite operations
 
     /**
-     * Replaces the contents of the transaction list with {@code persons}.
-     * {@code persons} must not contain duplicate persons.
+     * Replaces the contents of the transaction list with {@code transactions}.
      */
-    public void setPersons(List<Person> persons) {
-        this.persons.setPersons(persons);
+    public void setTransactionss(List<Transaction> transactions) {
+        this.transactions.setTransactions(transactions);
     }
 
     /**
-     * Resets the existing data of this {@code AddressBook} with {@code newData}.
+     * Resets the existing data of this transactions list with {@code newData}.
      */
     public void resetData(ReadOnlyAddressBook newData) {
         requireNonNull(newData);
 
-        setPersons(newData.getPersonList());
+        setTransactionss(newData.getTransactionList());
     }
 
     //// transaction-level operations
 
     /**
-     * Returns true if a transaction with the same identity as {@code transaction} exists in the address book.
-     */
-    public boolean hasPerson(Person person) {
-        requireNonNull(person);
-        return persons.contains(person);
-    }
-
-    /**
      * Adds a transaction to the address book.
-     * The transaction must not already exist in the address book.
      */
-    public void addPerson(Person p) {
-        persons.add(p);
+    public void addTransaction(Transaction t) {
+        transactions.add(t);
     }
 
     /**
@@ -80,42 +70,50 @@ public class AddressBook implements ReadOnlyAddressBook {
      * The transaction identity of {@code editedPerson} must not be the same as another existing transaction in the
      * address book.
      */
-    public void setPerson(Person target, Person editedPerson) {
+    public void setTransaction(Transaction target, Transaction editedPerson) {
         requireNonNull(editedPerson);
 
-        persons.setPerson(target, editedPerson);
+        transactions.setTransaction(target, editedPerson);
+    }
+
+    /**
+     * Returns true if the specified transaction exists in the transactions list.
+     */
+    public boolean hasTransaction(Transaction t) {
+        requireNonNull(t);
+        return transactions.contains(t);
     }
 
     /**
      * Removes {@code key} from this {@code AddressBook}.
      * {@code key} must exist in the address book.
      */
-    public void removePerson(Person key) {
-        persons.remove(key);
+    public void removeTransaction(Transaction key) {
+        transactions.remove(key);
     }
 
     //// util methods
 
     @Override
     public String toString() {
-        return persons.asUnmodifiableObservableList().size() + " persons";
+        return transactions.asUnmodifiableObservableList().size() + " persons";
         // TODO: refine later
     }
 
     @Override
-    public ObservableList<Person> getPersonList() {
-        return persons.asUnmodifiableObservableList();
+    public ObservableList<Transaction> getTransactionList() {
+        return transactions.asUnmodifiableObservableList();
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof AddressBook // instanceof handles nulls
-                && persons.equals(((AddressBook) other).persons));
+                && transactions.equals(((AddressBook) other).transactions));
     }
 
     @Override
     public int hashCode() {
-        return persons.hashCode();
+        return transactions.hashCode();
     }
 }

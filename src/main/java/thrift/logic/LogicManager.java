@@ -14,7 +14,7 @@ import thrift.logic.parser.AddressBookParser;
 import thrift.logic.parser.exceptions.ParseException;
 import thrift.model.Model;
 import thrift.model.ReadOnlyAddressBook;
-import thrift.model.transaction.Person;
+import thrift.model.transaction.Transaction;
 import thrift.storage.Storage;
 
 /**
@@ -57,8 +57,8 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public ObservableList<Person> getFilteredPersonList() {
-        return model.getFilteredPersonList();
+    public ObservableList<Transaction> getFilteredTransactionList() {
+        return model.getFilteredTransactionList();
     }
 
     @Override

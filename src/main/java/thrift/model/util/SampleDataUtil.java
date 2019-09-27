@@ -7,43 +7,32 @@ import java.util.stream.Collectors;
 import thrift.model.AddressBook;
 import thrift.model.ReadOnlyAddressBook;
 import thrift.model.tag.Tag;
-import thrift.model.transaction.Address;
-import thrift.model.transaction.Email;
-import thrift.model.transaction.Name;
-import thrift.model.transaction.Person;
-import thrift.model.transaction.Phone;
+import thrift.model.transaction.Description;
+import thrift.model.transaction.Expense;
+import thrift.model.transaction.Income;
+import thrift.model.transaction.Transaction;
+import thrift.model.transaction.TransactionDate;
+import thrift.model.transaction.Value;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.
  */
 public class SampleDataUtil {
-    public static Person[] getSamplePersons() {
-        return new Person[] {
-            new Person(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
-                new Address("Blk 30 Geylang Street 29, #06-40"),
-                getTagSet("friends")),
-            new Person(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
-                new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
-                getTagSet("colleagues", "friends")),
-            new Person(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
-                new Address("Blk 11 Ang Mo Kio Street 74, #11-04"),
-                getTagSet("neighbours")),
-            new Person(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
-                new Address("Blk 436 Serangoon Gardens Street 26, #16-43"),
-                getTagSet("family")),
-            new Person(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
-                new Address("Blk 47 Tampines Street 20, #17-35"),
-                getTagSet("classmates")),
-            new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
-                new Address("Blk 45 Aljunied Street 85, #11-31"),
-                getTagSet("colleagues"))
+    public static Transaction[] getSampleTransaction() {
+        return new Transaction[] {
+            new Expense(new Description("Laksa"), new Value("3.50"), new TransactionDate("13/03/1937"),
+                    getTagSet("Lunch")),
+            new Expense(new Description("Airpods 2nd Generation"), new Value("300"),
+                    new TransactionDate("14/03/1937"), getTagSet("Accessory")),
+            new Income(new Description("Bursary"), new Value("500"), new TransactionDate("12/03/1937"),
+                    getTagSet("Award"))
         };
     }
 
     public static ReadOnlyAddressBook getSampleAddressBook() {
         AddressBook sampleAb = new AddressBook();
-        for (Person samplePerson : getSamplePersons()) {
-            sampleAb.addPerson(samplePerson);
+        for (Transaction sampleTransaction : getSampleTransaction()) {
+            sampleAb.addTransaction(sampleTransaction);
         }
         return sampleAb;
     }

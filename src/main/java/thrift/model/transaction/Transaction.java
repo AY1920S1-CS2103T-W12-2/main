@@ -11,6 +11,8 @@ import thrift.model.tag.Tag;
  */
 public abstract class Transaction {
 
+    public abstract boolean isSameTransaction(Transaction otherTransaction);
+
     /**
      * Get this Transaction object's Description.
      *

@@ -8,7 +8,7 @@ import thrift.model.AddressBook;
 import thrift.model.Model;
 import thrift.model.ModelManager;
 import thrift.model.UserPrefs;
-import thrift.testutil.TypicalPersons;
+import thrift.testutil.TypicalTransactions;
 
 public class ClearCommandTest {
 
@@ -22,8 +22,8 @@ public class ClearCommandTest {
 
     @Test
     public void execute_nonEmptyAddressBook_success() {
-        Model model = new ModelManager(TypicalPersons.getTypicalAddressBook(), new UserPrefs());
-        Model expectedModel = new ModelManager(TypicalPersons.getTypicalAddressBook(), new UserPrefs());
+        Model model = new ModelManager(TypicalTransactions.getTypicalAddressBook(), new UserPrefs());
+        Model expectedModel = new ModelManager(TypicalTransactions.getTypicalAddressBook(), new UserPrefs());
         expectedModel.setAddressBook(new AddressBook());
 
         assertCommandSuccess(new ClearCommand(), model, ClearCommand.MESSAGE_SUCCESS, expectedModel);

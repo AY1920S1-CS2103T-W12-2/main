@@ -1,5 +1,6 @@
 package thrift.logic.parser;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static thrift.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
@@ -12,21 +13,21 @@ import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
-import thrift.logic.commands.AddCommand;
+import thrift.logic.commands.AddExpenseCommand;
 import thrift.logic.commands.ClearCommand;
 import thrift.logic.commands.DeleteCommand;
 import thrift.logic.commands.EditCommand;
-import thrift.logic.commands.EditCommand.EditPersonDescriptor;
+import thrift.logic.commands.EditCommand.EditTransactionDescriptor;
 import thrift.logic.commands.ExitCommand;
 import thrift.logic.commands.FindCommand;
 import thrift.logic.commands.HelpCommand;
 import thrift.logic.commands.ListCommand;
 import thrift.logic.parser.exceptions.ParseException;
-import thrift.model.transaction.NameContainsKeywordsPredicate;
-import thrift.model.transaction.Person;
-import thrift.testutil.EditPersonDescriptorBuilder;
-import thrift.testutil.PersonBuilder;
-import thrift.testutil.PersonUtil;
+import thrift.model.transaction.DescriptionContainsKeywordsPredicate;
+import thrift.model.transaction.Expense;
+import thrift.testutil.EditTransactionDescriptorBuilder;
+import thrift.testutil.ExpenseBuilder;
+import thrift.testutil.TransactionUtil;
 import thrift.testutil.TypicalIndexes;
 
 public class AddressBookParserTest {
@@ -34,10 +35,9 @@ public class AddressBookParserTest {
     private final AddressBookParser parser = new AddressBookParser();
 
     @Test
-    public void parseCommand_add() throws Exception {
-        Person person = new PersonBuilder().build();
-        AddCommand command = (AddCommand) parser.parseCommand(PersonUtil.getAddCommand(person));
-        assertEquals(new AddCommand(person), command);
+    public void parseCommand_addExpense() throws Exception {
+        assertDoesNotThrow(() -> (AddExpenseCommand) parser.parseCommand(TransactionUtil
+                .getAddExpenseCommand(new ExpenseBuilder().build())));
     }
 
     @Test
@@ -49,18 +49,17 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_delete() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
-                DeleteCommand.COMMAND_WORD + " " + TypicalIndexes.INDEX_FIRST_PERSON.getOneBased());
-        assertEquals(new DeleteCommand(TypicalIndexes.INDEX_FIRST_PERSON), command);
+                DeleteCommand.COMMAND_WORD + " " + TypicalIndexes.INDEX_FIRST_TRANSACTION.getOneBased());
+        assertEquals(new DeleteCommand(TypicalIndexes.INDEX_FIRST_TRANSACTION), command);
     }
 
     @Test
     public void parseCommand_edit() throws Exception {
-        Person person = new PersonBuilder().build();
-        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder(person).build();
-        EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
-                + TypicalIndexes.INDEX_FIRST_PERSON.getOneBased() + " "
-                + PersonUtil.getEditPersonDescriptorDetails(descriptor));
-        assertEquals(new EditCommand(TypicalIndexes.INDEX_FIRST_PERSON, descriptor), command);
+        Expense expense = new ExpenseBuilder().build();
+        EditTransactionDescriptor descriptor = new EditTransactionDescriptorBuilder(expense).build();
+        assertDoesNotThrow(() -> (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD
+                + " " + TypicalIndexes.INDEX_FIRST_TRANSACTION.getOneBased() + " "
+                + TransactionUtil.getEditTransactionDescriptorDetails(descriptor)));
     }
 
     @Test
@@ -75,7 +74,7 @@ public class AddressBookParserTest {
         FindCommand command = (FindCommand) parser.parseCommand(
                 FindCommand.COMMAND_WORD + " "
                         + keywords.stream().collect(Collectors.joining(" ")));
-        assertEquals(new FindCommand(new NameContainsKeywordsPredicate(keywords)), command);
+        assertEquals(new FindCommand(new DescriptionContainsKeywordsPredicate(keywords)), command);
     }
 
     @Test

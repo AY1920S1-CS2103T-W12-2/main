@@ -1,7 +1,7 @@
 package thrift.model;
 
 import javafx.collections.ObservableList;
-import thrift.model.transaction.Person;
+import thrift.model.transaction.Transaction;
 
 /**
  * Unmodifiable view of an address book
@@ -9,9 +9,8 @@ import thrift.model.transaction.Person;
 public interface ReadOnlyAddressBook {
 
     /**
-     * Returns an unmodifiable view of the persons list.
-     * This list will not contain any duplicate persons.
+     * Returns an unmodifiable view of the transactions list.
      */
-    ObservableList<Person> getPersonList();
+    ObservableList<Transaction> getTransactionList();
 
 }

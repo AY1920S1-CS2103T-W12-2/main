@@ -5,7 +5,7 @@ import java.util.Arrays;
 import thrift.commons.core.Messages;
 import thrift.logic.commands.FindCommand;
 import thrift.logic.parser.exceptions.ParseException;
-import thrift.model.transaction.NameContainsKeywordsPredicate;
+import thrift.model.transaction.DescriptionContainsKeywordsPredicate;
 
 /**
  * Parses input arguments and creates a new FindCommand object
@@ -26,7 +26,7 @@ public class FindCommandParser implements Parser<FindCommand> {
 
         String[] nameKeywords = trimmedArgs.split("\\s+");
 
-        return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
+        return new FindCommand(new DescriptionContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
     }
 
 }

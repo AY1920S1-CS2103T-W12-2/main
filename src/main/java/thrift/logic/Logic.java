@@ -9,7 +9,7 @@ import thrift.logic.commands.exceptions.CommandException;
 import thrift.logic.parser.exceptions.ParseException;
 import thrift.model.Model;
 import thrift.model.ReadOnlyAddressBook;
-import thrift.model.transaction.Person;
+import thrift.model.transaction.Transaction;
 
 /**
  * API of the Logic component
@@ -31,8 +31,9 @@ public interface Logic {
      */
     ReadOnlyAddressBook getAddressBook();
 
-    /** Returns an unmodifiable view of the filtered list of persons */
-    ObservableList<Person> getFilteredPersonList();
+    /** Returns an unmodifiable view of the filtered list of transactions
+     * @return*/
+    ObservableList<Transaction> getFilteredTransactionList();
 
     /**
      * Returns the user prefs' address book file path.
