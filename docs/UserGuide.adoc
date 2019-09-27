@@ -77,7 +77,6 @@ Expected output:
 
 
 [[DeleteTag]]
-
 === Deleting a Transaction: `delete`
 
 Format: `delete i/INDEX`
@@ -126,7 +125,6 @@ Original cost was: $10.50`
 
 //tag::tag[]
 [[TagTag]]
-
 === Tag transaction: `tag`
 
 Format: `tag i/INDEX t/TAG_NAME`
@@ -148,7 +146,7 @@ Expected output:
 // end::tag[]
 
 // tag::untag[]
-
+[[UntagTag]]
 === Tag transaction: `untag`
 
 Format: `untag i/INDEX t/TAG_NAME`
@@ -170,10 +168,10 @@ Expected output:
 // end::untag[]
 
 // tag::convert[]
-
+[[ConvertTag]]
 === Convert currency: `convert`
 
-Format: `convert f/ORIGIN_CURRENCY t/TARGET_CURRENCY (v/VALUE|i/INDEX)`
+Format: `convert c/TARGET_CURRENCY (v/VALUE|i/INDEX)`
 
 ****
 * Converts the a fixed value or `Transaction` entry
@@ -185,9 +183,9 @@ Format: `convert f/ORIGIN_CURRENCY t/TARGET_CURRENCY (v/VALUE|i/INDEX)`
 
 Examples:
 
-*   `convert f/SGD t/USD v/1000`
+*   `convert c/USD v/1000`
 
-*   `convert f/SGD t/JPY i/8`
+*   `convert c/JPY i/8`
 
 Expected output:
 
@@ -216,11 +214,7 @@ NOTE: Assume entry at index 1 is `1. [-] Laksa ($10.50) [Lunch][Food]` and there
 *   `New entry added: 2. [-] Laksa ($10.50) [Lunch][Food]`
 // end::clone[]
 
-
-*   `Entry converted: 8. Student Loan (¥934,566.00) [Debt]`
-
-
-
+[[UndoTag]]
 === Undoing the previous undoable command: `undo`
 
 Format: `undo`
@@ -346,13 +340,12 @@ Example: `list m/Jan t/Food`
 Example: `tag i/8 t/Debt`
 * <<UntagTag, *Untag*>>: `untag i/INDEX t/TAG_NAME` +
 Example: `untag i/7 t/Important`
-* <<ConvertTag, *Convert*>>: `convert f/ORIGIN_CURRENCY t/TARGET_CURRENCY (v/VALUE|i/INDEX)` +
+* <<ConvertTag, *Convert*>>: `convert c/TARGET_CURRENCY (v/VALUE|i/INDEX)` +
 Examples: +
- `convert f/SGD t/USD v/1000` +
- `convert f/SGD t/JPY i/8`
+ `convert c/USD v/1000` +
+ `convert c/JPY i/8`
 * <<UndoTag, *Undo*>>: `undo`
 * <<RedoTag, *Redo*>>: `redo`
 * <<HelpTag, *Help*>>: `help [COMMAND]` +
-
 Example: `help delete`
 * <<ExitTag, *Exit*>>: `exit`
