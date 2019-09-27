@@ -39,8 +39,9 @@
 <li><a href="#instructions-for-manual-testing">Appendix F: Instructions for Manual Testing</a>
 <ul class="sectlevel2">
 <li><a href="#launch-and-shutdown">F.1. Launch and Shutdown</a></li>
-<li><a href="#deleting-a-person">F.2. Deleting a person</a></li>
-<li><a href="#saving-data">F.3. Saving data</a></li>
+<li><a href="#adding-a-transaction">F.2. Adding a transaction</a></li>
+<li><a href="#deleting-a-transaction">F.3. Deleting a transaction</a></li>
+<li><a href="#saving-data">F.4. Saving data</a></li>
 </ul>
 </li>
 </ul>
@@ -924,7 +925,81 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 <div class="paragraph">
 <p>(For all use cases below, the <strong>System</strong> is the <code>THRIFT</code> and the <strong>Actor</strong> is the <code>user</code>, unless specified otherwise)</p>
 </div>
-<h3 id="use-case-shows-help-window" class="discrete">Use case: Shows help window</h3>
+<h3 id="use-case-add-an-expense-income-transaction" class="discrete">Use case: Add an expense/income transaction</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to add a new spending or income into the records.</p>
+</li>
+<li>
+<p>THRIFT processes the request and adds the expense/income into the transactions list.</p>
+<div class="paragraph">
+<p>Use case ends</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The parameters specified by the user are not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user and the transactions list is not updated.</p>
+<div class="paragraph">
+<p>Use case ends</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-delete-a-transaction" class="discrete">Use case: Delete a transaction</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to delete an existing transaction from the records.</p>
+</li>
+<li>
+<p>THRIFT processes the request and removes the transaction from the transactions list.</p>
+<div class="paragraph">
+<p>Use case ends</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The command or transaction specified by the user is not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user and the transactions list is not updated.</p>
+<div class="paragraph">
+<p>Use case ends</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-show-help-window" class="discrete">Use case: Show help window</h3>
 <div class="paragraph">
 <p><strong>MSS</strong></p>
 </div>
@@ -1095,28 +1170,51 @@ Expected: The most recent window size and location is retained.</p>
 </li>
 </ol>
 </div>
-<div class="paragraph">
-<p><em>{ more test cases &#8230;&#8203; }</em></p>
-</div>
 </div>
 <div class="sect2">
-<h3 id="deleting-a-person"><a class="link" href="#deleting-a-person">F.2. Deleting a person</a></h3>
+<h3 id="adding-a-transaction"><a class="link" href="#adding-a-transaction">F.2. Adding a transaction</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Deleting a person while all persons are listed</p>
+<p>Adding a transaction, be it income or expense.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Prerequisites: List all persons using the <code>list</code> command. Multiple persons in the list.</p>
+<p>Test case: <code>add_expense n/Bought a pair of Apple Earpods c/350</code><br>
+Expected: A new expense transaction is added into the list. Details of the expense transaction shown in the status message. The date string is automatically saved into the transaction list.</p>
 </li>
 <li>
-<p>Test case: <code>delete 1</code><br>
-Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.</p>
+<p>Test case: <code>add_income n/Awarded bursary prize c/500</code><br>
+Expected: A new income transaction is added into the list. Details of the income transaction shown in the status message. The date string is automatically saved into the transactions list.</p>
 </li>
 <li>
-<p>Test case: <code>delete 0</code><br>
-Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.</p>
+<p>Test case: <code>add_expense n/Lunch in school</code><br>
+Expected: No transaction is added. Error details shown in the status message (missing <code>c/COST</code> parameter). Status bar remains the same.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="deleting-a-transaction"><a class="link" href="#deleting-a-transaction">F.3. Deleting a transaction</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Deleting a transaction while all transactions are listed</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List all transactions using the <code>list</code> command. Multiple transactions in the list.</p>
+</li>
+<li>
+<p>Test case: <code>delete i/1</code><br>
+Expected: First transaction is deleted from the list. Details of the deleted transaction shown in the status message. Timestamp in the status bar is updated.</p>
+</li>
+<li>
+<p>Test case: <code>delete i/0</code><br>
+Expected: No transaction is deleted. Error details shown in the status message. Status bar remains the same.</p>
 </li>
 <li>
 <p>Other incorrect delete commands to try: <code>delete</code>, <code>delete x</code> (where x is larger than the list size) <em>{give more}</em><br>
@@ -1132,7 +1230,7 @@ Expected: Similar to previous.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="saving-data"><a class="link" href="#saving-data">F.3. Saving data</a></h3>
+<h3 id="saving-data"><a class="link" href="#saving-data">F.4. Saving data</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1140,16 +1238,13 @@ Expected: Similar to previous.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p><em>{explain how to simulate a missing/corrupted file and the expected behavior}</em></p>
+<p>Delete the data file at <code>.\data\thrift.json</code>.</p>
 </li>
 </ol>
 </div>
 </li>
 </ol>
 </div>
-<div class="paragraph">
-<p><em>{ more test cases &#8230;&#8203; }</em></p>
 </div>
 </div>
-</div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-09-27 03:26:43 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-09-27 07:24:48 UTC</div></div></div></body></html>
