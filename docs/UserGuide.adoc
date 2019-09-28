@@ -183,9 +183,9 @@ Format: `convert to/TARGET_CURRENCY (c/COST|i/INDEX)`
 
 Examples:
 
-*   `convert c/USD v/1000`
+*   `convert to/USD v/1000`
 
-*   `convert c/JPY i/8`
+*   `convert to/JPY i/8`
 
 Expected output:
 
