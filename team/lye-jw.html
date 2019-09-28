@@ -63,76 +63,6 @@
 </tbody>
 </table>
 <div class="sect2">
-<h3 id="UpdateTag"><a class="link" href="#UpdateTag">Updating a Transaction’s details: <code>update</code></a></h3>
-<div class="paragraph">
-<p>Format: <code>update i/INDEX | PREFIX_LETTER/UPDATED_DETAILS</code></p>
-</div>
-<div class="sidebarblock">
-<div class="content">
-<div class="ulist">
-<ul>
-<li>
-<p>Updates the Transaction&#8217;s details at the specified <code>INDEX</code>.</p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>INDEX</code> refers to the index number currently shown in the UI, and must be a <strong>positive integer</strong>.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><code>PREFIX_LETTER</code> specifies type of detail to be updated, e.g. <code>n/</code> for name.</p>
-</li>
-<li>
-<p><code>UPDATED_DETAILS</code> are the new details of type corresponding to <code>PREFIX_LETTER</code> that the Transaction is to be updated with.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>Examples:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>update i/1 | n/Curry Laksa</code></p>
-</li>
-<li>
-<p><code>update i/1 | c/11</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Expected output:<br></p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Assume 2nd command occurs after 1st
-</td>
-</tr>
-</table>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>Entry name updated: 1. [-] Curry Laksa ($10.50) [Lunch][Food]<br>
-Original name was: Laksa</code></p>
-</li>
-<li>
-<p><code>Entry cost updated: 1. [-] Curry Laksa ($11) [Lunch][Food]<br>
-Original cost was: $10.50</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
 <h3 id="CloneTag"><a class="link" href="#CloneTag">Cloning a Transaction: <code>clone</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>clone i/INDEX</code></p>
@@ -150,9 +80,6 @@ Original cost was: $10.50</code></p>
 </ul>
 </div>
 </div>
-</div>
-<div class="paragraph">
-<p>Examples:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -209,4 +136,4 @@ Assume entry at index 1 is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code> and 
 <p><em>{Optionally, you may include other projects in your portfolio.}</em></p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-09-27 07:24:48 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-09-28 04:08:30 UTC</div></div></div></body></html>

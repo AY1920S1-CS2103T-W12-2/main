@@ -17,15 +17,18 @@
 <li><a href="#IncomeTag">3.2. Adding an income: <code>add income</code></a></li>
 <li><a href="#DeleteTag">3.3. Deleting a Transaction: <code>delete</code></a></li>
 <li><a href="#UpdateTag">3.4. Updating a Transaction’s details: <code>update</code></a></li>
-<li><a href="#CloneTag">3.5. Cloning a Transaction: <code>clone</code></a></li>
-<li><a href="#UndoTag">3.6. Undoing the previous undoable command: <code>undo</code></a></li>
-<li><a href="#RedoTag">3.7. Redoing the undone command: <code>redo</code></a></li>
-<li><a href="#ListTag">3.8. List expenses for the month: <code>list</code></a></li>
-<li><a href="#HelpTag">3.9. Displaying help page: <code>help</code></a></li>
-<li><a href="#ExitTag">3.10. Exiting THRIFT application: <code>exit</code></a></li>
-<li><a href="#generating-an-external-report-code-coming-in-v2-0-code">3.11. Generating an external report <code>[coming in v2.0]</code></a></li>
-<li><a href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.12. Recommending dining options based on budget <code>[coming in v2.0]</code></a></li>
-<li><a href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.13. Encrypting THRIFT data <code>[coming in v2.0]</code></a></li>
+<li><a href="#TagTag">3.5. Tag transaction: <code>tag</code></a></li>
+<li><a href="#UntagTag">3.6. Tag transaction: <code>untag</code></a></li>
+<li><a href="#ConvertTag">3.7. Convert currency: <code>convert</code></a></li>
+<li><a href="#CloneTag">3.8. Cloning a Transaction: <code>clone</code></a></li>
+<li><a href="#UndoTag">3.9. Undoing the previous undoable command: <code>undo</code></a></li>
+<li><a href="#RedoTag">3.10. Redoing the undone command: <code>redo</code></a></li>
+<li><a href="#ListTag">3.11. List expenses for the month: <code>list</code></a></li>
+<li><a href="#HelpTag">3.12. Displaying help page: <code>help</code></a></li>
+<li><a href="#ExitTag">3.13. Exiting THRIFT application: <code>exit</code></a></li>
+<li><a href="#generating-an-external-report-code-coming-in-v2-0-code">3.14. Generating an external report <code>[coming in v2.0]</code></a></li>
+<li><a href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.15. Recommending dining options based on budget <code>[coming in v2.0]</code></a></li>
+<li><a href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.16. Encrypting THRIFT data <code>[coming in v2.0]</code></a></li>
 </ul>
 </li>
 <li><a href="#faq">4. FAQ</a></li>
@@ -290,7 +293,148 @@ Original cost was: $10.50</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="CloneTag"><a class="link" href="#CloneTag">3.5. Cloning a Transaction: <code>clone</code></a></h3>
+<h3 id="TagTag"><a class="link" href="#TagTag">3.5. Tag transaction: <code>tag</code></a></h3>
+<div class="paragraph">
+<p>Format: <code>tag i/INDEX t/TAG_NAME</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Tags the transaction at the specified <code>INDEX</code> with <code>TAG_NAME</code>.</p>
+</li>
+<li>
+<p><code>INDEX</code> refers to the index number currently shown in the UI (after filtering, if any).</p>
+</li>
+<li>
+<p><code>INDEX</code> <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>tag i/8 t/Debt</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Expected output:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Entry tagged: 8. Student Loan ($12000.00) [Debt]</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="UntagTag"><a class="link" href="#UntagTag">3.6. Tag transaction: <code>untag</code></a></h3>
+<div class="paragraph">
+<p>Format: <code>untag i/INDEX t/TAG_NAME</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Untags <code>TAG_NAME</code> from the transaction at the specified <code>INDEX</code>.</p>
+</li>
+<li>
+<p><code>INDEX</code> refers to the index number currently shown in the UI (after filtering, if any).</p>
+</li>
+<li>
+<p><code>INDEX</code> <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>untag i/7 t/Important</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Expected output:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Entry untagged: 7. DoTA Arcanas ($49.00) [Game]</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ConvertTag"><a class="link" href="#ConvertTag">3.7. Convert currency: <code>convert</code></a></h3>
+<div class="paragraph">
+<p>Format: <code>convert to/TARGET_CURRENCY (c/COST|i/INDEX)</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Converts the a fixed value or <code>Transaction</code> entry</p>
+</li>
+<li>
+<p>Only one of either <code>VALUE</code> or <code>INDEX</code> is allowed per command</p>
+</li>
+<li>
+<p><code>VALUE</code> must be positive.</p>
+</li>
+<li>
+<p><code>INDEX</code> refers to the index number currently shown in the UI (after filtering, if any).</p>
+</li>
+<li>
+<p><code>INDEX</code> <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>convert c/USD v/1000</code></p>
+</li>
+<li>
+<p><code>convert c/JPY i/8</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Expected output:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Value converted: SGD1000 = USD725.82</code></p>
+</li>
+<li>
+<p><code>Entry converted: 8. Student Loan (¥934,566.00) [Debt]</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="CloneTag"><a class="link" href="#CloneTag">3.8. Cloning a Transaction: <code>clone</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>clone i/INDEX</code></p>
 </div>
@@ -307,9 +451,6 @@ Original cost was: $10.50</code></p>
 </ul>
 </div>
 </div>
-</div>
-<div class="paragraph">
-<p>Examples:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -342,7 +483,7 @@ Assume entry at index 1 is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code> and 
 </div>
 </div>
 <div class="sect2">
-<h3 id="UndoTag"><a class="link" href="#UndoTag">3.6. Undoing the previous undoable command: <code>undo</code></a></h3>
+<h3 id="UndoTag"><a class="link" href="#UndoTag">3.9. Undoing the previous undoable command: <code>undo</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>undo</code></p>
 </div>
@@ -412,7 +553,7 @@ Undoable commands are commands that modify the data of THRIFT application.
 </div>
 </div>
 <div class="sect2">
-<h3 id="RedoTag"><a class="link" href="#RedoTag">3.7. Redoing the undone command: <code>redo</code></a></h3>
+<h3 id="RedoTag"><a class="link" href="#RedoTag">3.10. Redoing the undone command: <code>redo</code></a></h3>
 <div class="paragraph">
 <p>Redo the <a href="#Undoable">undoable command</a> that was previously undone by the user.</p>
 </div>
@@ -443,7 +584,7 @@ Undoable commands are commands that modify the data of THRIFT application.
 </div>
 </div>
 <div class="sect2">
-<h3 id="ListTag"><a class="link" href="#ListTag">3.8. List expenses for the month: <code>list</code></a></h3>
+<h3 id="ListTag"><a class="link" href="#ListTag">3.11. List expenses for the month: <code>list</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>list [m/MONTH] [t/TAG]</code></p>
 </div>
@@ -475,7 +616,7 @@ Undoable commands are commands that modify the data of THRIFT application.
 </div>
 </div>
 <div class="sect2">
-<h3 id="HelpTag"><a class="link" href="#HelpTag">3.9. Displaying help page: <code>help</code></a></h3>
+<h3 id="HelpTag"><a class="link" href="#HelpTag">3.12. Displaying help page: <code>help</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>help [COMMAND]</code></p>
 </div>
@@ -507,25 +648,25 @@ Undoable commands are commands that modify the data of THRIFT application.
 </div>
 </div>
 <div class="sect2">
-<h3 id="ExitTag"><a class="link" href="#ExitTag">3.10. Exiting THRIFT application: <code>exit</code></a></h3>
+<h3 id="ExitTag"><a class="link" href="#ExitTag">3.13. Exiting THRIFT application: <code>exit</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>exit</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="generating-an-external-report-code-coming-in-v2-0-code"><a class="link" href="#generating-an-external-report-code-coming-in-v2-0-code">3.11. Generating an external report <code>[coming in v2.0]</code></a></h3>
+<h3 id="generating-an-external-report-code-coming-in-v2-0-code"><a class="link" href="#generating-an-external-report-code-coming-in-v2-0-code">3.14. Generating an external report <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>With this feature, you will be able to save your monthly budget report into an external file for your record purposes. The report will clearly state your expenditure, income and remaining budget for the month.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="recommending-dining-options-based-on-budget-code-coming-in-v2-0-code"><a class="link" href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.12. Recommending dining options based on budget <code>[coming in v2.0]</code></a></h3>
+<h3 id="recommending-dining-options-based-on-budget-code-coming-in-v2-0-code"><a class="link" href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.15. Recommending dining options based on budget <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>Depending on your remaining budget and the remaining days to the end of the month, THRIFT will recommend you dining places in NUS which will suit your budget. For example, if you are running low on funds, you might get recommended to travel to the Arts canteen to eat since there are really cheap options there.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="encrypting-thrift-data-code-coming-in-v2-0-code"><a class="link" href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.13. Encrypting THRIFT data <code>[coming in v2.0]</code></a></h3>
+<h3 id="encrypting-thrift-data-code-coming-in-v2-0-code"><a class="link" href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.16. Encrypting THRIFT data <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>If you are especially conscious about having your data spied on, this function will definitely ease your worries. With encryption enabled, your data will not be known to the intruder should they steal your THRIFT application data.</p>
 </div>
@@ -579,6 +720,29 @@ Example: <code>clone i/1</code></p>
 Example: <code>list m/Jan t/Food</code></p>
 </li>
 <li>
+<p><a href="#HelpTag"><strong>Help</strong></a>: <code>help [COMMAND]</code><br></p>
+</li>
+<li>
+<p><a href="#TagTag"><strong>Tag</strong></a>: <code>tag i/INDEX t/TAG_NAME</code><br>
+Example: <code>tag i/8 t/Debt</code></p>
+</li>
+<li>
+<p><a href="#UntagTag"><strong>Untag</strong></a>: <code>untag i/INDEX t/TAG_NAME</code><br>
+Example: <code>untag i/7 t/Important</code></p>
+</li>
+<li>
+<p><a href="#ConvertTag"><strong>Convert</strong></a>: <code>convert to/TARGET_CURRENCY (c/COST|i/INDEX)</code><br>
+Examples:<br>
+ <code>convert c/USD v/1000</code><br>
+ <code>convert c/JPY i/8</code></p>
+</li>
+<li>
+<p><a href="#UndoTag"><strong>Undo</strong></a>: <code>undo</code></p>
+</li>
+<li>
+<p><a href="#RedoTag"><strong>Redo</strong></a>: <code>redo</code></p>
+</li>
+<li>
 <p><a href="#HelpTag"><strong>Help</strong></a>: <code>help [COMMAND]</code><br>
 Example: <code>help delete</code></p>
 </li>
@@ -588,4 +752,4 @@ Example: <code>help delete</code></p>
 </ul>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-09-27 07:24:48 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-09-28 04:08:30 UTC</div></div></div></body></html>
