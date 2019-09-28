@@ -171,7 +171,7 @@ Expected output:
 [[ConvertTag]]
 === Convert currency: `convert`
 
-Format: `convert c/TARGET_CURRENCY (v/VALUE|i/INDEX)`
+Format: `convert to/TARGET_CURRENCY (v/VALUE|i/INDEX)`
 
 ****
 * Converts the a fixed value or `Transaction` entry
@@ -340,7 +340,7 @@ Example: `list m/Jan t/Food`
 Example: `tag i/8 t/Debt`
 * <<UntagTag, *Untag*>>: `untag i/INDEX t/TAG_NAME` +
 Example: `untag i/7 t/Important`
-* <<ConvertTag, *Convert*>>: `convert c/TARGET_CURRENCY (v/VALUE|i/INDEX)` +
+* <<ConvertTag, *Convert*>>: `convert to/TARGET_CURRENCY (v/VALUE|i/INDEX)` +
 Examples: +
  `convert c/USD v/1000` +
  `convert c/JPY i/8`
