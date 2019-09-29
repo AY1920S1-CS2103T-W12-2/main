@@ -14,6 +14,8 @@ ifdef::env-github[]
 endif::[]
 :repoURL: https://github.com/AY1920S1-CS2103T-W12-2/main
 
+image::logo/logo.png[align="center"]
+
 By: `Team THRIFT`      Since: `Sept 2019`      Licence: `MIT`
 
 == Setting up
@@ -616,12 +618,93 @@ _Use case ends_
 +
 _Use case ends_
 
+[discrete]
+=== Use case: Tagging a transaction
+
+*MSS*
+
+1. User requests to tag a specific transaction.
+2. THRIFT processes the request and adds the tag to the specific transaction.
++
+_Use case ends_
+
+*Extensions*
+
+[none]
+* 1a. The parameters specified by the user are not valid.
++
+[none]
+** 1a1. THRIFT displays an invalid parameter error to the user and the transaction is not updated.
++
+_Use case ends_
+
+
+[discrete]
+=== Use case: Untagging a transaction
+
+*MSS*
+
+1. User requests to untag a specific transaction.
+2. THRIFT processes the request and removes the tag from the specific transaction.
++
+_Use case ends_
+
+*Extensions*
+
+[none]
+* 1a. The parameters specified by the user are not valid.
++
+[none]
+** 1a1. THRIFT displays an invalid parameter error to the user and the transaction is not updated.
++
+_Use case ends_
+
+[discrete]
+=== Use case: Convert a transaction
+
+*MSS*
+
+1. User requests to convert the currency of a specific transaction to a new currency.
+2. THRIFT processes the request and updates specific transaction with the new value in the new currency.
++
+_Use case ends_
+
+*Extensions*
+
+[none]
+* 1a. The parameters specified by the user are not valid.
++
+[none]
+** 1a1. THRIFT displays an invalid parameter error to the user and the transaction is not updated.
++
+_Use case ends_
+
+[discrete]
+=== Use case: Convert a value
+
+*MSS*
+
+1. User requests to convert a value in SGD to a specific currency.
+2. THRIFT processes the request and displays the new value in the new currency.
++
+_Use case ends_
+
+*Extensions*
+
+[none]
+* 1a. The parameters specified by the user are not valid.
++
+[none]
+** 1a1. THRIFT displays an invalid parameter error to the user.
++
+_Use case ends_
+
 [appendix]
 == Non Functional Requirements
 
-. THRIFT should be able to run on any <<mainstream-os, mainstream OS>> as long as it has Java `11` installed.
-. THRIFT should be able to hold up to 250 persons without a noticeable sluggishness in performance for typical usage.
-. A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+. THRIFT should be able to run on any <<mainstream-os, mainstream OS>> as long as it has `Java 11` installed.
+. THRIFT should be able to hold up to 250 transactions without a noticeable sluggishness in performance for typical usage.
+. A user with above average typing speed for <<regular-english-text, regular English text>> (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 . THRIFT should be able to run with or without internet connection.
 . THRIFT should work for a single user only.
 . THRIFT should not require user to install.
@@ -631,7 +714,17 @@ _Use case ends_
 == Glossary
 
 [[mainstream-os]] Mainstream OS::
-Windows, Linux, Unix, OS-X
+Stands for commonly used Operating Systems (OS) such as Windows, Linux, Unix, OS-X
+
+[[regular-english-text]] Regular English Text::
+Stands for text with ordinary english grammar structures and vocabulary generally used by the public.
+It excludes syntax related to programming and <<system-administration, system administration>>.
+
+[[system-administration]] System Administration::
+Stand for the field of work in which someone manages one or more systems, be they software, hardware, servers or workstations
+with the goal of ensuring the systems are running efficiently and effectively.
+
+
 
 [appendix]
 == Instructions for Manual Testing
