@@ -18,6 +18,23 @@ image::logo/logo.png[align="center"]
 
 By: `Team THRIFT`      Since: `Sept 2019`      Licence: `MIT`
 
+== Introduction
+<<thrift, THRIFT>> is an application for money-conscious NUS students who wish to track their spending, in order to make better informed decisions when it comes to saving money.
+It maintain records of your daily incoming and outgoing transactions and constantly keep track of the user's spending and income.
+THRIFT is optimized for those who prefer to work with a Command Line Interface (CLI) while still enjoying the benefits of having a Graphical User Interface (GUI).
+It is a simple, no-frills finance tracker made for the target user.
+
+=== Purpose
+
+This developer guide aims to communicate to the developers working on THRIFT the design and architecture of the implementation.
+It also includes non-technical details to give the developers an idea of the direction THRIFT intends to take on both current and future features.
+A developer should be able to understand the design, architecture and goals of THRIFT after reading this guide.
+
+=== Scope
+
+This developer guide specifies the technical and non-technical details of THRIFT.
+The technical aspects include the design and architecture while the non-technical aspects include the user stories, use cases and <<nfr, NFRs>>.
+
 == Setting up
 
 Refer to the guide <<SettingUp#, here>>.
@@ -703,7 +720,7 @@ _Use case ends_
 == Non Functional Requirements
 
 . THRIFT should be able to run on any <<mainstream-os, mainstream OS>> as long as it has `Java 11` installed.
-. THRIFT should be able to hold up to 250 transactions without a noticeable sluggishness in performance for typical usage.
+. THRIFT should be able to hold up to 250 transactions without a noticeable drop in performance for typical usage.
 . A user with above average typing speed for <<regular-english-text, regular English text>> (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 . THRIFT should be able to run with or without internet connection.
 . THRIFT should work for a single user only.
@@ -713,6 +730,12 @@ _Use case ends_
 [appendix]
 == Glossary
 
+[[thrift]] THRIFT::
+Stands for "Terminal-input Human Readable Interactive Finance Tracker". It is the application this developer guide is for.
+
+[[nfr]] NFR::
+Stands for "Non-functional Requirement"
+
 [[mainstream-os]] Mainstream OS::
 Stands for commonly used Operating Systems (OS) such as Windows, Linux, Unix, OS-X
 
@@ -721,7 +744,7 @@ Stands for text with ordinary english grammar structures and vocabulary generall
 It excludes syntax related to programming and <<system-administration, system administration>>.
 
 [[system-administration]] System Administration::
-Stand for the field of work in which someone manages one or more systems, be they software, hardware, servers or workstations
+Stands for the field of work in which someone manages one or more systems, be they software, hardware, servers or workstations
 with the goal of ensuring the systems are running efficiently and effectively.
 
 
