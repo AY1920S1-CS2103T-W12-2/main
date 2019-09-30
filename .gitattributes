@@ -13,4 +13,5 @@
 *.png binary
 *.jpg binary
 *.svg binary
+*.ai binary
 *.pdf binary

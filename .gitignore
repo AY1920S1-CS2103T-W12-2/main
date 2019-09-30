@@ -20,5 +20,3 @@ src/test/data/sandbox/
 # MacOS custom attributes files created by Finder
 .DS_Store
 
-# Illustrator and Vector Files
-docs/images/logo/logo.ai
