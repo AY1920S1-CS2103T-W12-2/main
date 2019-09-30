@@ -2,6 +2,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="stylesheets/coderay-asciidoctor.css"></head><body class="article"><div id="site-header"><nav class="navbar navbar-light bg-light"><div class="container"><a class="navbar-brand" href="index.html">THRIFT</a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="UserGuide.html">User Guide</a></li><li class="nav-item"><a class="nav-link active" href="DeveloperGuide.html">Developer Guide</a></li><li class="nav-item"><a class="nav-link" href="AboutUs.html">About Us</a></li><li class="nav-item"><a class="nav-link" href="ContactUs.html">Contact Us</a></li><li class="navitem"><a class="nav-link" href="https://github.com/AY1920S1-CS2103T-W12-2/main"><span class="fa fa-github fa-lg" aria-hidden="true"></span>&nbsp;View on GitHub</a></li></ul></div></nav></div><div id="header"><h1>THRIFT - Developer Guide</h1></div><div id="content"><div id="preamble">
 <div class="sectionbody">
+<div class="imageblock" style="text-align: center">
+<div class="content">
+<img src="images/logo/logo.png" alt="logo">
+</div>
+</div>
 <div class="paragraph">
 <p>By: <code>Team THRIFT</code>      Since: <code>Sept 2019</code>      Licence: <code>MIT</code></p>
 </div>
@@ -9,28 +14,34 @@
 <div id="toc" class="toc">
 <div id="toctitle"></div>
 <ul class="sectlevel1">
-<li><a href="#setting-up">1. Setting up</a></li>
-<li><a href="#design">2. Design</a>
+<li><a href="#introduction">1. Introduction</a>
 <ul class="sectlevel2">
-<li><a href="#Design-Architecture">2.1. Architecture</a></li>
-<li><a href="#Design-Ui">2.2. UI component</a></li>
-<li><a href="#Design-Logic">2.3. Logic component</a></li>
-<li><a href="#Design-Model">2.4. Model component</a></li>
-<li><a href="#Design-Storage">2.5. Storage component</a></li>
-<li><a href="#Design-Commons">2.6. Common classes</a></li>
+<li><a href="#purpose">1.1. Purpose</a></li>
+<li><a href="#scope">1.2. Scope</a></li>
 </ul>
 </li>
-<li><a href="#implementation">3. Implementation</a>
+<li><a href="#setting-up">2. Setting up</a></li>
+<li><a href="#design">3. Design</a>
 <ul class="sectlevel2">
-<li><a href="#proposed-undo-redo-feature">3.1. [Proposed] Undo/Redo feature</a></li>
-<li><a href="#proposed-data-encryption">3.2. [Proposed] Data Encryption</a></li>
-<li><a href="#logging">3.3. Logging</a></li>
-<li><a href="#Implementation-Configuration">3.4. Configuration</a></li>
+<li><a href="#Design-Architecture">3.1. Architecture</a></li>
+<li><a href="#Design-Ui">3.2. UI component</a></li>
+<li><a href="#Design-Logic">3.3. Logic component</a></li>
+<li><a href="#Design-Model">3.4. Model component</a></li>
+<li><a href="#Design-Storage">3.5. Storage component</a></li>
+<li><a href="#Design-Commons">3.6. Common classes</a></li>
 </ul>
 </li>
-<li><a href="#documentation">4. Documentation</a></li>
-<li><a href="#testing">5. Testing</a></li>
-<li><a href="#dev-ops">6. Dev Ops</a></li>
+<li><a href="#implementation">4. Implementation</a>
+<ul class="sectlevel2">
+<li><a href="#proposed-undo-redo-feature">4.1. [Proposed] Undo/Redo feature</a></li>
+<li><a href="#proposed-data-encryption">4.2. [Proposed] Data Encryption</a></li>
+<li><a href="#logging">4.3. Logging</a></li>
+<li><a href="#Implementation-Configuration">4.4. Configuration</a></li>
+</ul>
+</li>
+<li><a href="#documentation">5. Documentation</a></li>
+<li><a href="#testing">6. Testing</a></li>
+<li><a href="#dev-ops">7. Dev Ops</a></li>
 <li><a href="#product-scope">Appendix A: Product Scope</a></li>
 <li><a href="#user-stories">Appendix B: User Stories</a></li>
 <li><a href="#use-cases">Appendix C: Use Cases</a></li>
@@ -43,14 +54,44 @@
 <li><a href="#deleting-a-transaction">F.3. Deleting a transaction</a></li>
 <li><a href="#updating-a-transaction-s-details">F.4. Updating a transaction&#8217;s details</a></li>
 <li><a href="#cloning-a-transaction">F.5. Cloning a transaction</a></li>
-<li><a href="#saving-data">F.6. Saving data</a></li>
+<li><a href="#tagging-a-transaction">F.6. Tagging a transaction</a></li>
+<li><a href="#untagging-a-transaction">F.7. Untagging a transaction</a></li>
+<li><a href="#converting-a-transaction">F.8. Converting a transaction</a></li>
+<li><a href="#converting-a-value">F.9. Converting a value</a></li>
+<li><a href="#saving-data">F.10. Saving data</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <div class="sect1">
-<h2 id="setting-up"><a class="link" href="#setting-up">1. Setting up</a></h2>
+<h2 id="introduction"><a class="link" href="#introduction">1. Introduction</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="#thrift">THRIFT</a> is an application for money-conscious NUS students who wish to track their spending, in order to make better informed decisions when it comes to saving money.
+It maintain records of your daily incoming and outgoing transactions and constantly keep track of the user&#8217;s spending and income.
+THRIFT is optimized for those who prefer to work with a Command Line Interface (CLI) while still enjoying the benefits of having a Graphical User Interface (GUI).
+It is a simple, no-frills finance tracker made for the target user.</p>
+</div>
+<div class="sect2">
+<h3 id="purpose"><a class="link" href="#purpose">1.1. Purpose</a></h3>
+<div class="paragraph">
+<p>This developer guide aims to communicate to the developers working on THRIFT the design and architecture of the implementation.
+It also includes non-technical details to give the developers an idea of the direction THRIFT intends to take on both current and future features.
+A developer should be able to understand the design, architecture and goals of THRIFT after reading this guide.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="scope"><a class="link" href="#scope">1.2. Scope</a></h3>
+<div class="paragraph">
+<p>This developer guide specifies the technical and non-technical details of THRIFT.
+The technical aspects include the design and architecture while the non-technical aspects include the user stories, use cases and <a href="#nfr">NFRs</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="setting-up"><a class="link" href="#setting-up">2. Setting up</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Refer to the guide <a href="SettingUp.html">here</a>.</p>
@@ -58,10 +99,10 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="design"><a class="link" href="#design">2. Design</a></h2>
+<h2 id="design"><a class="link" href="#design">3. Design</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="Design-Architecture"><a class="link" href="#Design-Architecture">2.1. Architecture</a></h3>
+<h3 id="Design-Architecture"><a class="link" href="#Design-Architecture">3.1. Architecture</a></h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/ArchitectureDiagram.png" alt="ArchitectureDiagram">
@@ -164,7 +205,7 @@ The following class plays an important role at the architecture level:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Design-Ui"><a class="link" href="#Design-Ui">2.2. UI component</a></h3>
+<h3 id="Design-Ui"><a class="link" href="#Design-Ui">3.2. UI component</a></h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/UiClassDiagram.png" alt="UiClassDiagram">
@@ -195,7 +236,7 @@ The following class plays an important role at the architecture level:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Design-Logic"><a class="link" href="#Design-Logic">2.3. Logic component</a></h3>
+<h3 id="Design-Logic"><a class="link" href="#Design-Logic">3.3. Logic component</a></h3>
 <div id="fig-LogicClassDiagram" class="imageblock">
 <div class="content">
 <img src="images/LogicClassDiagram.png" alt="LogicClassDiagram">
@@ -248,7 +289,7 @@ The lifeline for <code>DeleteCommandParser</code> should end at the destroy mark
 </div>
 </div>
 <div class="sect2">
-<h3 id="Design-Model"><a class="link" href="#Design-Model">2.4. Model component</a></h3>
+<h3 id="Design-Model"><a class="link" href="#Design-Model">3.4. Model component</a></h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/ModelClassDiagram.png" alt="ModelClassDiagram">
@@ -293,7 +334,7 @@ As a more OOP model, we can store a <code>Tag</code> list in <code>Address Book<
 </div>
 </div>
 <div class="sect2">
-<h3 id="Design-Storage"><a class="link" href="#Design-Storage">2.5. Storage component</a></h3>
+<h3 id="Design-Storage"><a class="link" href="#Design-Storage">3.5. Storage component</a></h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/StorageClassDiagram.png" alt="StorageClassDiagram">
@@ -318,7 +359,7 @@ As a more OOP model, we can store a <code>Tag</code> list in <code>Address Book<
 </div>
 </div>
 <div class="sect2">
-<h3 id="Design-Commons"><a class="link" href="#Design-Commons">2.6. Common classes</a></h3>
+<h3 id="Design-Commons"><a class="link" href="#Design-Commons">3.6. Common classes</a></h3>
 <div class="paragraph">
 <p>Classes used by multiple components are in the <code>seedu.addressbook.commons</code> package.</p>
 </div>
@@ -326,15 +367,15 @@ As a more OOP model, we can store a <code>Tag</code> list in <code>Address Book<
 </div>
 </div>
 <div class="sect1">
-<h2 id="implementation"><a class="link" href="#implementation">3. Implementation</a></h2>
+<h2 id="implementation"><a class="link" href="#implementation">4. Implementation</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This section describes some noteworthy details on how certain features are implemented.</p>
 </div>
 <div class="sect2">
-<h3 id="proposed-undo-redo-feature"><a class="link" href="#proposed-undo-redo-feature">3.1. [Proposed] Undo/Redo feature</a></h3>
+<h3 id="proposed-undo-redo-feature"><a class="link" href="#proposed-undo-redo-feature">4.1. [Proposed] Undo/Redo feature</a></h3>
 <div class="sect3">
-<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">3.1.1. Proposed Implementation</a></h4>
+<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">4.1.1. Proposed Implementation</a></h4>
 <div class="paragraph">
 <p>The undo/redo mechanism is facilitated by <code>VersionedAddressBook</code>.
 It extends <code>AddressBook</code> with an undo/redo history, stored internally as an <code>addressBookStateList</code> and <code>currentStatePointer</code>.
@@ -476,7 +517,7 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations"><a class="link" href="#design-considerations">3.1.2. Design Considerations</a></h4>
+<h4 id="design-considerations"><a class="link" href="#design-considerations">4.1.2. Design Considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-how-undo-redo-executes"><a class="link" href="#aspect-how-undo-redo-executes">Aspect: How undo &amp; redo executes</a></h5>
 <div class="ulist">
@@ -546,20 +587,20 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">3.2. [Proposed] Data Encryption</a></h3>
+<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">4.2. [Proposed] Data Encryption</a></h3>
 <div class="paragraph">
 <p><em>{Explain here how the data encryption feature will be implemented}</em></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="logging"><a class="link" href="#logging">3.3. Logging</a></h3>
+<h3 id="logging"><a class="link" href="#logging">4.3. Logging</a></h3>
 <div class="paragraph">
 <p>We are using <code>java.util.logging</code> package for logging. The <code>LogsCenter</code> class is used to manage the logging levels and logging destinations.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 3.4, &#8220;Configuration&#8221;</a>)</p>
+<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 4.4, &#8220;Configuration&#8221;</a>)</p>
 </li>
 <li>
 <p>The <code>Logger</code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</p>
@@ -590,7 +631,7 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect2">
-<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">3.4. Configuration</a></h3>
+<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">4.4. Configuration</a></h3>
 <div class="paragraph">
 <p>Certain properties of the application can be controlled (e.g user prefs file location, logging level) through the configuration file (default: <code>config.json</code>).</p>
 </div>
@@ -598,7 +639,7 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect1">
-<h2 id="documentation"><a class="link" href="#documentation">4. Documentation</a></h2>
+<h2 id="documentation"><a class="link" href="#documentation">5. Documentation</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Refer to the guide <a href="Documentation.html">here</a>.</p>
@@ -606,7 +647,7 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect1">
-<h2 id="testing"><a class="link" href="#testing">5. Testing</a></h2>
+<h2 id="testing"><a class="link" href="#testing">6. Testing</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Refer to the guide <a href="Testing.html">here</a>.</p>
@@ -614,7 +655,7 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect1">
-<h2 id="dev-ops"><a class="link" href="#dev-ops">6. Dev Ops</a></h2>
+<h2 id="dev-ops"><a class="link" href="#dev-ops">7. Dev Ops</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Refer to the guide <a href="DevOps.html">here</a>.</p>
@@ -1149,6 +1190,154 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </li>
 </ul>
 </div>
+<h3 id="use-case-tagging-a-transaction" class="discrete">Use case: Tagging a transaction</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to tag a specific transaction.</p>
+</li>
+<li>
+<p>THRIFT processes the request and adds the tag to the specific transaction.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The parameters specified by the user are not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user and the transaction is not updated.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-untagging-a-transaction" class="discrete">Use case: Untagging a transaction</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to untag a specific transaction.</p>
+</li>
+<li>
+<p>THRIFT processes the request and removes the tag from the specific transaction.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The parameters specified by the user are not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user and the transaction is not updated.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-convert-a-transaction" class="discrete">Use case: Convert a transaction</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to convert the currency of a specific transaction to a new currency.</p>
+</li>
+<li>
+<p>THRIFT processes the request and updates specific transaction with the new value in the new currency.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The parameters specified by the user are not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user and the transaction is not updated.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-convert-a-value" class="discrete">Use case: Convert a value</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to convert a value in SGD to a specific currency.</p>
+</li>
+<li>
+<p>THRIFT processes the request and displays the new value in the new currency.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The parameters specified by the user are not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1157,13 +1346,13 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>THRIFT should be able to run on any <a href="#mainstream-os">mainstream OS</a> as long as it has Java <code>11</code> installed.</p>
+<p>THRIFT should be able to run on any <a href="#mainstream-os">mainstream OS</a> as long as it has <code>Java 11</code> installed.</p>
 </li>
 <li>
-<p>THRIFT should be able to hold up to 250 persons without a noticeable sluggishness in performance for typical usage.</p>
+<p>THRIFT should be able to hold up to 250 transactions without a noticeable drop in performance for typical usage.</p>
 </li>
 <li>
-<p>A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.</p>
+<p>A user with above average typing speed for <a href="#regular-english-text">regular English text</a> (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.</p>
 </li>
 <li>
 <p>THRIFT should be able to run with or without internet connection.</p>
@@ -1186,9 +1375,27 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 <div class="sectionbody">
 <div class="dlist">
 <dl>
+<dt class="hdlist1"><a id="thrift"></a> THRIFT</dt>
+<dd>
+<p>Stands for "Terminal-input Human Readable Interactive Finance Tracker". It is the application this developer guide is for.</p>
+</dd>
+<dt class="hdlist1"><a id="nfr"></a> NFR</dt>
+<dd>
+<p>Stands for "Non-functional Requirement"</p>
+</dd>
 <dt class="hdlist1"><a id="mainstream-os"></a> Mainstream OS</dt>
 <dd>
-<p>Windows, Linux, Unix, OS-X</p>
+<p>Stands for commonly used Operating Systems (OS) such as Windows, Linux, Unix, OS-X</p>
+</dd>
+<dt class="hdlist1"><a id="regular-english-text"></a> Regular English Text</dt>
+<dd>
+<p>Stands for text with ordinary english grammar structures and vocabulary generally used by the public.
+It excludes syntax related to programming and <a href="#system-administration">system administration</a>.</p>
+</dd>
+<dt class="hdlist1"><a id="system-administration"></a> System Administration</dt>
+<dd>
+<p>Stands for the field of work in which someone manages one or more systems, be they software, hardware, servers or workstations
+with the goal of ensuring the systems are running efficiently and effectively.</p>
 </dd>
 </dl>
 </div>
@@ -1375,12 +1582,145 @@ Expected: No changes. Error details shown in status message.</p>
 </li>
 </ol>
 </div>
+</div>
+<div class="sect2">
+<h3 id="tagging-a-transaction"><a class="link" href="#tagging-a-transaction">F.6. Tagging a transaction</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Tagging a transaction and reflecting changes in the list.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List all transactions using the <code>list</code> command. The first transaction is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code>.</p>
+</li>
+<li>
+<p>Test case: <code>tag i/1 t/EXPENSIVE</code>
+Expected: Details of the tagged transaction shown in status message. Listing the transaction reflects changes.</p>
+</li>
+<li>
+<p>Test case: <code>tag i/INVALID_INDEX</code> t/VALID_TAG` where <code>INVALID_INDEX</code> is a number less than 1 or more than list size and VALID_TAG is a valid tag.<br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>tag firstTransaction</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>tag</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="untagging-a-transaction"><a class="link" href="#untagging-a-transaction">F.7. Untagging a transaction</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Untagging a transaction and reflecting changes in the list.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List all transactions using the <code>list</code> command. The first transaction is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code>.</p>
+</li>
+<li>
+<p>Test case: <code>untag i/1 t/FOOD</code><br>
+Expected: Details of the untagged transaction shown in status message. Listing the transaction reflects changes.</p>
+</li>
+<li>
+<p>Test case: <code>untag i/INVALID_INDEX t/VALID_TAG</code> where <code>INVALID_INDEX</code> is a number less than 1 or more than list size and VALID_TAG is a valid tag.<br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>untag i/VALID_INDEX t/NOT_INSIDE_TAG</code> where <code>VALID_INDEX</code> is a valid transaction index and NOT_INSIDE_TAG is not inside the transaction specified.<br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>untag firstTransaction</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>untag</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="converting-a-transaction"><a class="link" href="#converting-a-transaction">F.8. Converting a transaction</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Converting a transaction&#8217;s currency and reflecting changes in the list.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List all transactions using the <code>list</code> command. The first transaction is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code>.</p>
+</li>
+<li>
+<p>Test case: <code>convert to/USD i/1</code><br>
+Expected: Details of the converted transaction shown in status message. Listing the transaction reflects changes.</p>
+</li>
+<li>
+<p>Test case: <code>convert to/USD i/INVALID_INDEX</code> where <code>INVALID_INDEX</code> is a number less than 1 or more than list size.<br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>convert to/INVALID_CURRENCY i/VALID_INDEX ` where `INVALID_CURRENCY</code> is not a supported currency and <code>VALID_INDEX</code> is a valid transaction index.<br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>convert firstTransaction</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>convert</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="converting-a-value"><a class="link" href="#converting-a-value">F.9. Converting a value</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Converting a values&#8217;s currency and displaying it</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Test case: <code>convert from/SGD to/USD c/cost</code>.<br>
+Expected: Original value and converted value displayed to the user.</p>
+</li>
+<li>
+<p>Test case: <code>convert from/SGD to/INVALID_CURRENCY c/cost ` where `INVALID_CURRENCY</code> is not a supported currency.<br>
+Expected: Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>convert from/INVALID_CURRENCY to/USD c/cost ` where `INVALID_CURRENCY</code> is not a supported currency.<br>
+Expected: Error details shown in status message.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
 <div class="paragraph">
 <p><em>{ more test cases &#8230;&#8203; }</em></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="saving-data"><a class="link" href="#saving-data">F.6. Saving data</a></h3>
+<h3 id="saving-data"><a class="link" href="#saving-data">F.10. Saving data</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1397,4 +1737,4 @@ Expected: No changes. Error details shown in status message.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-09-29 14:32:11 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-09-30 10:20:18 UTC</div></div></div></body></html>
