@@ -825,6 +825,63 @@ These instructions only provide a starting point for testers to work on; testers
 .. Test case: `clone` +
    Expected: No changes. Error details shown in status message.
 
+=== Tagging a transaction
+
+. Tagging a transaction and reflecting changes in the list.
+
+.. Prerequisites: List all transactions using the `list` command. The first transaction is `1. [-] Laksa ($10.50) [Lunch][Food]`.
+.. Test case: `tag i/1 t/EXPENSIVE`
+Expected: Details of the tagged transaction shown in status message. Listing the transaction reflects changes.
+.. Test case: `tag i/INVALID_INDEX` t/VALID_TAG` where `INVALID_INDEX` is a number less than 1 or more than list size and VALID_TAG is a valid tag. +
+   Expected: No changes. Error details shown in status message.
+.. Test case: `tag firstTransaction` +
+   Expected: No changes. Error details shown in status message.
+.. Test case: `tag` +
+   Expected: No changes. Error details shown in status message.
+
+=== Untagging a transaction
+
+. Untagging a transaction and reflecting changes in the list.
+
+.. Prerequisites: List all transactions using the `list` command. The first transaction is `1. [-] Laksa ($10.50) [Lunch][Food]`.
+.. Test case: `untag i/1 t/FOOD` +
+   Expected: Details of the untagged transaction shown in status message. Listing the transaction reflects changes.
+.. Test case: `untag i/INVALID_INDEX t/VALID_TAG` where `INVALID_INDEX` is a number less than 1 or more than list size and VALID_TAG is a valid tag. +
+   Expected: No changes. Error details shown in status message.
+.. Test case: `untag i/VALID_INDEX t/NOT_INSIDE_TAG` where `VALID_INDEX` is a valid transaction index and NOT_INSIDE_TAG is not inside the transaction specified. +
+   Expected: No changes. Error details shown in status message.
+.. Test case: `untag firstTransaction` +
+   Expected: No changes. Error details shown in status message.
+.. Test case: `untag` +
+   Expected: No changes. Error details shown in status message.
+
+=== Converting a transaction
+
+. Converting a transaction's currency and reflecting changes in the list.
+
+.. Prerequisites: List all transactions using the `list` command. The first transaction is `1. [-] Laksa ($10.50) [Lunch][Food]`.
+.. Test case: `convert to/USD i/1` +
+   Expected: Details of the converted transaction shown in status message. Listing the transaction reflects changes.
+.. Test case: `convert to/USD i/INVALID_INDEX` where `INVALID_INDEX` is a number less than 1 or more than list size. +
+   Expected: No changes. Error details shown in status message.
+.. Test case: `convert to/INVALID_CURRENCY i/VALID_INDEX ` where `INVALID_CURRENCY` is not a supported currency and `VALID_INDEX` is a valid transaction index. +
+   Expected: No changes. Error details shown in status message.
+.. Test case: `convert firstTransaction` +
+   Expected: No changes. Error details shown in status message.
+.. Test case: `convert` +
+   Expected: No changes. Error details shown in status message.
+
+=== Converting a value
+
+. Converting a values's currency and displaying it
+
+.. Test case: `convert from/SGD to/USD c/cost`. +
+   Expected: Original value and converted value displayed to the user.
+.. Test case: `convert from/SGD to/INVALID_CURRENCY c/cost ` where `INVALID_CURRENCY` is not a supported currency. +
+   Expected: Error details shown in status message.
+.. Test case: `convert from/INVALID_CURRENCY to/USD c/cost ` where `INVALID_CURRENCY` is not a supported currency. +
+   Expected: Error details shown in status message.
+.
 _{ more test cases ... }_
 
 === Saving data
