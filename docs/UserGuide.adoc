@@ -226,7 +226,7 @@ NOTE: Undoable commands are commands that modify the data of THRIFT application.
 .List of undoable commands[[Undoable]]:
 * <<Adding an expense: `add_expense`, add_expense>>
 * <<Adding an income: `add_income`, add_income>>
-* <<Deleting a Transaction: `delete`, delete>>
+* <<Deleting a transaction: `delete`, delete>>
 * update
 * clone
 * tag
