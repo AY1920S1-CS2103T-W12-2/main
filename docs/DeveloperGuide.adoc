@@ -881,7 +881,7 @@ Expected: Details of the tagged transaction shown in status message. Listing the
    Expected: Error details shown in status message.
 .. Test case: `convert from/INVALID_CURRENCY to/USD c/cost ` where `INVALID_CURRENCY` is not a supported currency. +
    Expected: Error details shown in status message.
-.
+
 _{ more test cases ... }_
 
 === Saving data
