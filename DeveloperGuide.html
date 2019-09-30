@@ -54,11 +54,12 @@
 <li><a href="#deleting-a-transaction">F.3. Deleting a transaction</a></li>
 <li><a href="#updating-a-transaction-s-details">F.4. Updating a transaction&#8217;s details</a></li>
 <li><a href="#cloning-a-transaction">F.5. Cloning a transaction</a></li>
-<li><a href="#tagging-a-transaction">F.6. Tagging a transaction</a></li>
-<li><a href="#untagging-a-transaction">F.7. Untagging a transaction</a></li>
-<li><a href="#converting-a-transaction">F.8. Converting a transaction</a></li>
-<li><a href="#converting-a-value">F.9. Converting a value</a></li>
-<li><a href="#saving-data">F.10. Saving data</a></li>
+<li><a href="#listing-the-transactions">F.6. Listing the transactions</a></li>
+<li><a href="#tagging-a-transaction">F.7. Tagging a transaction</a></li>
+<li><a href="#untagging-a-transaction">F.8. Untagging a transaction</a></li>
+<li><a href="#converting-a-transaction">F.9. Converting a transaction</a></li>
+<li><a href="#converting-a-value">F.10. Converting a value</a></li>
+<li><a href="#saving-data">F.11. Saving data</a></li>
 </ul>
 </li>
 </ul>
@@ -1153,46 +1154,27 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </li>
 </ul>
 </div>
-<h3 id="use-case-listing-monthly-expenses" class="discrete">Use case: Listing monthly expenses</h3>
+<h3 id="use-case-list-monthly-transactions" class="discrete">Use case: List monthly transactions</h3>
 <div class="paragraph">
 <p><strong>MSS</strong></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User requests to view list of expenses for a specific month.</p>
+<p>User requests to view list of transactions for a specific month.</p>
 </li>
 <li>
-<p>THRIFT displays expenses of that month.</p>
+<p>THRIFT displays transactions of that month.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
 </li>
 </ol>
 </div>
-<div class="paragraph">
-<p><strong>Extensions</strong></p>
-</div>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>1a. The command specified by the user is not valid.</p>
-<div class="ulist none">
-<ul class="none">
-<li>
-<p>1a1. THRIFT displays an invalid command error to user.</p>
-<div class="paragraph">
-<p><em>Use case ends</em></p>
-</div>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
 <h3 id="use-case-tagging-a-transaction" class="discrete">Use case: Tagging a transaction</h3>
 <div class="paragraph">
-<p><strong>MSS</strong></p>
+<p><strong>MSS</strong>
+= <strong>Extensions</strong></p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -1213,11 +1195,11 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a. The parameters specified by the user are not valid.</p>
+<p>1a. The command specified by the user is not valid.</p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. THRIFT displays an invalid parameter error to the user and the transaction is not updated.</p>
+<p>1a1. THRIFT displays an invalid command error to user.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -1584,7 +1566,36 @@ Expected: No changes. Error details shown in status message.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="tagging-a-transaction"><a class="link" href="#tagging-a-transaction">F.6. Tagging a transaction</a></h3>
+<h3 id="listing-the-transactions"><a class="link" href="#listing-the-transactions">F.6. Listing the transactions</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Listing out transactions by month or by tag.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: At least one transaction in the list.</p>
+</li>
+<li>
+<p>Test case: <code>list</code><br>
+Expected: The entire list of transactions will be shown.</p>
+</li>
+<li>
+<p>Test case: <code>list m/Jan</code><br>
+Expected: The list of transactions for January will be shown.</p>
+</li>
+<li>
+<p>Test case: <code>list m/Jan t/Food</code><br>
+Expected: The list of transactions related to food for January will be shown.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tagging-a-transaction"><a class="link" href="#tagging-a-transaction">F.7. Tagging a transaction</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1617,7 +1628,7 @@ Expected: No changes. Error details shown in status message.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="untagging-a-transaction"><a class="link" href="#untagging-a-transaction">F.7. Untagging a transaction</a></h3>
+<h3 id="untagging-a-transaction"><a class="link" href="#untagging-a-transaction">F.8. Untagging a transaction</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1654,7 +1665,7 @@ Expected: No changes. Error details shown in status message.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="converting-a-transaction"><a class="link" href="#converting-a-transaction">F.8. Converting a transaction</a></h3>
+<h3 id="converting-a-transaction"><a class="link" href="#converting-a-transaction">F.9. Converting a transaction</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1691,7 +1702,7 @@ Expected: No changes. Error details shown in status message.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="converting-a-value"><a class="link" href="#converting-a-value">F.9. Converting a value</a></h3>
+<h3 id="converting-a-value"><a class="link" href="#converting-a-value">F.10. Converting a value</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1715,12 +1726,9 @@ Expected: Error details shown in status message.</p>
 </li>
 </ol>
 </div>
-<div class="paragraph">
-<p><em>{ more test cases &#8230;&#8203; }</em></p>
-</div>
 </div>
 <div class="sect2">
-<h3 id="saving-data"><a class="link" href="#saving-data">F.10. Saving data</a></h3>
+<h3 id="saving-data"><a class="link" href="#saving-data">F.11. Saving data</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1737,4 +1745,4 @@ Expected: Error details shown in status message.</p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-09-30 10:20:18 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-09-30 15:48:11 UTC</div></div></div></body></html>
