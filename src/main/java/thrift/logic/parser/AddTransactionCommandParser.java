@@ -18,25 +18,47 @@ import thrift.model.transaction.Value;
 public abstract class AddTransactionCommandParser {
 
     /**
-     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
-     * {@code ArgumentMultimap}.
+     * This methods checks if the required prefixes are present in the {@code ArgumentMultimap}.
+     *
+     * @param argumentMultimap the object to check for the existence of prefixes.
+     * @param prefixes variable amount of {@code Prefix} to confirm the existence of.
+     * @return true if specified prefixes are present in the argumentMultimap.
      */
     protected static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
+    /**
+     * Parses for {@code Description} object given the {@code ArgumentMultimap} object.
+     * @param argMultimap the object to parse from.
+     * @return {@code Description} object based on the values in the input {@code ArgumentMultimap}.
+     */
     protected Description parseTransactionDescription(ArgumentMultimap argMultimap) {
         return ParserUtil.parseDescription(argMultimap.getValue(CliSyntax.PREFIX_NAME).get());
     }
 
+    /**
+     * Parses for {@code Value} object given the {@code ArgumentMultimap} object.
+     * @param argMultimap the object to parse from.
+     * @return {@code Value} object based on the values in the input {@code ArgumentMultimap}.
+     */
     protected Value parseTransactionValue(ArgumentMultimap argMultimap) throws ParseException {
         return ParserUtil.parseValue(argMultimap.getValue(CliSyntax.PREFIX_COST).get());
     }
 
-    protected TransactionDate parseTransactionDate(ArgumentMultimap argMultimap) {
+    /**
+     * Parses for {@code TransactionDate} object using the current System's date.
+     * @return {@code TransactionDate} object based on the current System's date.
+     */
+    protected TransactionDate parseTransactionDate() {
         return new TransactionDate(DATE_FORMATTER.format(new Date()));
     }
 
+    /**
+     * Parses for {@code Set<Tag>} object given the {@code ArgumentMultimap} object.
+     * @param argMultimap the object to parse from.
+     * @return {@code Set<Tag>} object based on the values in the input {@code ArgumentMultimap}.
+     */
     protected Set<Tag> parseTransactionTags(ArgumentMultimap argMultimap) throws ParseException {
         return ParserUtil.parseTags(argMultimap.getAllValues(CliSyntax.PREFIX_TAG));
     }

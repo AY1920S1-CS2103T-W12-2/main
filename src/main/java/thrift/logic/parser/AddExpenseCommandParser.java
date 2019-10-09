@@ -33,7 +33,7 @@ public class AddExpenseCommandParser extends AddTransactionCommandParser impleme
 
         Description description = parseTransactionDescription(argMultimap);
         Value value = parseTransactionValue(argMultimap);
-        TransactionDate date = parseTransactionDate(argMultimap);
+        TransactionDate date = parseTransactionDate();
         Set<Tag> tagList = parseTransactionTags(argMultimap);
 
         Expense expense = new Expense(description, value, date, tagList);

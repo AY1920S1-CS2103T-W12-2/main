@@ -33,7 +33,7 @@ public class AddIncomeCommandParser extends AddTransactionCommandParser implemen
 
         Description description = parseTransactionDescription(argMultimap);
         Value value = parseTransactionValue(argMultimap);
-        TransactionDate date = parseTransactionDate(argMultimap);
+        TransactionDate date = parseTransactionDate();
         Set<Tag> tagList = parseTransactionTags(argMultimap);
 
         Income income = new Income(description, value, date, tagList);
