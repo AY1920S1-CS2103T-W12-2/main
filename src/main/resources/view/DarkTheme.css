@@ -180,18 +180,6 @@
     -fx-font-size: 22px;
 }
 
-.total-bar {
-    -fx-background-color: derive(#1d1d1d, 20%);
-    -fx-border-color: derive(#1d1d1d, 10%);
-}
-
-.total-bar .label {
-    -fx-font-family: "Segoe UI Bold";
-    -fx-text-fill: white;
-    -fx-font-size: 22px;
-    -fx-padding: 0 10px 0 10px;
-}
-
 .status-bar .label {
     -fx-font-family: "Segoe UI Light";
     -fx-text-fill: white;
