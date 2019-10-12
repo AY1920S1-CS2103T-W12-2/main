@@ -45,6 +45,7 @@ public class TagSetBuilder {
 
     /**
      * Creates a TagSetBuilder with tags from {@param transaction}
+     *
      * @param transaction whose tags are used as reference
      */
     public TagSetBuilder(Transaction transaction) {
