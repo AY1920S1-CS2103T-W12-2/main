@@ -23,41 +23,41 @@ import thrift.model.transaction.Value;
 /**
  * Tags a specified Transaction
  */
-public class TagCommand extends Command {
+public class UntagCommand extends Command {
 
-    public static final String COMMAND_WORD = "tag";
+    public static final String COMMAND_WORD = "untag";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Tags the transaction identified "
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Untags the transaction identified "
             + "by the index number used in the displayed transaction list. "
-            + "New tags will be added to existing tags.\n"
+            + "The tags will be removed from existing tags, if they exist.\n"
             + "Parameters: " + CliSyntax.PREFIX_INDEX + "INDEX (must be a positive integer) "
             + CliSyntax.PREFIX_TAG + "TAG...\n"
             + "Example: " + COMMAND_WORD + " "
             + CliSyntax.PREFIX_INDEX + "1 "
             + CliSyntax.PREFIX_TAG + "Food";
 
-    public static final String MESSAGE_TAG_TRANSACTION_SUCCESS = "Updated Transaction: %1$s";
-    public static final String MESSAGE_TAG_EXISTED = "\nTag(s) %1$s already exist and will be ignored.";
+    public static final String MESSAGE_UNTAG_TRANSACTION_SUCCESS = "Updated Transaction: %1$s";
+    public static final String MESSAGE_TAG_NOT_EXISTED = "\nTag(s) %1$s do not exist and will be ignored.";
     public static final String MESSAGE_ORIGINAL_TRANSACTION = "\n\nOriginal: %1$s";
-    public static final String MESSAGE_NOT_TAGGED = "At least one tag must be provided.";
-    public static final String MESSAGE_NO_NEW_TAGS = "Specified tags already exist, the transaction was not updated.";
+    public static final String MESSAGE_NOT_UNTAGGED = "At least one tag must be provided.";
+    public static final String MESSAGE_NO_DEL_TAGS = "Specified tags do not exist, the transaction was not updated.";
 
     private final Index index;
     private final Set<Tag> tagSet;
-    private final StringBuilder existedTags;
+    private final StringBuilder nonexistentTags;
 
     /**
-     * Creates a TagCommand to tag the specified {@code Transaction}
+     * Creates a UntagCommand to untag the specified {@code Transaction}
      * @param index of the transaction in the filtered transaction list to update
-     * @param tagSet of new tags to be added to the current set of tags, without duplicates.
+     * @param tagSet of tags to be removed from the current set of tags, if they exist.
      */
-    public TagCommand(Index index, Set<Tag> tagSet) {
+    public UntagCommand(Index index, Set<Tag> tagSet) {
         requireNonNull(index);
         requireNonNull(tagSet);
 
         this.index = index;
         this.tagSet = tagSet;
-        existedTags = new StringBuilder();
+        nonexistentTags = new StringBuilder();
     }
 
     @Override
@@ -72,30 +72,29 @@ public class TagCommand extends Command {
         Transaction transactionToTag = lastShownList.get(index.getZeroBased());
         String originalTransactionNotification = String.format(MESSAGE_ORIGINAL_TRANSACTION, transactionToTag);
         Transaction updatedTransaction = createTaggedTransaction(transactionToTag, tagSet);
-        String taggedTransactionNotification = String.format(MESSAGE_TAG_TRANSACTION_SUCCESS, updatedTransaction);
-        String existedTagsNotification = existedTags.length() == 0
+        String taggedTransactionNotification = String.format(MESSAGE_UNTAG_TRANSACTION_SUCCESS, updatedTransaction);
+        String nonexistentTagsNotification = nonexistentTags.length() == 0
                 ? ""
-                : String.format(MESSAGE_TAG_EXISTED, existedTags.toString());
+                : String.format(MESSAGE_TAG_NOT_EXISTED, nonexistentTags.toString());
 
         model.setTransaction(transactionToTag, updatedTransaction);
         model.updateFilteredTransactionList(Model.PREDICATE_SHOW_ALL_TRANSACTIONS);
         return new CommandResult(taggedTransactionNotification
-                + existedTagsNotification
+                + nonexistentTagsNotification
                 + originalTransactionNotification);
     }
-
 
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof TagCommand // instanceof handles nulls
-                && index.equals(((TagCommand) other).index)
-                && tagSet.equals(((TagCommand) other).tagSet));
+                || (other instanceof UntagCommand // instanceof handles nulls
+                && index.equals(((UntagCommand) other).index)
+                && tagSet.equals(((UntagCommand) other).tagSet));
     }
 
     /**
      * Creates and returns a {@code Transaction}
-     * with the new tags from {@code tagSet} appended without duplicates.
+     * with the tags from {@code tagSet} removed.
      */
     private Transaction createTaggedTransaction(Transaction transactionToTag,
                                                         Set<Tag> tagSet) throws CommandException {
@@ -109,17 +108,17 @@ public class TagCommand extends Command {
         Set<Tag> updatedTags = new HashSet<Tag>(transactionToTag.getTags());
 
         int noOfTagsIgnored = 0;
-        for (Tag newTag : tagSet) {
-            if (updatedTags.contains(newTag)) {
-                existedTags.append("[" + newTag.tagName + "]");
+        for (Tag targetTag : tagSet) {
+            if (!updatedTags.contains(targetTag)) {
+                nonexistentTags.append("[" + targetTag.tagName + "]");
                 noOfTagsIgnored++;
             } else {
-                updatedTags.add(newTag);
+                updatedTags.remove(targetTag);
             }
         }
 
         if (tagSet.size() == noOfTagsIgnored) {
-            throw new CommandException(MESSAGE_NO_NEW_TAGS);
+            throw new CommandException(MESSAGE_NO_DEL_TAGS);
         }
 
         if (transactionToTag instanceof Expense) {

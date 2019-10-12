@@ -7,21 +7,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 import thrift.commons.core.index.Index;
-import thrift.logic.commands.TagCommand;
+import thrift.logic.commands.UntagCommand;
 import thrift.logic.parser.exceptions.ParseException;
 import thrift.model.tag.Tag;
 
 /**
- * Parses input arguments and creates a new TagCommand object.
+ * Parses input arguments and creates a new UntagCommand object.
  */
-public class TagCommandParser implements Parser<TagCommand> {
+public class UntagCommandParser implements Parser<UntagCommand> {
 
     /**
-     * Parses the given {@code String} of arguments in the context of the TagCommand
-     * and returns an TagCommand object for execution.
+     * Parses the given {@code String} of arguments in the context of the UntagCommand
+     * and returns an UntagCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
-    public TagCommand parse(String args) throws ParseException {
+    public UntagCommand parse(String args) throws ParseException {
         requireNonNull(args);
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, CliSyntax.PREFIX_INDEX, CliSyntax.PREFIX_TAG);
@@ -32,7 +32,7 @@ public class TagCommandParser implements Parser<TagCommand> {
         try {
             index = ParserUtil.parseIndex(argMultimap.getPreambleIncludeIndex());
         } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE), pe);
         }
         for (String tagName : argMultimap.getAllValues(CliSyntax.PREFIX_TAG)) {
             if (!tagName.isEmpty()) {
@@ -42,9 +42,9 @@ public class TagCommandParser implements Parser<TagCommand> {
         }
 
         if (tagSet.isEmpty()) {
-            throw new ParseException(TagCommand.MESSAGE_NOT_TAGGED);
+            throw new ParseException(UntagCommand.MESSAGE_NOT_UNTAGGED);
         }
 
-        return new TagCommand(index, tagSet);
+        return new UntagCommand(index, tagSet);
     }
 }
