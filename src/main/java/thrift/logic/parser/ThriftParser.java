@@ -16,6 +16,7 @@ import thrift.logic.commands.FindCommand;
 import thrift.logic.commands.HelpCommand;
 import thrift.logic.commands.ListCommand;
 import thrift.logic.commands.RedoCommand;
+import thrift.logic.commands.TagCommand;
 import thrift.logic.commands.UndoCommand;
 import thrift.logic.commands.UpdateCommand;
 import thrift.logic.parser.exceptions.ParseException;
@@ -55,6 +56,9 @@ public class ThriftParser {
 
         case UpdateCommand.COMMAND_WORD:
             return new UpdateCommandParser().parse(arguments);
+
+        case TagCommand.COMMAND_WORD:
+            return new TagCommandParser().parse(arguments);
 
         case DeleteCommand.COMMAND_WORD:
             return new DeleteCommandParser().parse(arguments);
