@@ -48,7 +48,8 @@ public class TagCommand extends Command {
 
     /**
      * Creates a TagCommand to tag the specified {@code Transaction}
-     * @param index of the transaction in the filtered transaction list to update
+     *
+     * @param index  of the transaction in the filtered transaction list to update
      * @param tagSet of new tags to be added to the current set of tags, without duplicates.
      */
     public TagCommand(Index index, Set<Tag> tagSet) {
@@ -79,6 +80,7 @@ public class TagCommand extends Command {
 
         model.setTransaction(transactionToTag, updatedTransaction);
         model.updateFilteredTransactionList(Model.PREDICATE_SHOW_ALL_TRANSACTIONS);
+
         return new CommandResult(taggedTransactionNotification
                 + existedTagsNotification
                 + originalTransactionNotification);
@@ -98,7 +100,7 @@ public class TagCommand extends Command {
      * with the new tags from {@code tagSet} appended without duplicates.
      */
     private Transaction createTaggedTransaction(Transaction transactionToTag,
-                                                        Set<Tag> tagSet) throws CommandException {
+                                                Set<Tag> tagSet) throws CommandException {
         assert transactionToTag != null;
 
         Description oldDescription = transactionToTag.getDescription();
