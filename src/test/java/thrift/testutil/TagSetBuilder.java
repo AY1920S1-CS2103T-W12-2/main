@@ -10,6 +10,7 @@ import thrift.model.transaction.Transaction;
 
 /**
  * A utility class to help with building Tag sets.
+ *
  * Example usage: <br>
  *     {@code Set<Tag> tagSet = new TagSetBuilder("Food").build();}
  */
@@ -26,6 +27,7 @@ public class TagSetBuilder {
 
     /**
      * Creates a TagSetBuilder with tags made from {@param tagNames}
+     *
      * @param tagNames whose tags are used as reference
      */
     public TagSetBuilder(String... tagNames) {
@@ -34,6 +36,7 @@ public class TagSetBuilder {
 
     /**
      * Creates a TagSetBuilder with tags from {@param tagSet}
+     *
      * @param tagSet whose tags are used as reference
      */
     public TagSetBuilder(Set<Tag> tagSet) {
@@ -50,6 +53,7 @@ public class TagSetBuilder {
 
     /**
      * Returns a {@code TagSetBuilder} with a tag having tagName appended
+     *
      * @param tagName to be made into a {@code Tag} object and appended
      * @return {@code TagSetBuilder} with a tag having tagName appended
      */
@@ -60,6 +64,7 @@ public class TagSetBuilder {
 
     /**
      * Returns a {@code TagSetBuilder} with tags having tagNames appended
+     *
      * @param tagNames to be made into {@code Tag} objects and appended
      * @return {@code TagSetBuilder} with tags having tagNames appended
      */

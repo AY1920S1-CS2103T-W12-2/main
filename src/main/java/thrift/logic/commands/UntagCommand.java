@@ -48,6 +48,7 @@ public class UntagCommand extends Command {
 
     /**
      * Creates a UntagCommand to untag the specified {@code Transaction}
+     *
      * @param index of the transaction in the filtered transaction list to update
      * @param tagSet of tags to be removed from the current set of tags, if they exist.
      */
@@ -71,7 +72,7 @@ public class UntagCommand extends Command {
 
         Transaction transactionToTag = lastShownList.get(index.getZeroBased());
         String originalTransactionNotification = String.format(MESSAGE_ORIGINAL_TRANSACTION, transactionToTag);
-        Transaction updatedTransaction = createTaggedTransaction(transactionToTag, tagSet);
+        Transaction updatedTransaction = createUntaggedTransaction(transactionToTag, tagSet);
         String taggedTransactionNotification = String.format(MESSAGE_UNTAG_TRANSACTION_SUCCESS, updatedTransaction);
         String nonexistentTagsNotification = nonexistentTags.length() == 0
                 ? ""
@@ -96,7 +97,7 @@ public class UntagCommand extends Command {
      * Creates and returns a {@code Transaction}
      * with the tags from {@code tagSet} removed.
      */
-    private Transaction createTaggedTransaction(Transaction transactionToTag,
+    private Transaction createUntaggedTransaction(Transaction transactionToTag,
                                                         Set<Tag> tagSet) throws CommandException {
         assert transactionToTag != null;
 

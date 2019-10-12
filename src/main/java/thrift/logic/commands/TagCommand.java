@@ -100,7 +100,7 @@ public class TagCommand extends Command {
      * with the new tags from {@code tagSet} appended without duplicates.
      */
     private Transaction createTaggedTransaction(Transaction transactionToTag,
-                                                Set<Tag> tagSet) throws CommandException {
+                                                        Set<Tag> tagSet) throws CommandException {
         assert transactionToTag != null;
 
         Description oldDescription = transactionToTag.getDescription();
