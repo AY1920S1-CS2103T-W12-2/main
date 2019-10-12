@@ -98,7 +98,7 @@ public class UntagCommand extends Command {
      * with the tags from {@code tagSet} removed.
      */
     private Transaction createUntaggedTransaction(Transaction transactionToTag,
-                                                        Set<Tag> tagSet) throws CommandException {
+            Set<Tag> tagSet) throws CommandException {
         assert transactionToTag != null;
 
         Description oldDescription = transactionToTag.getDescription();
