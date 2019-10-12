@@ -1,15 +1,11 @@
 package thrift.logic.parser;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-
 import static thrift.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static thrift.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static thrift.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
-import thrift.commons.core.Messages;
+import org.junit.jupiter.api.Test;
+
 import thrift.logic.commands.TagCommand;
 import thrift.testutil.TagSetBuilder;
 import thrift.testutil.TypicalIndexes;
@@ -19,9 +15,9 @@ class TagCommandParserTest {
 
     private TagCommandParser parser = new TagCommandParser();
     @Test
-    void parse_with_Tags() {
+    void parse_withTags() {
         String input = "tag i/1 t/Food t/Shopping";
-        String input2 = "tag i/1 t/Shopping t/Food" ;
+        String input2 = "tag i/1 t/Shopping t/Food";
 
         TagCommand expectedCommand = new TagCommand(TypicalIndexes.INDEX_FIRST_TRANSACTION,
                 new TagSetBuilder("Food", "Shopping").build());
@@ -31,7 +27,7 @@ class TagCommandParserTest {
     }
 
     @Test
-    void parse_with_Blank_Tags() {
+    void parse_withBlankTags() {
         String input = "tag i/1 t/";
 
         assertParseFailure(parser, input, TagCommand.MESSAGE_NOT_TAGGED);

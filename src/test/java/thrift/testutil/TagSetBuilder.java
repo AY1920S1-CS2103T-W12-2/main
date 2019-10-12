@@ -8,6 +8,11 @@ import java.util.stream.Stream;
 import thrift.model.tag.Tag;
 import thrift.model.transaction.Transaction;
 
+/**
+ * A utility class to help with building Tag sets.
+ * Example usage: <br>
+ *     {@code Set<Tag> tagSet = new TagSetBuilder("Food").build();}
+ */
 public class TagSetBuilder {
 
     private final Set<Tag> tagSet;
@@ -44,9 +49,9 @@ public class TagSetBuilder {
     }
 
     /**
-     * Returns a {@code TagSetBuilder} with a tag having {@param tagName} appended
+     * Returns a {@code TagSetBuilder} with a tag having tagName appended
      * @param tagName to be made into a {@code Tag} object and appended
-     * @return {@code TagSetBuilder} with a tag having {@param tagName} appended
+     * @return {@code TagSetBuilder} with a tag having tagName appended
      */
     public TagSetBuilder addTag(String tagName) {
         tagSet.add(new Tag(tagName));
@@ -54,9 +59,9 @@ public class TagSetBuilder {
     }
 
     /**
-     * Returns a {@code TagSetBuilder} with tags having {@param tagNames} appended
+     * Returns a {@code TagSetBuilder} with tags having tagNames appended
      * @param tagNames to be made into {@code Tag} objects and appended
-     * @return {@code TagSetBuilder} with tags having {@param tagNames} appended
+     * @return {@code TagSetBuilder} with tags having tagNames appended
      */
     public TagSetBuilder addTags(String... tagNames) {
         Set<Tag> tagSet = new HashSet<Tag>(this.tagSet);

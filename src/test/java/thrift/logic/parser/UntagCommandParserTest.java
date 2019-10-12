@@ -6,8 +6,6 @@ import static thrift.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
 import org.junit.jupiter.api.Test;
 
-import thrift.logic.commands.Command;
-import thrift.logic.commands.TagCommand;
 import thrift.logic.commands.UntagCommand;
 import thrift.testutil.TagSetBuilder;
 import thrift.testutil.TypicalIndexes;
@@ -18,7 +16,7 @@ class UntagCommandParserTest {
     private UntagCommandParser parser = new UntagCommandParser();
 
     @Test
-    void parse_with_Tags() {
+    void parse_withTags() {
         String input = "untag i/1 t/Debt t/Horror";
         String input2 = "untag i/1 t/Horror t/Debt";
 
@@ -30,7 +28,7 @@ class UntagCommandParserTest {
     }
 
     @Test
-    void parse_with_Blank_Tags() {
+    void parse_withBlankTags() {
         String input = "tag i/1 t/";
 
         assertParseFailure(parser, input, UntagCommand.MESSAGE_NOT_UNTAGGED);
