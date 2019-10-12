@@ -22,11 +22,11 @@ public class DeleteCommandParser implements Parser<DeleteCommand> {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, CliSyntax.PREFIX_INDEX);
 
         try {
-            Index index = ParserUtil.parseIndex(argMultimap.getPreambleTillIndex());
+            Index index = ParserUtil.parseIndex(argMultimap.getPreambleIncludeIndex());
             return new DeleteCommand(index);
         } catch (ParseException pe) {
             throw new ParseException(
-                String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), pe);
+                    String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE), pe);
         }
     }
 
