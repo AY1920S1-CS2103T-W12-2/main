@@ -40,11 +40,7 @@ public class TagCommand extends Command {
     public static final String MESSAGE_TAG_EXISTED = "\nTag(s) %1$s already exist and will be ignored.";
     public static final String MESSAGE_ORIGINAL_TRANSACTION = "\n\nOriginal: %1$s";
     public static final String MESSAGE_NOT_TAGGED = "At least one tag must be provided.";
-<<<<<<< HEAD
     public static final String MESSAGE_NO_NEW_TAGS = "Specified tag(s) already exist, the transaction was not updated.";
-=======
-    public static final String MESSAGE_NO_NEW_TAGS = "Specified tags already exist, the transaction was not updated.";
->>>>>>> master
 
     private final Index index;
     private final Set<Tag> tagSet;

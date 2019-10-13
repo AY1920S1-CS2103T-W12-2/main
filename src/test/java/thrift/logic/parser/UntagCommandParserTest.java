@@ -7,10 +7,7 @@ import static thrift.logic.parser.CommandParserTestUtil.assertParseSuccess;
 import org.junit.jupiter.api.Test;
 
 import thrift.logic.commands.UntagCommand;
-<<<<<<< HEAD
 import thrift.model.tag.Tag;
-=======
->>>>>>> master
 import thrift.testutil.TagSetBuilder;
 import thrift.testutil.TypicalIndexes;
 
