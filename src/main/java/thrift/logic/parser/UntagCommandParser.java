@@ -42,6 +42,7 @@ public class UntagCommandParser implements Parser<UntagCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE), pe);
         } catch (IllegalArgumentException iae) {
             throw new ParseException(iae.getMessage(), iae);
+
         }
 
         if (tagSet.isEmpty()) {

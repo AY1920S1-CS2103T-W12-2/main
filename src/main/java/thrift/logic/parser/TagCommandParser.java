@@ -44,7 +44,6 @@ public class TagCommandParser implements Parser<TagCommand> {
             throw new ParseException(iae.getMessage(), iae);
         }
 
-
         if (tagSet.isEmpty()) {
             throw new ParseException(TagCommand.MESSAGE_NOT_TAGGED);
         }
