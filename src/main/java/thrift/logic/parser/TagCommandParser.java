@@ -2,6 +2,7 @@ package thrift.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static thrift.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static thrift.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT_WITH_PE;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,7 +32,11 @@ public class TagCommandParser implements Parser<TagCommand> {
         Set<Tag> tagSet = new HashSet<Tag>();
 
         try {
-            index = ParserUtil.parseIndex(argMultimap.getPreambleIncludeIndex());
+            String indexStr = argMultimap.getSingleValue(CliSyntax.PREFIX_INDEX).orElse("");
+            if (indexStr.length() == 0) {
+                throw new ParseException("");
+            }
+            index = ParserUtil.parseIndex(indexStr);
             for (String tagName : argMultimap.getAllValues(CliSyntax.PREFIX_TAG)) {
                 if (!tagName.isEmpty()) {
                     Tag tag = new Tag(tagName);
@@ -39,7 +44,9 @@ public class TagCommandParser implements Parser<TagCommand> {
                 }
             }
         } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, TagCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT_WITH_PE, TagCommand.MESSAGE_USAGE, pe.getMessage()),
+                    pe);
         } catch (IllegalArgumentException iae) {
             throw new ParseException(iae.getMessage(), iae);
         }

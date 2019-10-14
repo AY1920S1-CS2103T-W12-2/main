@@ -1,12 +1,14 @@
 package thrift.logic.parser;
 
 import static java.util.Objects.requireNonNull;
-import static thrift.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static thrift.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT_WITH_PE;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import thrift.commons.core.index.Index;
+import thrift.logic.commands.Command;
+import thrift.logic.commands.TagCommand;
 import thrift.logic.commands.UntagCommand;
 import thrift.logic.parser.exceptions.ParseException;
 import thrift.model.tag.Tag;
@@ -31,7 +33,11 @@ public class UntagCommandParser implements Parser<UntagCommand> {
         Set<Tag> tagSet = new HashSet<Tag>();
 
         try {
-            index = ParserUtil.parseIndex(argMultimap.getPreambleIncludeIndex());
+            String indexStr = argMultimap.getSingleValue(CliSyntax.PREFIX_INDEX).orElse("");
+            if (indexStr.length() == 0) {
+                throw new ParseException("");
+            }
+            index = ParserUtil.parseIndex(indexStr);
             for (String tagName : argMultimap.getAllValues(CliSyntax.PREFIX_TAG)) {
                 if (!tagName.isEmpty()) {
                     Tag tag = new Tag(tagName);
@@ -39,7 +45,9 @@ public class UntagCommandParser implements Parser<UntagCommand> {
                 }
             }
         } catch (ParseException pe) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, UntagCommand.MESSAGE_USAGE), pe);
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT_WITH_PE, UntagCommand.MESSAGE_USAGE, pe.getMessage()),
+                    pe);
         } catch (IllegalArgumentException iae) {
             throw new ParseException(iae.getMessage(), iae);
 
