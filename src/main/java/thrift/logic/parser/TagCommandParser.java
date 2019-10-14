@@ -1,7 +1,6 @@
 package thrift.logic.parser;
 
 import static java.util.Objects.requireNonNull;
-import static thrift.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static thrift.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT_WITH_PE;
 
 import java.util.HashSet;

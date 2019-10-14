@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import thrift.commons.core.index.Index;
-import thrift.logic.commands.Command;
-import thrift.logic.commands.TagCommand;
 import thrift.logic.commands.UntagCommand;
 import thrift.logic.parser.exceptions.ParseException;
 import thrift.model.tag.Tag;
