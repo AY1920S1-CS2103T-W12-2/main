@@ -34,17 +34,15 @@ public class TagCommandParser implements Parser<TagCommand> {
                     .orElseThrow(() -> new ParseException(""));
             index = ParserUtil.parseIndex(indexStr);
             tagSet = ParserUtil.parseTags(argMultimap.getAllValues(CliSyntax.PREFIX_TAG));
+            if (tagSet.isEmpty()) {
+                throw new ParseException(TagCommand.MESSAGE_NOT_TAGGED);
+            }
         } catch (ParseException pe) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT_WITH_PE, TagCommand.MESSAGE_USAGE, pe.getMessage()),
                     pe);
-        } catch (IllegalArgumentException iae) {
-            throw new ParseException(iae.getMessage(), iae);
         }
 
-        if (tagSet.isEmpty()) {
-            throw new ParseException(TagCommand.MESSAGE_NOT_TAGGED);
-        }
 
         return new TagCommand(index, tagSet);
     }

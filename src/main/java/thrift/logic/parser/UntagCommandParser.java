@@ -34,6 +34,9 @@ public class UntagCommandParser implements Parser<UntagCommand> {
                     .orElseThrow(() -> new ParseException(""));
             index = ParserUtil.parseIndex(indexStr);
             tagSet = ParserUtil.parseTags(argMultimap.getAllValues(CliSyntax.PREFIX_TAG));
+            if (tagSet.isEmpty()) {
+                throw new ParseException(UntagCommand.MESSAGE_NOT_UNTAGGED);
+            }
         } catch (ParseException pe) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT_WITH_PE, UntagCommand.MESSAGE_USAGE, pe.getMessage()),
