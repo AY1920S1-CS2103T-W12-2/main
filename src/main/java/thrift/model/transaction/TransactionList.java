@@ -70,6 +70,12 @@ public class TransactionList implements Iterable<Transaction> {
      */
     public void setTransactionWithIndex(Index actualIndex, Transaction updatedTransaction) {
         requireAllNonNull(actualIndex, updatedTransaction);
+        int index = actualIndex.getZeroBased();
+
+        if (internalList.size() <= index) {
+            throw new IndexOutOfBoundsException();
+        }
+
         internalList.set(actualIndex.getZeroBased(), updatedTransaction);
     }
 
