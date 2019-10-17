@@ -26,7 +26,7 @@ public class TransactionUtil {
     public static String getExpenseDetails(Expense expense) {
         StringBuilder sb = new StringBuilder();
         sb.append(CliSyntax.PREFIX_NAME + expense.getDescription().toString() + " ");
-        sb.append(CliSyntax.PREFIX_COST + expense.getValue().toString() + " ");
+        sb.append(CliSyntax.PREFIX_VALUE + expense.getValue().toString() + " ");
         expense.getTags().stream().forEach(
             s -> sb.append(CliSyntax.PREFIX_TAG + s.tagName + " ")
         );
@@ -40,7 +40,8 @@ public class TransactionUtil {
         StringBuilder sb = new StringBuilder();
         descriptor.getDescription().ifPresent(description -> sb.append(CliSyntax.PREFIX_NAME)
                 .append(description.toString()).append(" "));
-        descriptor.getValue().ifPresent(value -> sb.append(CliSyntax.PREFIX_COST).append(value.toString()).append(" "));
+        descriptor.getValue().ifPresent(value -> sb.append(CliSyntax.PREFIX_VALUE)
+                .append(value.toString()).append(" "));
         if (descriptor.getTags().isPresent()) {
             Set<Tag> tags = descriptor.getTags().get();
             if (tags.isEmpty()) {

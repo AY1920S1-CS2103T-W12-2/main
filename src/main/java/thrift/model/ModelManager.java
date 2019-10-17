@@ -15,6 +15,7 @@ import thrift.commons.core.LogsCenter;
 import thrift.commons.core.index.Index;
 import thrift.commons.util.CollectionUtil;
 import thrift.logic.commands.Undoable;
+import thrift.model.transaction.Budget;
 import thrift.model.transaction.Expense;
 import thrift.model.transaction.Income;
 import thrift.model.transaction.Transaction;
@@ -146,6 +147,11 @@ public class ModelManager implements Model {
     public void addIncome(Income income, Index index) {
         thrift.addTransaction(income, index);
         updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
+    }
+
+    @Override
+    public void setBudget(Budget budget) {
+        thrift.setBudget(budget);
     }
 
     @Override

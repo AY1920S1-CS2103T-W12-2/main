@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import thrift.commons.core.GuiSettings;
 import thrift.commons.core.index.Index;
 import thrift.logic.commands.Undoable;
+import thrift.model.transaction.Budget;
 import thrift.model.transaction.Expense;
 import thrift.model.transaction.Income;
 import thrift.model.transaction.Transaction;
@@ -105,6 +106,11 @@ public interface Model {
      * Adds the given income to a specified index.
      */
     void addIncome(Income income, Index index);
+
+    /**
+     * Sets the monthly budget to the specified budget.
+     */
+    void setBudget(Budget budget);
 
     /**
      * Replaces the given transaction {@code target} with {@code updatedTransaction}.

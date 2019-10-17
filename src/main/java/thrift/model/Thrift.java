@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import javafx.collections.ObservableList;
 import thrift.commons.core.index.Index;
+import thrift.model.transaction.Budget;
+import thrift.model.transaction.BudgetList;
 import thrift.model.transaction.Transaction;
 import thrift.model.transaction.TransactionList;
 
@@ -17,6 +19,7 @@ import thrift.model.transaction.TransactionList;
 public class Thrift implements ReadOnlyThrift {
 
     private final TransactionList transactions;
+    private final BudgetList budgets;
 
     /*
      * The 'unusual' code block below is a non-static initialization block, sometimes used to avoid duplication
@@ -27,6 +30,7 @@ public class Thrift implements ReadOnlyThrift {
      */
     {
         transactions = new TransactionList();
+        budgets = new BudgetList();
     }
 
     public Thrift() {}
@@ -71,6 +75,14 @@ public class Thrift implements ReadOnlyThrift {
      */
     public void addTransaction(Transaction t, Index index) {
         transactions.add(t, index);
+    }
+
+    /**
+     * Adds the specified {@code budget} into the budget list, updates the budget instead if it already exists.
+     */
+    public void setBudget(Budget budget) {
+        requireNonNull(budget);
+        budgets.setBudget(budget);
     }
 
     /**
@@ -144,14 +156,19 @@ public class Thrift implements ReadOnlyThrift {
     }
 
     @Override
-    public String toString() {
-        return transactions.asUnmodifiableObservableList().size() + " transactions";
-        // TODO: refine later
+    public ObservableList<Transaction> getTransactionList() {
+        return transactions.asUnmodifiableObservableList();
     }
 
     @Override
-    public ObservableList<Transaction> getTransactionList() {
-        return transactions.asUnmodifiableObservableList();
+    public BudgetList getBudgetList() {
+        return budgets;
+    }
+
+    @Override
+    public String toString() {
+        return transactions.asUnmodifiableObservableList().size() + " transactions";
+        // TODO: refine later
     }
 
     @Override

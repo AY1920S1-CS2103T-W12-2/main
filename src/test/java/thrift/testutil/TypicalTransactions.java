@@ -2,12 +2,15 @@ package thrift.testutil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import thrift.model.Thrift;
+import thrift.model.transaction.Budget;
 import thrift.model.transaction.Expense;
 import thrift.model.transaction.Income;
 import thrift.model.transaction.Transaction;
+import thrift.model.transaction.Value;
 
 /**
  * A utility class containing a list of {@code Transaction} objects to be used in tests.
@@ -20,6 +23,9 @@ public class TypicalTransactions {
             .withDate("11/10/2010").withRemark("One of the best Laksa").withTags("Brunch").build();
     public static final Income BURSARY = new IncomeBuilder().withDescription("Bursary").withValue("500")
             .withDate("13/11/2011").withTags("Award").build();
+
+    public static final Calendar NOW = Calendar.getInstance();
+    public static final Budget CURRENT_BUDGET = new Budget(NOW, new Value("1000"));
 
     private TypicalTransactions() {} // prevents instantiation
 
