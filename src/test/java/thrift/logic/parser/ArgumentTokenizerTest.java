@@ -135,10 +135,7 @@ public class ArgumentTokenizerTest {
         // Assume all values shouldn't be repeated. dashT violates, pSlash doesn't
         String argsString = "SomePreambleString -t dashT-Value ^Q ^Q -t another dashT value p/ pSlash value -t";
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(argsString, pSlash, dashT, hatQ);
-        assertThrows(
-                ParseException.class,
-                () -> argMultimap.getSingleValue(dashT)
-        );
+        assertThrows(ParseException.class, () -> argMultimap.getSingleValue(dashT));
         assertDoesNotThrow(() ->argMultimap.getSingleValue(pSlash));
     }
 
