@@ -25,11 +25,11 @@ public class BalanceBar extends UiPart<Region> {
     @FXML
     private Label balance;
 
-    public BalanceBar(double monthlyBudget, double balanceRemaining) {
+    public BalanceBar(String monthYear, double monthBudget, double balanceRemaining) {
         super(FXML);
-        monthlyBudgetLabel.setText("Monthly Budget: ");
-        this.monthlyBudget.setText("$" + monthlyBudget);
-        balanceRemainingLabel.setText("Balance: ");
+        monthlyBudgetLabel.setText(monthYear);
+        monthlyBudget.setText("Budget: $" + monthBudget);
+        balanceRemainingLabel.setText("\tBalance: ");
 
         StringBuilder sb = new StringBuilder();
         if (balanceRemaining < 0) {
@@ -41,7 +41,7 @@ public class BalanceBar extends UiPart<Region> {
         }
         balance.setText(sb.toString());
 
-        this.monthlyBudget.setWrapText(true);
+        monthlyBudget.setWrapText(true);
         balance.setWrapText(true);
     }
 }

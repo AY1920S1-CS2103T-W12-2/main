@@ -112,15 +112,15 @@ public class MainWindow extends UiPart<Stage> {
     void fillInnerParts() {
         //Show the current month transactions and current month budget only.
         transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
-        double balance = logic.setFilteredTransactionListToCurrentMonth();
-        double budget = logic.getCurrentMonthBudget();
         transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
-        //TODO: Change the hardcoded budget to retrieved budget. Add month to the bar also.
-        BalanceBar balanceBar = new BalanceBar(budget, balance);
+        String monthYear = logic.getCurrentMonthYear();
+        double budget = logic.getCurrentMonthBudget();
+        double balance = logic.setFilteredTransactionListToCurrentMonth();
+        BalanceBar balanceBar = new BalanceBar(monthYear, budget, balance);
         balancebarPlaceholder.getChildren().add(balanceBar.getRoot());
 
         StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getThriftFilePath());
@@ -177,7 +177,6 @@ public class MainWindow extends UiPart<Stage> {
     /**
      * Executes the command and returns the result.
      *
-     * @see Logic#execute(String)
      */
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
         try {

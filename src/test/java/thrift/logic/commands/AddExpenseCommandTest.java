@@ -202,7 +202,11 @@ public class AddExpenseCommandTest {
         @Override
         public void deleteLastTransaction() {
             throw new AssertionError("This method should not be called.");
+        }
 
+        @Override
+        public String getCurrentMonthYear() {
+            throw new AssertionError("This method should not be called.");
         }
 
         @Override
@@ -246,7 +250,7 @@ public class AddExpenseCommandTest {
         }
 
         @Override
-        public void updateBalance() {
+        public void updateBalanceForCurrentMonth() {
             throw new AssertionError("This method should not be called.");
         }
 

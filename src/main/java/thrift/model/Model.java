@@ -131,6 +131,9 @@ public interface Model {
      */
     Transaction getLastTransactionFromThrift();
 
+    /** Returns the current month and year in MMM yyyy format. */
+    String getCurrentMonthYear();
+
     /** Returns the current month's budget. */
     double getCurrentMonthBudget();
 
@@ -149,7 +152,7 @@ public interface Model {
     /**
      * Updates the balance tracked by the model by summing values from the {@code Transaction} in the filteredList.
      */
-    void updateBalance();
+    void updateBalanceForCurrentMonth();
 
     /**
      * Returns the balance held by the model to update the GUI with.

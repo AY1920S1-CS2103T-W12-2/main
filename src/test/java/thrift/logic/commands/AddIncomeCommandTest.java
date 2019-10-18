@@ -239,12 +239,17 @@ public class AddIncomeCommandTest {
         }
 
         @Override
+        public String getCurrentMonthYear() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public double getCurrentMonthBudget() {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public void updateBalance() {
+        public void updateBalanceForCurrentMonth() {
             throw new AssertionError("This method should not be called.");
         }
 

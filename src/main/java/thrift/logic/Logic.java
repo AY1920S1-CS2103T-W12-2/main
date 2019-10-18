@@ -35,6 +35,9 @@ public interface Logic {
      */
     ReadOnlyThrift getThrift();
 
+    /** Returns the current month and year in MMM yyyy format. */
+    String getCurrentMonthYear();
+
     /** Returns the current month's budget. */
     double getCurrentMonthBudget();
 

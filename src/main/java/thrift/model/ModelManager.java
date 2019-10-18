@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static thrift.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -26,6 +27,7 @@ import thrift.model.transaction.TransactionIsInMonthYearPredicate;
  * Represents the in-memory model of the THRIFT data.
  */
 public class ModelManager implements Model {
+
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final Thrift thrift;
@@ -34,6 +36,9 @@ public class ModelManager implements Model {
     private final PastUndoableCommands pastUndoableCommands;
     private final Calendar currentMonthYear;
     private double balance;
+
+    /** {@code Predicate} that always show the current month transactions */
+    private Predicate<Transaction> predicateShowCurrentMonthTransactions;
 
     /**
      * Initializes a ModelManager with the given thrift, userPrefs and pastUndoableCommands.
@@ -50,6 +55,7 @@ public class ModelManager implements Model {
         this.pastUndoableCommands = pastUndoableCommands;
         currentMonthYear = Calendar.getInstance();
         balance = 1;
+        predicateShowCurrentMonthTransactions = new TransactionIsInMonthYearPredicate(currentMonthYear);
     }
 
     public ModelManager() {
@@ -117,42 +123,54 @@ public class ModelManager implements Model {
     @Override
     public void deleteTransaction(Transaction transaction) {
         thrift.removeTransaction(transaction);
+        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
+        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void deleteTransaction(Index index) {
         thrift.removeTransactionByIndex(index);
-        updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
+        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
+        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void deleteLastTransaction() {
         thrift.removeLastTransaction();
-        updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
+        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void addExpense(Expense expense) {
         thrift.addTransaction(expense);
-        updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
+        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
+        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void addExpense(Expense expense, Index index) {
         thrift.addTransaction(expense, index);
-        updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
+        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
+        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void addIncome(Income income) {
         thrift.addTransaction(income);
-        updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
+        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
+        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void addIncome(Income income, Index index) {
         thrift.addTransaction(income, index);
-        updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
+        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
+        updateBalanceForCurrentMonth();
+    }
+
+    @Override
+    public String getCurrentMonthYear() {
+        return new SimpleDateFormat("MMMMM yyyy").format(currentMonthYear.getTime());
     }
 
     @Override
@@ -174,14 +192,16 @@ public class ModelManager implements Model {
     public void setTransaction(Transaction target, Transaction updatedTransaction) {
         CollectionUtil.requireAllNonNull(target, updatedTransaction);
         thrift.setTransaction(target, updatedTransaction);
-        updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
+        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
+        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void setTransactionWithIndex(Index actualIndex, Transaction updatedTransaction) {
         CollectionUtil.requireAllNonNull(actualIndex, updatedTransaction);
         thrift.setTransactionWithIndex(actualIndex, updatedTransaction);
-        updateFilteredTransactionList(PREDICATE_SHOW_ALL_TRANSACTIONS);
+        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
+        updateBalanceForCurrentMonth();
     }
 
     @Override
@@ -203,6 +223,7 @@ public class ModelManager implements Model {
     @Override
     public void updateFilteredTransactionListToCurrentMonth() {
         filteredTransactions.setPredicate(new TransactionIsInMonthYearPredicate(currentMonthYear));
+        updateBalanceForCurrentMonth();
     }
 
     @Override
@@ -212,8 +233,8 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void updateBalance() {
-        balance += filteredTransactions.stream()
+    public void updateBalanceForCurrentMonth() {
+        balance = getCurrentMonthBudget() + filteredTransactions.stream()
                 .mapToDouble(t -> {
                     double value = t.getValue().getMonetaryValue();
                     if (t instanceof Expense) {

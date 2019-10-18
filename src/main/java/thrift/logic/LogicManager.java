@@ -73,6 +73,11 @@ public class LogicManager implements Logic {
     }
 
     @Override
+    public String getCurrentMonthYear() {
+        return model.getCurrentMonthYear();
+    }
+
+    @Override
     public ObservableList<Transaction> getFilteredTransactionList() {
         return model.getFilteredTransactionList();
     }
@@ -80,7 +85,6 @@ public class LogicManager implements Logic {
     @Override
     public double setFilteredTransactionListToCurrentMonth() {
         model.updateFilteredTransactionListToCurrentMonth();
-        model.updateBalance();
         return model.getBalance();
     }
 
