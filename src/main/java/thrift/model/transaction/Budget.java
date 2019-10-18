@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Budget {
 
     public static final SimpleDateFormat BUDGET_DATE_FORMAT = new SimpleDateFormat("MM/yyyy");
-    public static final String DATE_CONSTRAINTS = "Please enter the month in the correct format: MM/yyyy.";
+    public static final String DATE_CONSTRAINTS = "Month should be in the following format: MM/yyyy.";
     public static final String VALIDATION_REGEX = "^(0[1-9]|10|11|12)\\/\\d{4}$";
 
     private Calendar period;
@@ -29,6 +29,10 @@ public class Budget {
 
     public Calendar getBudgetDate() {
         return this.period;
+    }
+
+    public String getBudgetDateString() {
+        return BUDGET_DATE_FORMAT.format(period.getTime());
     }
 
     public Value getBudgetValue() {
@@ -61,7 +65,7 @@ public class Budget {
         builder.append("\nAmount: $")
                 .append(value.toString())
                 .append("\nMonth: ")
-                .append(BUDGET_DATE_FORMAT.format(period.getTime()));
+                .append(getBudgetDateString());
         return builder.toString();
     }
 }

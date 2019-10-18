@@ -53,12 +53,19 @@ public class Thrift implements ReadOnlyThrift {
     }
 
     /**
+     * Replaces the contents of the budget list with {@code budgets}.
+     */
+    public void setBudgets(BudgetList budgets) {
+        this.budgets.setBudgets(budgets);
+    }
+
+    /**
      * Resets the existing data of this transactions list with {@code newData}.
      */
     public void resetData(ReadOnlyThrift newData) {
         requireNonNull(newData);
-
         setTransactions(newData.getTransactionList());
+        setBudgets(newData.getBudgetList());
     }
 
     //// transaction-level operations
@@ -175,7 +182,8 @@ public class Thrift implements ReadOnlyThrift {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof Thrift // instanceof handles nulls
-                && transactions.equals(((Thrift) other).transactions));
+                && transactions.equals(((Thrift) other).transactions)
+                && budgets.equals(((Thrift) other).budgets));
     }
 
     @Override
