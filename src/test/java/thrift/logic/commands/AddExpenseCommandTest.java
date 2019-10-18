@@ -206,6 +206,11 @@ public class AddExpenseCommandTest {
         }
 
         @Override
+        public double getCurrentMonthBudget() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void setBudget(Budget budget) {
             throw new AssertionError("This method should not be called.");
         }
@@ -231,7 +236,22 @@ public class AddExpenseCommandTest {
         }
 
         @Override
+        public void updateFilteredTransactionListToCurrentMonth() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
         public void updateFilteredTransactionList(Predicate<Transaction> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateBalance() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public double getBalance() {
             throw new AssertionError("This method should not be called.");
         }
 

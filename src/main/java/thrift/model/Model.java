@@ -131,15 +131,31 @@ public interface Model {
      */
     Transaction getLastTransactionFromThrift();
 
+    /** Returns the current month's budget. */
+    double getCurrentMonthBudget();
 
     /** Returns an unmodifiable view of the filtered transaction list */
     ObservableList<Transaction> getFilteredTransactionList();
+
+    /** Filters the view of the transaction list to only show transactions that occur in the current month. */
+    void updateFilteredTransactionListToCurrentMonth();
 
     /**
      * Updates the filter of the filtered transaction list to filter by the given {@code predicate}.
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredTransactionList(Predicate<Transaction> predicate);
+
+    /**
+     * Updates the balance tracked by the model by summing values from the {@code Transaction} in the filteredList.
+     */
+    void updateBalance();
+
+    /**
+     * Returns the balance held by the model to update the GUI with.
+     * @return
+     */
+    double getBalance();
 
     /**
      * Keeps track of past undoable commands.

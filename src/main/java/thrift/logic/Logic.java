@@ -35,8 +35,15 @@ public interface Logic {
      */
     ReadOnlyThrift getThrift();
 
-    /** Returns an unmodifiable view of the filtered list of transactions*/
+    /** Returns the current month's budget. */
+    double getCurrentMonthBudget();
+
+    /** Returns an unmodifiable view of the filtered list of transactions. */
     ObservableList<Transaction> getFilteredTransactionList();
+
+    /** Filters the view of the transaction list to only show transactions that occur in the current month.
+     * @return*/
+    double setFilteredTransactionListToCurrentMonth();
 
     /**
      * Returns the user prefs' thrift file path.

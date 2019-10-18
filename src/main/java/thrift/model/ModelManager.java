@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static thrift.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Calendar;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -19,6 +20,7 @@ import thrift.model.transaction.Budget;
 import thrift.model.transaction.Expense;
 import thrift.model.transaction.Income;
 import thrift.model.transaction.Transaction;
+import thrift.model.transaction.TransactionIsInMonthYearPredicate;
 
 /**
  * Represents the in-memory model of the THRIFT data.
@@ -30,6 +32,8 @@ public class ModelManager implements Model {
     private final UserPrefs userPrefs;
     private final FilteredList<Transaction> filteredTransactions;
     private final PastUndoableCommands pastUndoableCommands;
+    private final Calendar currentMonthYear;
+    private double balance;
 
     /**
      * Initializes a ModelManager with the given thrift, userPrefs and pastUndoableCommands.
@@ -44,6 +48,8 @@ public class ModelManager implements Model {
         this.userPrefs = new UserPrefs(userPrefs);
         filteredTransactions = new FilteredList<>(this.thrift.getTransactionList());
         this.pastUndoableCommands = pastUndoableCommands;
+        currentMonthYear = Calendar.getInstance();
+        balance = 1;
     }
 
     public ModelManager() {
@@ -150,6 +156,16 @@ public class ModelManager implements Model {
     }
 
     @Override
+    public double getCurrentMonthBudget() {
+        Optional<Budget> optBudget = thrift.getBudgetList().getBudgetForMonthYear(currentMonthYear);
+        if (optBudget.isPresent()) {
+            return optBudget.get().getBudgetValue().getMonetaryValue();
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
     public void setBudget(Budget budget) {
         thrift.setBudget(budget);
     }
@@ -174,7 +190,6 @@ public class ModelManager implements Model {
     }
 
     //=========== Filtered Transaction List Accessors =============================================================
-
     /**
      * Returns an unmodifiable view of the list of {@code Transaction} backed by the internal list of
      * {@code versionedThrift}
@@ -184,11 +199,34 @@ public class ModelManager implements Model {
         return filteredTransactions;
     }
 
+    /** Filters the view of the transaction list to only show transactions that occur in the current month. */
+    @Override
+    public void updateFilteredTransactionListToCurrentMonth() {
+        filteredTransactions.setPredicate(new TransactionIsInMonthYearPredicate(currentMonthYear));
+    }
 
     @Override
     public void updateFilteredTransactionList(Predicate<Transaction> predicate) {
         requireNonNull(predicate);
         filteredTransactions.setPredicate(predicate);
+    }
+
+    @Override
+    public void updateBalance() {
+        balance += filteredTransactions.stream()
+                .mapToDouble(t -> {
+                    double value = t.getValue().getMonetaryValue();
+                    if (t instanceof Expense) {
+                        return value * -1;
+                    }
+                    return value;
+                })
+                .sum();
+    }
+
+    @Override
+    public double getBalance() {
+        return balance;
     }
 
     @Override

@@ -1,10 +1,10 @@
 package thrift.ui;
 
+import static thrift.model.transaction.Value.DECIMAL_FORMATTER;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
-
-import thrift.model.transaction.Value;
 
 /**
  * A ui for displaying the remaining balance for the month. It sits right on top of the status bar footer.
@@ -25,23 +25,23 @@ public class BalanceBar extends UiPart<Region> {
     @FXML
     private Label balance;
 
-    public BalanceBar(Value monthlyBudgetValue, Value balanceRemainingValue) {
+    public BalanceBar(double monthlyBudget, double balanceRemaining) {
         super(FXML);
         monthlyBudgetLabel.setText("Monthly Budget: ");
-        monthlyBudget.setText("$" + monthlyBudgetValue.toString());
+        this.monthlyBudget.setText("$" + monthlyBudget);
         balanceRemainingLabel.setText("Balance: ");
 
         StringBuilder sb = new StringBuilder();
-        if (balanceRemainingValue.getMonetaryValue() < 0) {
-            sb.append("-$").append(balanceRemainingValue.toString());
+        if (balanceRemaining < 0) {
+            sb.append("-$").append(DECIMAL_FORMATTER.format(balanceRemaining * (-1)));
             balance.setStyle("-fx-text-fill: #ff6c4f;");
         } else {
-            sb.append("$").append(balanceRemainingValue.toString());
+            sb.append("$").append(DECIMAL_FORMATTER.format(balanceRemaining));
             balance.setStyle("-fx-text-fill: #69ff4f;");
         }
         balance.setText(sb.toString());
 
-        monthlyBudget.setWrapText(true);
+        this.monthlyBudget.setWrapText(true);
         balance.setWrapText(true);
     }
 }

@@ -16,7 +16,6 @@ import thrift.logic.Logic;
 import thrift.logic.commands.CommandResult;
 import thrift.logic.commands.exceptions.CommandException;
 import thrift.logic.parser.exceptions.ParseException;
-import thrift.model.transaction.Value;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -111,14 +110,17 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
+        //Show the current month transactions and current month budget only.
         transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
+        double balance = logic.setFilteredTransactionListToCurrentMonth();
+        double budget = logic.getCurrentMonthBudget();
         transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
-        //TODO: Change the hardcoded balance to dynamically calculated balance.
-        BalanceBar balanceBar = new BalanceBar(new Value("3100"), new Value("1337"));
+        //TODO: Change the hardcoded budget to retrieved budget. Add month to the bar also.
+        BalanceBar balanceBar = new BalanceBar(budget, balance);
         balancebarPlaceholder.getChildren().add(balanceBar.getRoot());
 
         StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getThriftFilePath());

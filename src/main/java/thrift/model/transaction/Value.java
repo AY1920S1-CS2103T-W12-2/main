@@ -21,7 +21,7 @@ public class Value {
             "Currency should only be 'SGD', 'MYR', 'USD' OR 'EUR'!";
     public static final String VALIDATION_REGEX = "^[1-9]\\d{0,6}(\\.\\d{0,2})?$";
     public static final String DEFAULT_CURRENCY = "SGD";
-    private static final DecimalFormat decimalFormatter = new DecimalFormat("#,##0.00");
+    public static final DecimalFormat DECIMAL_FORMATTER = new DecimalFormat("#,##0.00");
 
     public final Double amount;
     public final String currency;
@@ -95,7 +95,7 @@ public class Value {
 
     @Override
     public String toString() {
-        return String.valueOf(decimalFormatter.format(getMonetaryValue()));
+        return String.valueOf(DECIMAL_FORMATTER.format(getMonetaryValue()));
     }
 
     @Override
