@@ -9,14 +9,7 @@ import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import thrift.commons.core.GuiSettings;
 import thrift.commons.core.LogsCenter;
-import thrift.logic.commands.AddExpenseCommand;
-import thrift.logic.commands.AddIncomeCommand;
-import thrift.logic.commands.BudgetCommand;
-import thrift.logic.commands.Command;
-import thrift.logic.commands.CommandResult;
-import thrift.logic.commands.DeleteCommand;
-import thrift.logic.commands.Undoable;
-import thrift.logic.commands.UpdateCommand;
+import thrift.logic.commands.*;
 import thrift.logic.commands.exceptions.CommandException;
 import thrift.logic.parser.ThriftParser;
 import thrift.logic.parser.exceptions.ParseException;
@@ -87,7 +80,9 @@ public class LogicManager implements Logic {
                 || command instanceof AddExpenseCommand
                 || command instanceof BudgetCommand
                 || command instanceof DeleteCommand
-                || command instanceof UpdateCommand) {
+                || command instanceof RedoCommand
+                || command instanceof UpdateCommand
+                || command instanceof UndoCommand) {
             logger.info("[PREPARING TO UPDATE MONTHLY BALANCE OR BUDGET]");
             return true;
         }
