@@ -36,6 +36,7 @@ public class CommandTestUtil {
     public static final String VALID_VALUE_AIRPODS = "350";
     public static final String VALID_VALUE_BUDGET = "1000";
     public static final String VALID_REMARK_LAKSA = "Delicious!";
+    public static final String VALID_REMARK_AIRPODS = "Is this really worth it?";
     public static final String VALID_DATE_BURSARY = "09/10/2019";
     public static final String VALID_DATE_LAKSA = "13/03/1937";
     public static final String VALID_DATE_AIRPODS = "14/03/1937";
@@ -54,6 +55,7 @@ public class CommandTestUtil {
     public static final String VALUE_AIRPODS = " " + PREFIX_VALUE + VALID_VALUE_AIRPODS;
     public static final String VALUE_BUDGET = " " + PREFIX_VALUE + VALID_VALUE_BUDGET;
     public static final String DATE_BUDGET = " " + PREFIX_DATE + VALID_DATE_BUDGET;
+    public static final String REMARK_AIRPODS = " " + PREFIX_REMARK + VALID_REMARK_AIRPODS;
     public static final String TAG_BURSARY = " " + PREFIX_TAG + VALID_TAG_AWARD;
     public static final String TAG_LAKSA = " " + PREFIX_TAG + VALID_TAG_LUNCH;
     public static final String TAG_BRUNCH = " " + PREFIX_TAG + VALID_TAG_BRUNCH;
