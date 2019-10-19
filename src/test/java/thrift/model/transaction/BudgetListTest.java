@@ -17,7 +17,7 @@ public class BudgetListTest {
     @Test
     public void addValidBudget_success() {
         Calendar now = Calendar.getInstance();
-        assertDoesNotThrow(() -> budgetList.setBudget(new Budget(now, new Value("123"))));
+        assertDoesNotThrow(() -> budgetList.setBudget(new Budget(now, new BudgetValue("123"))));
     }
 
     @Test
@@ -29,7 +29,7 @@ public class BudgetListTest {
     @Test
     public void updateBudget_success() {
         Calendar now = Calendar.getInstance();
-        assertDoesNotThrow(() -> budgetList.setBudget(new Budget(now, new Value("321"))));
+        assertDoesNotThrow(() -> budgetList.setBudget(new Budget(now, new BudgetValue("321"))));
     }
 
     @Test

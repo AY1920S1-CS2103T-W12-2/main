@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import thrift.logic.commands.BudgetCommand;
 import thrift.logic.commands.CommandTestUtil;
 import thrift.model.transaction.Budget;
-import thrift.model.transaction.Value;
+import thrift.model.transaction.BudgetValue;
 
 public class BudgetCommandParserTest {
     private BudgetCommandParser parser = new BudgetCommandParser();
@@ -40,7 +40,7 @@ public class BudgetCommandParserTest {
     public void parse_invalidValue_failure() {
         // invalid value
         CommandParserTestUtil.assertParseFailure(parser, CommandTestUtil.INVALID_VALUE
-                + CommandTestUtil.DATE_BUDGET, Value.VALUE_CONSTRAINTS);
+                + CommandTestUtil.DATE_BUDGET, BudgetValue.VALUE_CONSTRAINTS);
 
         // invalid date
         CommandParserTestUtil.assertParseFailure(parser, CommandTestUtil.INVALID_DATE

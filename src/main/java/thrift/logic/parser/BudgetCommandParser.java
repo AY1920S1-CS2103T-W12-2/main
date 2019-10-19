@@ -6,7 +6,7 @@ import thrift.commons.core.Messages;
 import thrift.logic.commands.BudgetCommand;
 import thrift.logic.parser.exceptions.ParseException;
 import thrift.model.transaction.Budget;
-import thrift.model.transaction.Value;
+import thrift.model.transaction.BudgetValue;
 
 /**
  * Parses input arguments and creates a new BudgetCommand object.
@@ -30,7 +30,7 @@ public class BudgetCommandParser implements Parser<BudgetCommand> {
         }
 
         Calendar monthYear = ParserUtil.parseDate(argMultimap.getSingleValue(CliSyntax.PREFIX_DATE).get());
-        Value value = ParserUtil.parseValue(argMultimap.getSingleValue(CliSyntax.PREFIX_VALUE).get());
+        BudgetValue value = ParserUtil.parseBudgetValue(argMultimap.getSingleValue(CliSyntax.PREFIX_VALUE).get());
         Budget budget = new Budget(monthYear, value);
         return new BudgetCommand(budget);
     }

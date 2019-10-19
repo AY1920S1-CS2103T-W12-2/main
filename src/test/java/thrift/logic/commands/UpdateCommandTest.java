@@ -77,7 +77,6 @@ public class UpdateCommandTest {
 
     @Test
     public void execute_filteredList_success() {
-        CommandTestUtil.showTransactionAtIndex(model, TypicalIndexes.INDEX_FIRST_TRANSACTION);
 
         Transaction transactionInFilteredList = model.getFilteredTransactionList().get(
                 TypicalIndexes.INDEX_FIRST_TRANSACTION.getZeroBased());

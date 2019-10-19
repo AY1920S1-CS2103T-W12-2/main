@@ -18,14 +18,14 @@ public class BudgetTest {
     @Test
     public void constructor_validCalendarInvalidValue_throwsIllegalArgumentException() {
         Calendar now = Calendar.getInstance();
-        assertThrows(IllegalArgumentException.class, () -> new Budget(now, new Value("-100")));
+        assertThrows(IllegalArgumentException.class, () -> new Budget(now, new BudgetValue("-100")));
     }
 
     @Test
     public void compareIdenticalBudgets_returnsTrue() {
         Calendar now = Calendar.getInstance();
-        Budget b1 = new Budget(now, new Value("123"));
-        Budget b2 = new Budget(now, new Value("123"));
+        Budget b1 = new Budget(now, new BudgetValue("123"));
+        Budget b2 = new Budget(now, new BudgetValue("123"));
         assertEquals(b1, b2);
     }
 

@@ -12,6 +12,7 @@ import thrift.commons.core.LogsCenter;
 import thrift.logic.commands.AddExpenseCommand;
 import thrift.logic.commands.AddIncomeCommand;
 import thrift.logic.commands.BudgetCommand;
+import thrift.logic.commands.CloneCommand;
 import thrift.logic.commands.Command;
 import thrift.logic.commands.CommandResult;
 import thrift.logic.commands.DeleteCommand;
@@ -88,6 +89,7 @@ public class LogicManager implements Logic {
         if (command instanceof AddIncomeCommand
                 || command instanceof AddExpenseCommand
                 || command instanceof BudgetCommand
+                || command instanceof CloneCommand
                 || command instanceof DeleteCommand
                 || command instanceof RedoCommand
                 || command instanceof UpdateCommand

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import thrift.commons.exceptions.IllegalValueException;
 import thrift.model.transaction.Budget;
-import thrift.model.transaction.Value;
+import thrift.model.transaction.BudgetValue;
 
 /**
  * Jackson-friendly version of {@link Budget}.
@@ -44,7 +44,7 @@ public class JsonAdaptedBudget {
      */
     public Budget toModelType() throws IllegalValueException {
         final Calendar modelPeriod;
-        final Value modelValue;
+        final BudgetValue modelValue;
 
         if (period == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "month String"));
@@ -58,12 +58,13 @@ public class JsonAdaptedBudget {
         }
 
         if (value == null) {
-            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Value.class.getSimpleName()));
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    BudgetValue.class.getSimpleName()));
         }
-        if (!Value.isValidValue(value)) {
-            throw new IllegalValueException(Value.VALUE_CONSTRAINTS);
+        if (!BudgetValue.isValidValue(value)) {
+            throw new IllegalValueException(BudgetValue.VALUE_CONSTRAINTS);
         }
-        modelValue = new Value(value);
+        modelValue = new BudgetValue(value);
 
         return new Budget(modelPeriod, modelValue);
     }

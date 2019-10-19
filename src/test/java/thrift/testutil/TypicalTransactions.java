@@ -11,10 +11,10 @@ import thrift.commons.util.StreamUtils;
 import thrift.model.Thrift;
 import thrift.model.transaction.Budget;
 import thrift.model.transaction.BudgetList;
+import thrift.model.transaction.BudgetValue;
 import thrift.model.transaction.Expense;
 import thrift.model.transaction.Income;
 import thrift.model.transaction.Transaction;
-import thrift.model.transaction.Value;
 
 /**
  * A utility class containing a list of {@code Transaction} objects to be used in tests.
@@ -29,7 +29,7 @@ public class TypicalTransactions {
             .withDate("13/11/2011").withTags("Award").build();
 
     public static final Calendar OCT_2019_MONTH = setCalendar("10/2019");
-    public static final Budget OCT_BUDGET = new Budget(OCT_2019_MONTH, new Value("1000"));
+    public static final Budget OCT_BUDGET = new Budget(OCT_2019_MONTH, new BudgetValue("1000"));
 
     private TypicalTransactions() {} // prevents instantiation
 

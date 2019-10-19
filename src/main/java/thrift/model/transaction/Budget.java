@@ -16,12 +16,12 @@ public class Budget {
     public static final String VALIDATION_REGEX = "^(0[1-9]|10|11|12)\\/\\d{4}$";
 
     private Calendar period;
-    private Value value;
+    private BudgetValue value;
 
     /**
      * Creates a Budget object that has {@code value} amount of money for the month of {@code period}.
      */
-    public Budget(Calendar period, Value value) {
+    public Budget(Calendar period, BudgetValue value) {
         requireAllNonNull(period, value);
         this.period = period;
         this.value = value;
@@ -35,7 +35,7 @@ public class Budget {
         return BUDGET_DATE_FORMAT.format(period.getTime());
     }
 
-    public Value getBudgetValue() {
+    public BudgetValue getBudgetValue() {
         return this.value;
     }
 

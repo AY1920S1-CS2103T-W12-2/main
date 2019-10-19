@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import thrift.commons.exceptions.IllegalValueException;
 import thrift.model.transaction.Budget;
-import thrift.model.transaction.Value;
+import thrift.model.transaction.BudgetValue;
 import thrift.testutil.TypicalTransactions;
 
 public class JsonAdaptedBudgetTest {
@@ -42,14 +42,14 @@ public class JsonAdaptedBudgetTest {
     @Test
     public void toModelType_nullValue_throwsIllegalValueException() {
         JsonAdaptedBudget budget = new JsonAdaptedBudget(VALID_DATE, null);
-        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Value.class.getSimpleName());
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, BudgetValue.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, budget::toModelType);
     }
 
     @Test
     public void toModelType_invalidValue_throwsIllegalValueException() {
         JsonAdaptedBudget budget = new JsonAdaptedBudget(VALID_DATE, INVALID_VALUE);
-        String expectedMessage = Value.VALUE_CONSTRAINTS;
+        String expectedMessage = BudgetValue.VALUE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, budget::toModelType);
     }
 

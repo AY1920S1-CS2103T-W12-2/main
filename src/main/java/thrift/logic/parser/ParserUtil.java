@@ -13,6 +13,7 @@ import thrift.commons.util.StringUtil;
 import thrift.logic.parser.exceptions.ParseException;
 import thrift.model.tag.Tag;
 import thrift.model.transaction.Budget;
+import thrift.model.transaction.BudgetValue;
 import thrift.model.transaction.Description;
 import thrift.model.transaction.Remark;
 import thrift.model.transaction.Value;
@@ -83,6 +84,21 @@ public class ParserUtil {
             throw new ParseException(Value.VALUE_CONSTRAINTS);
         }
         return new Value(trimmedValue);
+    }
+
+    /**
+     * Parses a {@code String value} into a {@code BudgetValue} and returns it.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code value} is invalid.
+     */
+    public static BudgetValue parseBudgetValue(String value) throws ParseException {
+        requireNonNull(value);
+        String trimmedValue = value.trim();
+        if (!BudgetValue.isValidValue(trimmedValue)) {
+            throw new ParseException(BudgetValue.VALUE_CONSTRAINTS);
+        }
+        return new BudgetValue(trimmedValue);
     }
 
     /**
