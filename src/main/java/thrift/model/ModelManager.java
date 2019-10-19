@@ -123,13 +123,11 @@ public class ModelManager implements Model {
     @Override
     public void deleteTransaction(Transaction transaction) {
         thrift.removeTransaction(transaction);
-        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
     }
 
     @Override
     public void deleteTransaction(Index index) {
         thrift.removeTransactionByIndex(index);
-        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
     }
 
     @Override
@@ -140,25 +138,21 @@ public class ModelManager implements Model {
     @Override
     public void addExpense(Expense expense) {
         thrift.addTransaction(expense);
-        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
     }
 
     @Override
     public void addExpense(Expense expense, Index index) {
         thrift.addTransaction(expense, index);
-        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
     }
 
     @Override
     public void addIncome(Income income) {
         thrift.addTransaction(income);
-        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
     }
 
     @Override
     public void addIncome(Income income, Index index) {
         thrift.addTransaction(income, index);
-        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
     }
 
     @Override
@@ -185,7 +179,6 @@ public class ModelManager implements Model {
     public void setTransaction(Transaction target, Transaction updatedTransaction) {
         CollectionUtil.requireAllNonNull(target, updatedTransaction);
         thrift.setTransaction(target, updatedTransaction);
-        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
         updateBalanceForCurrentMonth();
     }
 
@@ -193,7 +186,6 @@ public class ModelManager implements Model {
     public void setTransactionWithIndex(Index actualIndex, Transaction updatedTransaction) {
         CollectionUtil.requireAllNonNull(actualIndex, updatedTransaction);
         thrift.setTransactionWithIndex(actualIndex, updatedTransaction);
-        updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
         updateBalanceForCurrentMonth();
     }
 
@@ -215,7 +207,7 @@ public class ModelManager implements Model {
     /** Filters the view of the transaction list to only show transactions that occur in the current month. */
     @Override
     public void updateFilteredTransactionListToCurrentMonth() {
-        filteredTransactions.setPredicate(new TransactionIsInMonthYearPredicate(currentMonthYear));
+        filteredTransactions.setPredicate(predicateShowCurrentMonthTransactions);
         updateBalanceForCurrentMonth();
     }
 
@@ -227,8 +219,18 @@ public class ModelManager implements Model {
 
     @Override
     public void updateBalanceForCurrentMonth() {
+        //If transaction does not belong to current displayed month, don't update the balance.
         logger.info("Original balance: " + balance);
         balance = getCurrentMonthBudget() + filteredTransactions.stream()
+                .filter(t -> {
+                    Calendar temp = Calendar.getInstance();
+                    temp.setTime(t.getDate().getDate());
+                    if (temp.get(Calendar.MONTH) != currentMonthYear.get(Calendar.MONTH)
+                            || temp.get(Calendar.YEAR) != currentMonthYear.get(Calendar.YEAR)) {
+                        return false;
+                    }
+                    return true;
+                })
                 .mapToDouble(t -> {
                     double value = t.getValue().getMonetaryValue();
                     if (t instanceof Expense) {

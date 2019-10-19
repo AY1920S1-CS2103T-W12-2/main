@@ -19,7 +19,7 @@ public class BudgetCommand extends Command {
             + CliSyntax.PREFIX_DATE + "MM/YYYY "
             + "Example: " + COMMAND_WORD + " "
             + CliSyntax.PREFIX_VALUE + "1000 "
-            + CliSyntax.PREFIX_MONTH + "10/2019 ";
+            + CliSyntax.PREFIX_DATE + "10/2019 ";
 
     public static final String MESSAGE_SUCCESS = "New budget: %1$s";
 
