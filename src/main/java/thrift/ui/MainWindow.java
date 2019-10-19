@@ -34,6 +34,11 @@ public class MainWindow extends UiPart<Stage> {
     private TransactionListPanel transactionListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
+    private BalanceBar balanceBar;
+
+    private String monthYear;
+    private double budget;
+    private double balance;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -110,17 +115,19 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        //Show the current month transactions and current month budget only.
+        //Show the current month transactions only.
         transactionListPanel = new TransactionListPanel(logic.getFilteredTransactionList());
         transactionListPanelPlaceholder.getChildren().add(transactionListPanel.getRoot());
+        logic.setFilteredTransactionListToCurrentMonth();
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
-        String monthYear = logic.getCurrentMonthYear();
-        double budget = logic.getCurrentMonthBudget();
-        double balance = logic.setFilteredTransactionListToCurrentMonth();
-        BalanceBar balanceBar = new BalanceBar(monthYear, budget, balance);
+        //Show the current month, budget and balance.
+        monthYear = logic.getCurrentMonthYear();
+        budget = logic.getCurrentMonthBudget();
+        balance = logic.getCurrentMonthBalance();
+        balanceBar = new BalanceBar(monthYear, budget, balance);
         balancebarPlaceholder.getChildren().add(balanceBar.getRoot());
 
         StatusBarFooter statusBarFooter = new StatusBarFooter(logic.getThriftFilePath());
@@ -180,7 +187,7 @@ public class MainWindow extends UiPart<Stage> {
      */
     private CommandResult executeCommand(String commandText) throws CommandException, ParseException {
         try {
-            CommandResult commandResult = logic.execute(commandText, transactionListPanel);
+            CommandResult commandResult = logic.execute(commandText, transactionListPanel, balanceBar);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 

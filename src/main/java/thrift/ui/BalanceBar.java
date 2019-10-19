@@ -14,34 +14,49 @@ public class BalanceBar extends UiPart<Region> {
     private static final String FXML = "BalanceBar.fxml";
 
     @FXML
-    private Label monthlyBudgetLabel;
+    private Label monthYearLabel;
 
     @FXML
-    private Label monthlyBudget;
+    private Label monthBudgetLabel;
 
     @FXML
-    private Label balanceRemainingLabel;
+    private Label monthBudgetValueLabel;
 
     @FXML
-    private Label balance;
+    private Label monthBalanceLabel;
 
-    public BalanceBar(String monthYear, double monthBudget, double balanceRemaining) {
+    @FXML
+    private Label monthBalanceValueLabel;
+
+    public BalanceBar(String monthYear, double monthBudget, double monthBalance) {
         super(FXML);
-        monthlyBudgetLabel.setText(monthYear);
-        monthlyBudget.setText("Budget: $" + monthBudget);
-        balanceRemainingLabel.setText("\tBalance: ");
+        setMonthYear(monthYear);
+        monthBudgetLabel.setText("Budget: $");
+        setMonthBudget(monthBudget);
+        monthBalanceLabel.setText("\tBalance: ");
+        setMonthBalance(monthBalance);
 
+        monthBudgetLabel.setWrapText(true);
+        monthBalanceValueLabel.setWrapText(true);
+    }
+
+    public void setMonthYear(String monthYear) {
+        monthYearLabel.setText(monthYear);
+    }
+
+    public void setMonthBudget(double monthBudget) {
+        monthBudgetValueLabel.setText(String.valueOf(DECIMAL_FORMATTER.format(monthBudget)));
+    }
+
+    public void setMonthBalance(double monthBalance) {
         StringBuilder sb = new StringBuilder();
-        if (balanceRemaining < 0) {
-            sb.append("-$").append(DECIMAL_FORMATTER.format(balanceRemaining * (-1)));
-            balance.setStyle("-fx-text-fill: #ff6c4f;");
+        if (monthBalance < 0) {
+            sb.append("-$").append(DECIMAL_FORMATTER.format(monthBalance * (-1)));
+            monthBalanceValueLabel.setStyle("-fx-text-fill: #ff6c4f;");
         } else {
-            sb.append("$").append(DECIMAL_FORMATTER.format(balanceRemaining));
-            balance.setStyle("-fx-text-fill: #69ff4f;");
+            sb.append("$").append(DECIMAL_FORMATTER.format(monthBalance));
+            monthBalanceValueLabel.setStyle("-fx-text-fill: #69ff4f;");
         }
-        balance.setText(sb.toString());
-
-        monthlyBudget.setWrapText(true);
-        balance.setWrapText(true);
+        monthBalanceValueLabel.setText(sb.toString());
     }
 }

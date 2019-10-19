@@ -54,7 +54,7 @@ public class ModelManager implements Model {
         filteredTransactions = new FilteredList<>(this.thrift.getTransactionList());
         this.pastUndoableCommands = pastUndoableCommands;
         currentMonthYear = Calendar.getInstance();
-        balance = 1;
+        balance = 0;
         predicateShowCurrentMonthTransactions = new TransactionIsInMonthYearPredicate(currentMonthYear);
     }
 
@@ -124,48 +124,41 @@ public class ModelManager implements Model {
     public void deleteTransaction(Transaction transaction) {
         thrift.removeTransaction(transaction);
         updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
-        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void deleteTransaction(Index index) {
         thrift.removeTransactionByIndex(index);
         updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
-        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void deleteLastTransaction() {
         thrift.removeLastTransaction();
-        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void addExpense(Expense expense) {
         thrift.addTransaction(expense);
         updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
-        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void addExpense(Expense expense, Index index) {
         thrift.addTransaction(expense, index);
         updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
-        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void addIncome(Income income) {
         thrift.addTransaction(income);
         updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
-        updateBalanceForCurrentMonth();
     }
 
     @Override
     public void addIncome(Income income, Index index) {
         thrift.addTransaction(income, index);
         updateFilteredTransactionList(predicateShowCurrentMonthTransactions);
-        updateBalanceForCurrentMonth();
     }
 
     @Override
@@ -234,6 +227,7 @@ public class ModelManager implements Model {
 
     @Override
     public void updateBalanceForCurrentMonth() {
+        logger.info("Original balance: " + balance);
         balance = getCurrentMonthBudget() + filteredTransactions.stream()
                 .mapToDouble(t -> {
                     double value = t.getValue().getMonetaryValue();
@@ -243,6 +237,7 @@ public class ModelManager implements Model {
                     return value;
                 })
                 .sum();
+        logger.info("Updated balance: " + balance);
     }
 
     @Override

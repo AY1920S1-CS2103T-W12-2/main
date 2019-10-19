@@ -1,5 +1,7 @@
 package thrift.logic;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.logging.Logger;
@@ -7,8 +9,12 @@ import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import thrift.commons.core.GuiSettings;
 import thrift.commons.core.LogsCenter;
+import thrift.logic.commands.AddExpenseCommand;
+import thrift.logic.commands.AddIncomeCommand;
+import thrift.logic.commands.BudgetCommand;
 import thrift.logic.commands.Command;
 import thrift.logic.commands.CommandResult;
+import thrift.logic.commands.DeleteCommand;
 import thrift.logic.commands.Undoable;
 import thrift.logic.commands.UpdateCommand;
 import thrift.logic.commands.exceptions.CommandException;
@@ -18,6 +24,7 @@ import thrift.model.Model;
 import thrift.model.ReadOnlyThrift;
 import thrift.model.transaction.Transaction;
 import thrift.storage.Storage;
+import thrift.ui.BalanceBar;
 import thrift.ui.TransactionListPanel;
 
 /**
@@ -38,7 +45,7 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public CommandResult execute(String commandText, TransactionListPanel transactionListPanel)
+    public CommandResult execute(String commandText, TransactionListPanel transactionListPanel, BalanceBar balanceBar)
             throws CommandException, ParseException {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
 
@@ -48,6 +55,12 @@ public class LogicManager implements Logic {
             commandResult = ((UpdateCommand) command).execute(model, transactionListPanel);
         } else {
             commandResult = command.execute(model);
+        }
+        if (requireFilteredListRefresh(command)) {
+            model.updateBalanceForCurrentMonth();
+            balanceBar.setMonthYear(getCurrentMonthYear());
+            balanceBar.setMonthBudget(getCurrentMonthBudget());
+            balanceBar.setMonthBalance(getCurrentMonthBalance());
         }
         if (command instanceof Undoable) {
             model.keepTrackCommands((Undoable) command);
@@ -68,6 +81,20 @@ public class LogicManager implements Logic {
     }
 
     @Override
+    public boolean requireFilteredListRefresh(Command command) {
+        requireNonNull(command);
+        if (command instanceof AddIncomeCommand
+                || command instanceof AddExpenseCommand
+                || command instanceof BudgetCommand
+                || command instanceof DeleteCommand
+                || command instanceof UpdateCommand) {
+            logger.info("[PREPARING TO UPDATE MONTHLY BALANCE OR BUDGET]");
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public double getCurrentMonthBudget() {
         return model.getCurrentMonthBudget();
     }
@@ -78,14 +105,18 @@ public class LogicManager implements Logic {
     }
 
     @Override
+    public double getCurrentMonthBalance() {
+        return model.getBalance();
+    }
+
+    @Override
     public ObservableList<Transaction> getFilteredTransactionList() {
         return model.getFilteredTransactionList();
     }
 
     @Override
-    public double setFilteredTransactionListToCurrentMonth() {
+    public void setFilteredTransactionListToCurrentMonth() {
         model.updateFilteredTransactionListToCurrentMonth();
-        return model.getBalance();
     }
 
     @Override
