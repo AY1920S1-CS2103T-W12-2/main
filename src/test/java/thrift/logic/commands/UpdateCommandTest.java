@@ -218,9 +218,6 @@ public class UpdateCommandTest {
         // null -> returns false
         assertFalse(standardCommand.equals(null));
 
-        // different types -> returns false
-        assertFalse(standardCommand.equals(new ClearCommand()));
-
         // different index -> returns false
         assertFalse(standardCommand.equals(new UpdateCommand(TypicalIndexes.INDEX_SECOND_TRANSACTION,
                 CommandTestUtil.DESC_MEAL)));
