@@ -18,22 +18,23 @@
 <li><a href="#quick-start">2. Quick Start</a></li>
 <li><a href="#features">3. Features:</a>
 <ul class="sectlevel2">
-<li><a href="#ExpenseTag">3.1. Adding an expense: <code>add_expense</code></a></li>
-<li><a href="#IncomeTag">3.2. Adding an income: <code>add_income</code></a></li>
-<li><a href="#DeleteTag">3.3. Deleting a transaction: <code>delete</code></a></li>
-<li><a href="#UpdateTag">3.4. Updating a transaction’s details: <code>update</code></a></li>
-<li><a href="#TagTag">3.5. Tagging a transaction: <code>tag</code></a></li>
-<li><a href="#UntagTag">3.6. Untagging a transaction: <code>untag</code></a></li>
-<li><a href="#ConvertTag">3.7. Converting currency: <code>convert</code></a></li>
-<li><a href="#CloneTag">3.8. Cloning a transaction: <code>clone</code></a></li>
-<li><a href="#UndoTag">3.9. Undoing the previous undoable command: <code>undo</code></a></li>
-<li><a href="#RedoTag">3.10. Redoing the undone command: <code>redo</code></a></li>
-<li><a href="#ListTag">3.11. List expenses for the month: <code>list</code></a></li>
-<li><a href="#HelpTag">3.12. Displaying help page: <code>help</code></a></li>
-<li><a href="#ExitTag">3.13. Exiting THRIFT application: <code>exit</code></a></li>
-<li><a href="#generating-an-external-report-code-coming-in-v2-0-code">3.14. Generating an external report <code>[coming in v2.0]</code></a></li>
-<li><a href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.15. Recommending dining options based on budget <code>[coming in v2.0]</code></a></li>
-<li><a href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.16. Encrypting THRIFT data <code>[coming in v2.0]</code></a></li>
+<li><a href="#BudgetTag">3.1. Setting monthly budget: <code>budget</code></a></li>
+<li><a href="#ExpenseTag">3.2. Adding an expense: <code>add_expense</code></a></li>
+<li><a href="#IncomeTag">3.3. Adding an income: <code>add_income</code></a></li>
+<li><a href="#DeleteTag">3.4. Deleting a transaction: <code>delete</code></a></li>
+<li><a href="#UpdateTag">3.5. Updating a transaction’s details: <code>update</code></a></li>
+<li><a href="#TagTag">3.6. Tagging a transaction: <code>tag</code></a></li>
+<li><a href="#UntagTag">3.7. Untagging a transaction: <code>untag</code></a></li>
+<li><a href="#ConvertTag">3.8. Converting currency: <code>convert</code></a></li>
+<li><a href="#CloneTag">3.9. Cloning a transaction: <code>clone</code></a></li>
+<li><a href="#UndoTag">3.10. Undoing the previous undoable command: <code>undo</code></a></li>
+<li><a href="#RedoTag">3.11. Redoing the undone command: <code>redo</code></a></li>
+<li><a href="#ListTag">3.12. List expenses for the month: <code>list</code></a></li>
+<li><a href="#HelpTag">3.13. Displaying help page: <code>help</code></a></li>
+<li><a href="#ExitTag">3.14. Exiting THRIFT application: <code>exit</code></a></li>
+<li><a href="#generating-an-external-report-code-coming-in-v2-0-code">3.15. Generating an external report <code>[coming in v2.0]</code></a></li>
+<li><a href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.16. Recommending dining options based on budget <code>[coming in v2.0]</code></a></li>
+<li><a href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.17. Encrypting THRIFT data <code>[coming in v2.0]</code></a></li>
 </ul>
 </li>
 <li><a href="#faq">4. FAQ</a></li>
@@ -74,10 +75,10 @@
 <div class="ulist">
 <ul>
 <li>
-<p><code>add_expense n/Apple Airpods c/200</code>: adds an expense called <code>Apple Airpods</code> which cost $<code>200</code>.</p>
+<p><code>add_expense n/Apple Airpods v/200</code>: adds an expense called <code>Apple Airpods</code> which cost $<code>200</code>.</p>
 </li>
 <li>
-<p><code>add_income n/Bursary Award c/350</code>: adds an income called <code>Bursary Award</code> which incremented your budget by $<code>350</code>.</p>
+<p><code>add_income n/Bursary Award v/350</code>: adds an income called <code>Bursary Award</code> which incremented your budget by $<code>350</code>.</p>
 </li>
 <li>
 <p><code>delete i/1</code>: deletes the 1st transaction in the current list shown in the UI.</p>
@@ -98,10 +99,10 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Words in <code>UPPER_CASE</code> are parameters to be supplied by the user e.g. <code>expense n/EXPENSE_NAME c/COST</code>.</p>
+<p>Words in <code>UPPER_CASE</code> are parameters to be supplied by the user e.g. <code>expense n/EXPENSE_NAME v/VALUE</code>.</p>
 </li>
 <li>
-<p>Items in square brackets <code>[ ]</code> are optional e.g. <code>n/EXPENSE_NAME [t/TAG]</code> can be used as <code>n/Laksa t/Food</code>.</p>
+<p>Items in square brackets <code>[ ]</code> are optional e.g. <code>n/EXPENSE_NAME [t/TAG]</code> can be used as <code>n/Laksa</code>.</p>
 </li>
 <li>
 <p>Items in round brackets <code>( )</code> with <code>|</code> are mandatory parameters where a selection is needed e.g. <code>tag (add | delete)</code> means you need to input either <code>tag add</code> or <code>tag delete</code>.</p>
@@ -110,14 +111,42 @@
 <p>Items with <code>&#8230;&#8203;</code> after them can be used multiple times including zero times e.g. <code>[t/TAG] …</code> can be used as ` ` (i.e. 0 times), <code>t/Food t/Dinner</code> etc.</p>
 </li>
 <li>
-<p>Parameters can be in any order e.g. if the command specifies <code>n/EXPENSE_NAME c/COST</code>, <code>c/COST n/EXPENSE_NAME</code> will achieve the same outcome.</p>
+<p>Parameters can be in any order e.g. if the command specifies <code>n/EXPENSE_NAME v/VALUE</code>, <code>v/VALUE n/EXPENSE_NAME</code> will achieve the same outcome.</p>
 </li>
 </ul>
 </div>
 <div class="sect2">
-<h3 id="ExpenseTag"><a class="link" href="#ExpenseTag">3.1. Adding an expense: <code>add_expense</code></a></h3>
+<h3 id="BudgetTag"><a class="link" href="#BudgetTag">3.1. Setting monthly budget: <code>budget</code></a></h3>
 <div class="paragraph">
-<p>Format: <code>add_expense n/EXPENSE_NAME c/COST [r/REMARKS] [t/TAG]&#8230;&#8203;</code></p>
+<p>Format: <code>budget v/VALUE d/MONTH</code>, where <code>MONTH</code> are digits in <code>MM/YYYY</code>.</p>
+</div>
+<div class="paragraph">
+<p>Example:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>budget v/1000 d/10/2019</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Expected output:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>New budget:<br>
+Amount: $1,000.00<br>
+Month: 10/2019</code></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ExpenseTag"><a class="link" href="#ExpenseTag">3.2. Adding an expense: <code>add_expense</code></a></h3>
+<div class="paragraph">
+<p>Format: <code>add_expense n/EXPENSE_NAME v/VALUE [r/REMARKS] [t/TAG]&#8230;&#8203;</code></p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -126,7 +155,7 @@
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-The default currency is in Singapore Dollars (SGD). You are recommended to <code>convert</code> foreign currencies to SGD before adding the value as the <code>COST</code>.
+The default currency is in Singapore Dollars (SGD). You are recommended to <code>convert</code> foreign currencies to SGD before adding the value as the <code>VALUE</code>.
 </td>
 </tr>
 </table>
@@ -137,10 +166,10 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 <div class="ulist">
 <ul>
 <li>
-<p><code>add_expense n/Laksa c/10.50 t/Lunch t/Food</code></p>
+<p><code>add_expense n/Laksa v/10.50 t/Lunch t/Food</code></p>
 </li>
 <li>
-<p><code>add_expense n/Travel c/53 r/Went to Johor Bahru t/Travel</code></p>
+<p><code>add_expense n/Travel v/53 r/Went to Johor Bahru t/Travel</code></p>
 </li>
 </ul>
 </div>
@@ -159,9 +188,9 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 </div>
 </div>
 <div class="sect2">
-<h3 id="IncomeTag"><a class="link" href="#IncomeTag">3.2. Adding an income: <code>add_income</code></a></h3>
+<h3 id="IncomeTag"><a class="link" href="#IncomeTag">3.3. Adding an income: <code>add_income</code></a></h3>
 <div class="paragraph">
-<p>Format: <code>add_income n/INCOME_NAME c/COST [r/REMARKS] [t/TAG]&#8230;&#8203;</code></p>
+<p>Format: <code>add_income n/INCOME_NAME v/VALUE [r/REMARKS] [t/TAG]&#8230;&#8203;</code></p>
 </div>
 <div class="paragraph">
 <p>Examples:</p>
@@ -169,10 +198,10 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 <div class="ulist">
 <ul>
 <li>
-<p><code>add_income n/Allowance c/1000 t/Monthly</code></p>
+<p><code>add_income n/Allowance v/1000 t/Monthly</code></p>
 </li>
 <li>
-<p><code>add_income n/Bursary c/500 r/Did well in previous semester. t/Award</code></p>
+<p><code>add_income n/Bursary v/500 r/Did well in previous semester. t/Award</code></p>
 </li>
 </ul>
 </div>
@@ -191,7 +220,7 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 </div>
 </div>
 <div class="sect2">
-<h3 id="DeleteTag"><a class="link" href="#DeleteTag">3.3. Deleting a transaction: <code>delete</code></a></h3>
+<h3 id="DeleteTag"><a class="link" href="#DeleteTag">3.4. Deleting a transaction: <code>delete</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>delete i/INDEX</code></p>
 </div>
@@ -213,7 +242,7 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 </div>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
+<p>Example:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -234,7 +263,7 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 </div>
 </div>
 <div class="sect2">
-<h3 id="UpdateTag"><a class="link" href="#UpdateTag">3.4. Updating a transaction’s details: <code>update</code></a></h3>
+<h3 id="UpdateTag"><a class="link" href="#UpdateTag">3.5. Updating a transaction’s details: <code>update</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>update i/INDEX PREFIX_LETTER/UPDATED_DETAILS &#8230;&#8203;</code></p>
 </div>
@@ -274,7 +303,7 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 <p><code>update i/1 n/Curry Laksa</code></p>
 </li>
 <li>
-<p><code>update i/1 n/Asam Laksa c/11 r/My first time trying! t/Dinner t/Food</code></p>
+<p><code>update i/1 n/Asam Laksa v/11 r/My first time trying! t/Dinner t/Food</code></p>
 </li>
 </ul>
 </div>
@@ -311,7 +340,7 @@ Assume 2nd command occurs after 1st
 </div>
 </div>
 <div class="sect2">
-<h3 id="TagTag"><a class="link" href="#TagTag">3.5. Tagging a transaction: <code>tag</code></a></h3>
+<h3 id="TagTag"><a class="link" href="#TagTag">3.6. Tagging a transaction: <code>tag</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>tag i/INDEX t/TAG_NAME&#8230;&#8203;</code></p>
 </div>
@@ -333,7 +362,7 @@ Assume 2nd command occurs after 1st
 </div>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
+<p>Example:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -354,7 +383,7 @@ Assume 2nd command occurs after 1st
 </div>
 </div>
 <div class="sect2">
-<h3 id="UntagTag"><a class="link" href="#UntagTag">3.6. Untagging a transaction: <code>untag</code></a></h3>
+<h3 id="UntagTag"><a class="link" href="#UntagTag">3.7. Untagging a transaction: <code>untag</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>untag i/INDEX t/TAG_NAME&#8230;&#8203;</code></p>
 </div>
@@ -376,7 +405,7 @@ Assume 2nd command occurs after 1st
 </div>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
+<p>Example:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -397,9 +426,9 @@ Assume 2nd command occurs after 1st
 </div>
 </div>
 <div class="sect2">
-<h3 id="ConvertTag"><a class="link" href="#ConvertTag">3.7. Converting currency: <code>convert</code></a></h3>
+<h3 id="ConvertTag"><a class="link" href="#ConvertTag">3.8. Converting currency: <code>convert</code></a></h3>
 <div class="paragraph">
-<p>Format: <code>convert to/TARGET_CURRENCY (c/COST|i/INDEX)</code></p>
+<p>Format: <code>convert to/TARGET_CURRENCY (v/VALUE|i/INDEX)</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
@@ -452,7 +481,7 @@ Assume 2nd command occurs after 1st
 </div>
 </div>
 <div class="sect2">
-<h3 id="CloneTag"><a class="link" href="#CloneTag">3.8. Cloning a transaction: <code>clone</code></a></h3>
+<h3 id="CloneTag"><a class="link" href="#CloneTag">3.9. Cloning a transaction: <code>clone</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>clone i/INDEX</code></p>
 </div>
@@ -504,7 +533,7 @@ Assume entry at index 1 is <code>[-] Laksa ($10.50) Date: 18/10/2019 Remarks: Un
 </div>
 </div>
 <div class="sect2">
-<h3 id="UndoTag"><a class="link" href="#UndoTag">3.9. Undoing the previous undoable command: <code>undo</code></a></h3>
+<h3 id="UndoTag"><a class="link" href="#UndoTag">3.10. Undoing the previous undoable command: <code>undo</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>undo</code></p>
 </div>
@@ -552,11 +581,11 @@ Undoable commands are commands that modify the data of THRIFT application.
 <div class="ulist">
 <ul>
 <li>
-<p><code>add_expense n/Laksa c/10.50 t/Lunch t/Food</code><br>
+<p><code>add_expense n/Laksa v/10.50 t/Lunch t/Food</code><br>
 <code>undo</code></p>
 </li>
 <li>
-<p><code>add_income n/Allowance c/1000 t/Monthly</code><br>
+<p><code>add_income n/Allowance v/1000 t/Monthly</code><br>
 <code>list</code><br>
 <code>undo</code></p>
 </li>
@@ -577,7 +606,7 @@ Undoable commands are commands that modify the data of THRIFT application.
 </div>
 </div>
 <div class="sect2">
-<h3 id="RedoTag"><a class="link" href="#RedoTag">3.10. Redoing the undone command: <code>redo</code></a></h3>
+<h3 id="RedoTag"><a class="link" href="#RedoTag">3.11. Redoing the undone command: <code>redo</code></a></h3>
 <div class="paragraph">
 <p>Redo the <a href="#Undoable">undoable command</a> that was previously undone by the user.</p>
 </div>
@@ -590,7 +619,7 @@ Undoable commands are commands that modify the data of THRIFT application.
 <div class="ulist">
 <ul>
 <li>
-<p><code>add_expense n/Laksa c/10.50 t/Lunch t/Food</code><br>
+<p><code>add_expense n/Laksa v/10.50 t/Lunch t/Food</code><br>
 <code>undo</code><br>
 <code>redo</code></p>
 </li>
@@ -608,7 +637,7 @@ Undoable commands are commands that modify the data of THRIFT application.
 </div>
 </div>
 <div class="sect2">
-<h3 id="ListTag"><a class="link" href="#ListTag">3.11. List expenses for the month: <code>list</code></a></h3>
+<h3 id="ListTag"><a class="link" href="#ListTag">3.12. List expenses for the month: <code>list</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>list [m/MONTH] [t/TAG]</code></p>
 </div>
@@ -640,7 +669,7 @@ Undoable commands are commands that modify the data of THRIFT application.
 </div>
 </div>
 <div class="sect2">
-<h3 id="HelpTag"><a class="link" href="#HelpTag">3.12. Displaying help page: <code>help</code></a></h3>
+<h3 id="HelpTag"><a class="link" href="#HelpTag">3.13. Displaying help page: <code>help</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>help [COMMAND]</code></p>
 </div>
@@ -672,25 +701,25 @@ Undoable commands are commands that modify the data of THRIFT application.
 </div>
 </div>
 <div class="sect2">
-<h3 id="ExitTag"><a class="link" href="#ExitTag">3.13. Exiting THRIFT application: <code>exit</code></a></h3>
+<h3 id="ExitTag"><a class="link" href="#ExitTag">3.14. Exiting THRIFT application: <code>exit</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>exit</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="generating-an-external-report-code-coming-in-v2-0-code"><a class="link" href="#generating-an-external-report-code-coming-in-v2-0-code">3.14. Generating an external report <code>[coming in v2.0]</code></a></h3>
+<h3 id="generating-an-external-report-code-coming-in-v2-0-code"><a class="link" href="#generating-an-external-report-code-coming-in-v2-0-code">3.15. Generating an external report <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>With this feature, you will be able to save your monthly budget report into an external file for your record purposes. The report will clearly state your expenditure, income and remaining budget for the month.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="recommending-dining-options-based-on-budget-code-coming-in-v2-0-code"><a class="link" href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.15. Recommending dining options based on budget <code>[coming in v2.0]</code></a></h3>
+<h3 id="recommending-dining-options-based-on-budget-code-coming-in-v2-0-code"><a class="link" href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.16. Recommending dining options based on budget <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>Depending on your remaining budget and the remaining days to the end of the month, THRIFT will recommend you dining places in NUS which will suit your budget. For example, if you are running low on funds, you might get recommended to travel to the Arts canteen to eat since there are really cheap options there.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="encrypting-thrift-data-code-coming-in-v2-0-code"><a class="link" href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.16. Encrypting THRIFT data <code>[coming in v2.0]</code></a></h3>
+<h3 id="encrypting-thrift-data-code-coming-in-v2-0-code"><a class="link" href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.17. Encrypting THRIFT data <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>If you are especially conscious about having your data spied on, this function will definitely ease your worries. With encryption enabled, your data will not be known to the intruder should they steal your THRIFT application data.</p>
 </div>
@@ -714,12 +743,16 @@ Undoable commands are commands that modify the data of THRIFT application.
 <div class="ulist">
 <ul>
 <li>
-<p><a href="#ExpenseTag"><strong>Expense</strong></a>:  <code>add_expense n/EXPENSE_NAME c/COST [r/REMARKS] [t/TAG]&#8230;&#8203;</code><br>
-Example: <code>add_expense n/Laksa c/10.50 r/At Hougang t/Lunch t/Food</code></p>
+<p><a href="#BudgetTag"><strong>Budget</strong></a>: <code>budget v/VALUE d/MONTH</code><br>
+Example: <code>budget v/1000 d/10/2019</code></p>
 </li>
 <li>
-<p><a href="#IncomeTag"><strong>Income</strong></a>: <code>add_income n/INCOME_NAME c/COST [t/TAG]&#8230;&#8203;</code><br>
-Example: <code>add_income n/Allowance c/1000 r/From my parents t/Monthly</code></p>
+<p><a href="#ExpenseTag"><strong>Expense</strong></a>:  <code>add_expense n/EXPENSE_NAME v/VALUE [r/REMARKS] [t/TAG]&#8230;&#8203;</code><br>
+Example: <code>add_expense n/Laksa v/10.50 r/At Hougang t/Lunch t/Food</code></p>
+</li>
+<li>
+<p><a href="#IncomeTag"><strong>Income</strong></a>: <code>add_income n/INCOME_NAME v/VALUE [t/TAG]&#8230;&#8203;</code><br>
+Example: <code>add_income n/Allowance v/1000 r/From my parents t/Monthly</code></p>
 </li>
 <li>
 <p><a href="#DeleteTag"><strong>Delete</strong></a>: <code>delete i/INDEX</code><br>
@@ -727,7 +760,7 @@ Example: <code>delete i/1</code></p>
 </li>
 <li>
 <p><a href="#UpdateTag"><strong>Update</strong></a>: <code>update i/INDEX PREFIX_LETTER/UPDATED_DETAILS &#8230;&#8203;</code><br>
-Example: <code>update i/1 n/Curry Laksa c/5 t/Lunch t/Dinner</code></p>
+Example: <code>update i/1 n/Curry Laksa v/5 t/Lunch t/Dinner</code></p>
 </li>
 <li>
 <p><a href="#CloneTag"><strong>Clone</strong></a>: <code>clone i/INDEX</code><br>
@@ -746,10 +779,10 @@ Example: <code>tag i/8 t/Debt</code></p>
 Example: <code>untag i/7 t/Important</code></p>
 </li>
 <li>
-<p><a href="#ConvertTag"><strong>Convert</strong></a>: <code>convert to/TARGET_CURRENCY (c/COST|i/INDEX)</code><br>
+<p><a href="#ConvertTag"><strong>Convert</strong></a>: <code>convert to/TARGET_CURRENCY (v/VALUE|i/INDEX)</code><br>
 Examples:<br>
- <code>convert c/USD v/1000</code><br>
- <code>convert c/JPY i/8</code></p>
+ <code>convert v/USD v/1000</code><br>
+ <code>convert v/JPY i/8</code></p>
 </li>
 <li>
 <p><a href="#UndoTag"><strong>Undo</strong></a>: <code>undo</code></p>
@@ -767,4 +800,4 @@ Example: <code>help delete</code></p>
 </ul>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-19 14:03:36 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-20 03:17:23 UTC</div></div></div></body></html>
