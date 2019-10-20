@@ -217,7 +217,6 @@ public class UpdateCommandTest {
 
     @Test
     public void execute_wrongExecuteCalled_throwsCommandException() {
-        CommandTestUtil.showTransactionAtIndex(model, TypicalIndexes.INDEX_FIRST_TRANSACTION);
         Index firstIndex = TypicalIndexes.INDEX_FIRST_TRANSACTION;
         UpdateCommand updateCommand = new UpdateCommand(firstIndex,
                 new UpdateTransactionDescriptorBuilder().withDescription(CommandTestUtil.VALID_DESCRIPTION_LAKSA)

@@ -65,13 +65,24 @@ public class FindCommandTest {
     }
 
     @Test
-    public void execute_multipleKeywords_multipleTransactionsFound() {
+    public void execute_multipleKeywordsDescriptionField_transactionsFound() {
         String expectedMessage = String.format(MESSAGE_TRANSACTIONS_LISTED_OVERVIEW, 1);
         DescriptionOrRemarkContainsKeywordsPredicate predicate = preparePredicate("Penang Laksa1");
         FindCommand command = new FindCommand(predicate);
         expectedModel.updateFilteredTransactionList(predicate);
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
         assertEquals(Arrays.asList(TypicalTransactions.PENANG_LAKSA), model.getFilteredTransactionList());
+    }
+
+    @Test
+    public void execute_multipleKeywordsRemarkField_transactionsFound() {
+        String expectedMessage = String.format(MESSAGE_TRANSACTIONS_LISTED_OVERVIEW, 2);
+        DescriptionOrRemarkContainsKeywordsPredicate predicate = preparePredicate("the best");
+        FindCommand command = new FindCommand(predicate);
+        expectedModel.updateFilteredTransactionList(predicate);
+        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        assertEquals(Arrays.asList(TypicalTransactions.LAKSA, TypicalTransactions.PENANG_LAKSA),
+                model.getFilteredTransactionList());
     }
 
     /**
