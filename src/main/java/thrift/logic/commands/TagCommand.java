@@ -87,7 +87,6 @@ public class TagCommand extends Command implements Undoable {
 
         actualIndex = model.getIndexInFullTransactionList(transactionToTag).orElse(index);
         model.setTransactionWithIndex(actualIndex, updatedTransaction);
-        model.updateFilteredTransactionList(Model.PREDICATE_SHOW_ALL_TRANSACTIONS);
 
         return new CommandResult(taggedTransactionNotification
                 + existedTagsNotification
