@@ -39,7 +39,7 @@ public interface Logic {
     ReadOnlyThrift getThrift();
 
     /** Returns if the given command requires a refresh of the filteredlist. */
-    boolean requireFilteredListRefresh(Command command);
+    boolean isRefreshingFilteredList(Command command);
 
     /** Returns the current month and year in MMM yyyy format. */
     String getCurrentMonthYear();

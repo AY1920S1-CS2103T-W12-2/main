@@ -145,6 +145,7 @@ public interface Model {
 
     /**
      * Updates the filter of the filtered transaction list to filter by the given {@code predicate}.
+     *
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredTransactionList(Predicate<Transaction> predicate);
@@ -156,7 +157,6 @@ public interface Model {
 
     /**
      * Returns the balance held by the model to update the GUI with.
-     * @return
      */
     double getBalance();
 

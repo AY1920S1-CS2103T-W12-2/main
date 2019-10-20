@@ -40,6 +40,7 @@ public class JsonAdaptedBudget {
 
     /**
      * Converts this Jackson-friendly adapted budget object into the model's {@code Budget} object.
+     *
      * @throws IllegalValueException if there are any data constraints violated in the adapted budget.
      */
     public Budget toModelType() throws IllegalValueException {

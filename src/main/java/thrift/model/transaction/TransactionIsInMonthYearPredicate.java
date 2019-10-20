@@ -25,10 +25,10 @@ public class TransactionIsInMonthYearPredicate implements Predicate<Transaction>
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof TransactionIsInMonthYearPredicate) // instanceof handles nulls
-                && (((TransactionIsInMonthYearPredicate) other).monthYear.get(Calendar.MONTH)
-                    == monthYear.get(Calendar.MONTH)
-                    && ((TransactionIsInMonthYearPredicate) other).monthYear.get(Calendar.YEAR)
-                    == monthYear.get(Calendar.YEAR));
+            || (other instanceof TransactionIsInMonthYearPredicate) // instanceof handles nulls
+            && (((TransactionIsInMonthYearPredicate) other).monthYear.get(Calendar.MONTH)
+                == monthYear.get(Calendar.MONTH)
+                && ((TransactionIsInMonthYearPredicate) other).monthYear.get(Calendar.YEAR)
+                == monthYear.get(Calendar.YEAR));
     }
 }

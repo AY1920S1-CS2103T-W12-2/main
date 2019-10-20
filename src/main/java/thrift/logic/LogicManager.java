@@ -59,7 +59,7 @@ public class LogicManager implements Logic {
         } else {
             commandResult = command.execute(model);
         }
-        if (requireFilteredListRefresh(command)) {
+        if (isRefreshingFilteredList(command)) {
             model.updateBalanceForCurrentMonth();
             balanceBar.setMonthYear(getCurrentMonthYear());
             balanceBar.setMonthBudget(getCurrentMonthBudget());
@@ -84,7 +84,7 @@ public class LogicManager implements Logic {
     }
 
     @Override
-    public boolean requireFilteredListRefresh(Command command) {
+    public boolean isRefreshingFilteredList(Command command) {
         requireNonNull(command);
         if (command instanceof AddIncomeCommand
                 || command instanceof AddExpenseCommand

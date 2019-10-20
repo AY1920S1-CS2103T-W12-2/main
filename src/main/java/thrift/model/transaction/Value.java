@@ -15,8 +15,8 @@ import thrift.model.util.CurrencyUtil;
 public class Value {
 
     public static final String VALUE_CONSTRAINTS =
-            "Value should only contain positive numbers and an optional decimal point, which if specified, "
-                   + "accepts up to 2 decimal digits.\nValue should also be lesser than 1 billion.";
+        "Value should only contain positive numbers and an optional decimal point, which if specified, "
+             + "accepts up to 2 decimal digits.\nValue should also be lesser than 1 billion.";
     public static final String CURRENCY_CONSTRAINTS =
             "Currency should only be 'SGD', 'MYR', 'USD' OR 'EUR'!";
     public static final String VALIDATION_REGEX = "^[1-9]\\d{0,8}(\\.\\d{0,2})?$";
