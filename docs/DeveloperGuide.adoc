@@ -172,6 +172,97 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
+// tag::budget[]
+=== Add Expense/Income feature
+==== Implementation
+The **add_expense**/**add_income** feature is implemented through polymorphism. `**Expense**` and `**Income**` are both subclasses of the abstract class `Transaction`.
+Each `**Transaction**` contains the following mandatory fields: `Description`, `TransactionDate` and `Value`; as well as optional fields: `Remark`,
+and `Set<Tag>`.
+
+image::add-transaction/Polymorphism.png[]
+
+Because of this polymorphism relation, many of the driver functions in `THRIFT` simply references `Transaction` and it will work for both `Expense`
+and `Income` transaction objects. For example, when inserting a new `Expense`/`Income`, the `AddTransactionCommandParser` will determine
+which object to initialize:
+
+.Sequence diagram of how adding a new `Transaction` is processed with polymorphism
+image::add-transaction/PolymorphismCalling.png[]
+
+`**Expense**` and `**Income**` are normally instantiated by either `ExpenseCommandParser#parse(String args)` or `IncomeCommandParser#parse(String args)`, which
+attempts to parse the various parameters supplied in `args` and return either a `**Expense**` or `**Income**` object. The following conditions will cause a `**ParseException**`
+to be thrown by the parser:
+
+. Missing parameters
+. Incorrect syntax (i.e. missing prefix, if it is required)
+. Illegal values in parameters (i.e. special characters and symbols entered for a integer-only field)
+. Multiple occurrences of parameters which only expects a single entry
+
+[NOTE]
+If the user input is incorrect due to any of the reasons above, the usage syntax will be shown.
+
+Below is a given example on how a `**Transaction**` is added into `**THRIFT**` and how the back-end handles each step of the process:
+
+Step 1. The user launches the application for the first time. THRIFT does not contain any other `**Transaction**` and the user is
+about to add their own. An empty transaction list is initialized.
+
+image::add-transaction/AddTransaction0.png[]
+
+Step 2. The user executes **add_expense n/Laksa v/3.50** to insert an `**Expense**` with `**Description**` set to "Laksa"
+and `**Value**` set to "3.50". The `**TransactionDate**` is set to the user's current system date in the form "dd/mm/yyyy".
+The input is now checked and an attempt to parse each parameter occurs:
+
+* `**Description**` is parsed by `AddTransactionCommandParser#parseTransactionDescription(ArgumentMultimap)`
+* `**Value**` is parsed by `AddTransactionCommandParser#parseTransactionValue(ArgumentMultimap)`
+* `**TransactionDate**` is instantiated by `AddTransactionCommandParser#parseTransactionDate()`
+
+TIP: `**ArgumentMultimap**` is a class that stores all the parsed parameters taken from the user input.
+
+Since the user input is valid, the `**Expense**` is successfully created and inserted into the transaction list.
+The transaction list now contains 1 `**Transaction**` object.
+
+image::add-transaction/AddTransaction1.png[]
+
+Step 3. The user executes **add_income n/Bursary v/500 r/Awarded for doing well in school** to insert an `**Income**` with
+the `**Description**` set to "Bursary", `**Value**` set to "500" and `**Remark**` set to "Awarded for doing well in school".
+The `**TransactionDate**` is set to the user's current system date in the form "dd/mm/yyyy". The input is now checked in
+a similar fashion as in Step 2 except for:
+
+* `**Remark**` is parsed by `AddTransactionCommandParser#parseTransactionRemark(ArgumentMultimap)`
+
+Again, since the input is valid, the `**Income**` is successfully added into the transaction list. The transaction list
+now contains 2 `**Transaction**` objects.
+
+image::add-transaction/AddTransaction2.png[]
+
+The following activity diagram summarizes what happens when the user executes a command to add a new `**Transaction**`:
+
+image::add-transaction/AddTransactionSequence.png[]
+
+==== Design considerations
+
+===== Aspect: Differentiating between `**Expense**` and `**Income**`
+* **Alternative 1: (current choice):** Introduce a `**Transaction**` parent class which both `**Expense**` and `**Income**`
+extends from.
+** Pros: Introduces polymorphism, easing references to either classes by simply referencing the `**Transaction**` object.
+For example, using a single `**List<Transaction>**` instead of needing 2 separate lists `**List<Expense>**` and `**List<Income>**`.
+** Cons: Reduces the readability of the program as polymorphism can be confusing.
+
+* **Alternative 2:** Keep `**Expense**` and `**Income**` classes separate, with each having their own specialized methods.
+** Pros: Maintains an intuitive design: `**Expense**` deducts money and `**Income**` increases money.
+** Cons: Incurs significant overhead and duplicated codes since it is likely that both `**Expense**` and `**Income**` will
+have very similar methods.
+
+===== Aspect: Managing how `**Value**` is stored and handled in `**Expense**` and `**Income**`
+* **Alternative 1: (current choice):** Disallow negative `**Value**` in `**Expense**` object, only using positive amount
+for both `**Expense**` and `**Income**`
+** Pros: Removes the need to implement support for inserting negative `**Value**`. This is due to how `**Value**` constraints
+are applied when restoring `**THRIFT**` data from the data file.
+** Cons: Requires the developer to negate the `**Value**` whenever calculations are done with a `**Expense**` object.
+
+* **Alternative 2:** Allow only negative amount in `**Expense**` object and only positive amount in `**Income**` object
+** Pros: Calculations become trivial: to get balance, sum up the entire `**List<Transaction>**`.
+** Cons: Overhead to parse user input to allow only a single negative symbol and no other symbols.
+
 // tag::undoredo[]
 === [Proposed] Undo/Redo feature
 ==== Proposed Implementation
