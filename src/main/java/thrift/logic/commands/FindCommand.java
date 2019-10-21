@@ -4,13 +4,13 @@ import static java.util.Objects.requireNonNull;
 
 import thrift.commons.core.Messages;
 import thrift.model.Model;
-import thrift.model.transaction.DescriptionContainsKeywordsPredicate;
+import thrift.model.transaction.DescriptionOrRemarkContainsKeywordsPredicate;
 
 /**
  * Finds and lists all transactions in THRIFT whose description contains any of the argument keywords.
  * Keyword matching is case insensitive.
  */
-public class FindCommand extends Command {
+public class FindCommand extends NonScrollingCommand {
 
     public static final String COMMAND_WORD = "find";
 
@@ -19,9 +19,9 @@ public class FindCommand extends Command {
             + "Parameters: KEYWORD [MORE_KEYWORDS]...\n"
             + "Example: " + COMMAND_WORD + " alice bob charlie";
 
-    private final DescriptionContainsKeywordsPredicate predicate;
+    private final DescriptionOrRemarkContainsKeywordsPredicate predicate;
 
-    public FindCommand(DescriptionContainsKeywordsPredicate predicate) {
+    public FindCommand(DescriptionOrRemarkContainsKeywordsPredicate predicate) {
         this.predicate = predicate;
     }
 
