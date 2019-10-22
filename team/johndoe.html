@@ -152,223 +152,1703 @@
 </tbody>
 </table>
 <div class="sect2">
-<h3 id="proposed-undo-redo-feature"><a class="link" href="#proposed-undo-redo-feature">[Proposed] Undo/Redo feature</a></h3>
-<div class="sect3">
-<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">Proposed Implementation</a></h4>
+<h3 id="logging"><a class="link" href="#logging">Logging</a></h3>
 <div class="paragraph">
-<p>The undo/redo mechanism is facilitated by <code>VersionedAddressBook</code>.
-It extends <code>AddressBook</code> with an undo/redo history, stored internally as an <code>addressBookStateList</code> and <code>currentStatePointer</code>.
-Additionally, it implements the following operations:</p>
+<p>We are using <code><strong>java.util.logging</strong></code> package for logging. The <code><strong>LogsCenter</strong></code> class is used to manage the logging levels and logging destinations:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>VersionedAddressBook#commit()</code>&#8201;&#8212;&#8201;Saves the current address book state in its history.</p>
+<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Configuration</a>)</p>
 </li>
 <li>
-<p><code>VersionedAddressBook#undo()</code>&#8201;&#8212;&#8201;Restores the previous address book state from its history.</p>
+<p>The <code><strong>Logger</strong></code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</p>
 </li>
 <li>
-<p><code>VersionedAddressBook#redo()</code>&#8201;&#8212;&#8201;Restores a previously undone address book state from its history.</p>
+<p>The log messages are output through: <code>Console</code> and to a <code>.log</code> file.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>These operations are exposed in the <code>Model</code> interface as <code>Model#commitAddressBook()</code>, <code>Model#undoAddressBook()</code> and <code>Model#redoAddressBook()</code> respectively.</p>
+<p><strong>Logging Levels</strong></p>
 </div>
-<div class="paragraph">
-<p>Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.</p>
-</div>
-<div class="paragraph">
-<p>Step 1. The user launches the application for the first time. The <code>VersionedAddressBook</code> will be initialized with the initial address book state, and the <code>currentStatePointer</code> pointing to that single address book state.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/UndoRedoState0.png" alt="UndoRedoState0">
-</div>
-</div>
-<div class="paragraph">
-<p>Step 2. The user executes <code>delete 5</code> command to delete the 5th person in the address book. The <code>delete</code> command calls <code>Model#commitAddressBook()</code>, causing the modified state of the address book after the <code>delete 5</code> command executes to be saved in the <code>addressBookStateList</code>, and the <code>currentStatePointer</code> is shifted to the newly inserted address book state.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/UndoRedoState1.png" alt="UndoRedoState1">
-</div>
-</div>
-<div class="paragraph">
-<p>Step 3. The user executes <code>add n/David &#8230;&#8203;</code> to add a new person. The <code>add</code> command also calls <code>Model#commitAddressBook()</code>, causing another modified address book state to be saved into the <code>addressBookStateList</code>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/UndoRedoState2.png" alt="UndoRedoState2">
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If a command fails its execution, it will not call <code>Model#commitAddressBook()</code>, so the address book state will not be saved into the <code>addressBookStateList</code>.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Step 4. The user now decides that adding the person was a mistake, and decides to undo that action by executing the <code>undo</code> command. The <code>undo</code> command will call <code>Model#undoAddressBook()</code>, which will shift the <code>currentStatePointer</code> once to the left, pointing it to the previous address book state, and restores the address book to that state.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/UndoRedoState3.png" alt="UndoRedoState3">
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If the <code>currentStatePointer</code> is at index 0, pointing to the initial address book state, then there are no previous address book states to restore. The <code>undo</code> command uses <code>Model#canUndoAddressBook()</code> to check if this is the case. If so, it will return an error to the user rather than attempting to perform the undo.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>The following sequence diagram shows how the undo operation works:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/UndoSequenceDiagram.png" alt="UndoSequenceDiagram">
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The lifeline for <code>UndoCommand</code> should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>The <code>redo</code> command does the opposite&#8201;&#8212;&#8201;it calls <code>Model#redoAddressBook()</code>, which shifts the <code>currentStatePointer</code> once to the right, pointing to the previously undone state, and restores the address book to that state.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If the <code>currentStatePointer</code> is at index <code>addressBookStateList.size() - 1</code>, pointing to the latest address book state, then there are no undone address book states to restore. The <code>redo</code> command uses <code>Model#canRedoAddressBook()</code> to check if this is the case. If so, it will return an error to the user rather than attempting to perform the redo.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Step 5. The user then decides to execute the command <code>list</code>. Commands that do not modify the address book, such as <code>list</code>, will usually not call <code>Model#commitAddressBook()</code>, <code>Model#undoAddressBook()</code> or <code>Model#redoAddressBook()</code>. Thus, the <code>addressBookStateList</code> remains unchanged.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/UndoRedoState4.png" alt="UndoRedoState4">
-</div>
-</div>
-<div class="paragraph">
-<p>Step 6. The user executes <code>clear</code>, which calls <code>Model#commitAddressBook()</code>. Since the <code>currentStatePointer</code> is not pointing at the end of the <code>addressBookStateList</code>, all address book states after the <code>currentStatePointer</code> will be purged. We designed it this way because it no longer makes sense to redo the <code>add n/David &#8230;&#8203;</code> command. This is the behavior that most modern desktop applications follow.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/UndoRedoState5.png" alt="UndoRedoState5">
-</div>
-</div>
-<div class="paragraph">
-<p>The following activity diagram summarizes what happens when a user executes a new command:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/CommitActivityDiagram.png" alt="CommitActivityDiagram">
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="design-considerations"><a class="link" href="#design-considerations">Design Considerations</a></h4>
-<div class="sect4">
-<h5 id="aspect-how-undo-redo-executes"><a class="link" href="#aspect-how-undo-redo-executes">Aspect: How undo &amp; redo executes</a></h5>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Alternative 1 (current choice):</strong> Saves the entire address book.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: Easy to implement.</p>
+<p><code>SEVERE</code> : Detected a critical problem which may possibly cause the termination of the application</p>
 </li>
 <li>
-<p>Cons: May have performance issues in terms of memory usage.</p>
+<p><code>WARNING</code> : Exercise caution if continuing</p>
+</li>
+<li>
+<p><code>INFO</code> : Display information showing the noteworthy actions by the application</p>
+</li>
+<li>
+<p><code>FINE</code> : Display details that are usually not noteworthy but may be useful in debugging e.g. print the actual list
+instead of just its size</p>
 </li>
 </ul>
-</div>
-</li>
-<li>
-<p><strong>Alternative 2:</strong> Individual command knows how to undo/redo by itself.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: Will use less memory (e.g. for <code>delete</code>, just save the person being deleted).</p>
-</li>
-<li>
-<p>Cons: We must ensure that the implementation of each individual command are correct.</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect4">
-<h5 id="aspect-data-structure-to-support-the-undo-redo-commands"><a class="link" href="#aspect-data-structure-to-support-the-undo-redo-commands">Aspect: Data structure to support the undo/redo commands</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Alternative 1 (current choice):</strong> Use a list to store the history of address book states.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: Easy for new Computer Science student undergraduates to understand, who are likely to be the new incoming developers of our project.</p>
-</li>
-<li>
-<p>Cons: Logic is duplicated twice. For example, when a new command is executed, we must remember to update both <code>HistoryManager</code> and <code>VersionedAddressBook</code>.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><strong>Alternative 2:</strong> Use <code>HistoryManager</code> for undo/redo</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: We do not need to maintain a separate list, and just reuse what is already in the codebase.</p>
-</li>
-<li>
-<p>Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as <code>HistoryManager</code> now needs to do two different things.</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">[Proposed] Data encryption</a></h3>
+<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">Configuration</a></h3>
 <div class="paragraph">
-<p><em>{Explain here how the data encryption feature will be implemented}</em></p>
+<p>Certain properties of the application can be controlled (e.g user prefs file location, logging level) through the configuration file (default: <em>config.json</em>).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="documentation"><a class="link" href="#documentation">Documentation</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Refer to the guide <a href="Documentation.html">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="testing"><a class="link" href="#testing">Testing</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Refer to the guide <a href="Testing.html">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="dev-ops"><a class="link" href="#dev-ops">Dev ops</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Refer to the guide <a href="DevOps.html">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="product-scope"><a class="link" href="#product-scope">Appendix A: Product scope</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Target user profile</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>money-conscious NUS students</p>
+</li>
+<li>
+<p>number of transactions are significant and needs to be managed</p>
+</li>
+<li>
+<p>apps are preferred on desktop over other platforms</p>
+</li>
+<li>
+<p>typists that type quickly and prefers typing over mouse input</p>
+</li>
+<li>
+<p>CLI usage does not pose any discomfort</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Value proposition</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>provides a more effective financial management compared to typical mouse/GUI driven app</p>
+</li>
+<li>
+<p>plans for future spending are made easier</p>
+</li>
+<li>
+<p>congregates all info regarding fees and costs in a single location</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="user-stories"><a class="link" href="#user-stories">Appendix B: User stories</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Priorities: High (must have) - <code>* * *</code>, Medium (nice to have) - <code>* *</code>, Low (unlikely to have) - <code>*</code></p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 5%;">
+<col style="width: 25%;">
+<col style="width: 30%;">
+<col style="width: 40%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Priority</th>
+<th class="tableblock halign-left valign-top">As a &#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">I want to &#8230;&#8203;</th>
+<th class="tableblock halign-left valign-top">So that I can&#8230;&#8203;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NUS student</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">track my spending</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">manage my finances better</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">movie addict who watches every movie that comes out</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">keep track of my movie ticket and snack expenses</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">have enough money to watch the movies I want.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">computing student who has many software subscriptions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use the recurring expenses tracker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">manage my subscription payments</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student staying in the Halls with many expenses</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">see all my expenses in a central spot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">keep track of all the different expenses</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NUS international student</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">keep track of my travelling and spending expenses</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">have enough money when I travel around Singapore</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">someone who loves travelling</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use the tracker to help me plan for my travelling budgets</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fully enjoy my time on vacation</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SOC student always on my laptop</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">write down my expenses</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">really quickly due to the command-line nature</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student who uses both PayLah and cash interchangeably</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">tag my expenses</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">keep track of both expenses</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NUS student who loans money to a lot of friends</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use the debt tracker to track and collect my interest</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student accepting financial aid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use the expense tracker report</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">keep within my budget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student who borrows money frequently from other people</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use the debt tracker to remember who I owe money to</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NUS international student</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">be able to keep track of recurring utility expenses such as phone bills</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plan a suitable budget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">phone junkie</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">set aside enough money for purchasing the latest phones and accessories</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student who is conscious about money</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">be able to view my monthly expenditure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">know how much I had spent this month</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">female buying clothes frequently</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">track exactly how much I spend on clothes each month using the tracker and filter</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">don’t exceed my clothes budget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student who likes to buy games online</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use the expense tracker funds left</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">see if I am able to pay my school fees</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">mobile game addict who makes a lot of in-app purchases</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use the expenses tracker report</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">manage my finances and to sustain my essential expenses</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student that frequently takes on part-time jobs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use finance planner to track my income</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">frugal NUS student</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use the expense tracker report</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">optimise my finances</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">social animal frequently going to clubs and bars</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">plan out my expenses</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">moderate my spending on social activities and keep up my balanced lifestyle</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student that stays in Hall</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">add my expenses to the expense tracker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">track funds contributed to hall activities</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student who wants to save more money</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">be able to compare my past expenditure with my current expenditure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">know if I had spent more money or saved money this month</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hall resident who eats supper daily</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">keep track of what I have been eating and how much I usually spend on supper</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">don&#8217;t overspend on each supper</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">child of wealthy parent</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">easily delete previous expenses</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">properly count my expenditure should my parents decide to help cover some parts of it</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">careless student</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">make some changes to the information</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ensure that the application displays the correct information</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* * *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student who loves to keep track of finance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">view all the possible commands</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">fully utilize the functionalities offered by the application</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student that wants to allocate less money to material goods and more to food</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">analyse the spending by category and adjust accordingly</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">on-campus resident who likes to cook my own food</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">track my grocery bills</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">moderate the cost and frequency of grocery shopping</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">motor enthusiast</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use the planner to set aside funds</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">keep purchasing vehicle parts, modifications and accessories and keep pursuing my hobby</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student who has a bad habit of spending a lot on material goods</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">see which goods are taking up most of my monthly budget</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">better manage my finances</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hypebeast that spends a lot of money on branded goods</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">look at my recent spending percentage</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">manage my finances and keep my budget</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student who is going for exchange</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">make sure that I bring enough foreign currency</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">avoid using my credit card</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>* *</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student who is currently in a relationship</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">the tracker to help me set aside enough money for both my partner and I</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">get married soon</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">student who always lends money to people</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">be able to send receipt to my loanee</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">claim back my money</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">dota addict who always buy arcanas and battle pass levels</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">track my spending</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">afford to buy more battle pass levels</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">active youth in need of sustenance within a limited budget</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">get recommendations for food prices</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">be healthy physically and financially</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">shopaholic</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">use the finance planner to find discounts</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">spend less on my shopping</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NUS student with stingy and over-controlling parents</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">send my expense report for the month to my parents to view easily</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">avoid them asking me what I have been spending on all the time</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NUS student whose transaction details may be inaccurate in retrospect due to cashbacks or receipt discrepancies</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">modify transactions in my list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">transactions have the most updated and accurate information</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>*</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">NUS student with completely or almost identical repeated transactions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">make copies of such transactions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">more convenient to add them instead of having to type them out fully each time</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="use-cases"><a class="link" href="#use-cases">Appendix C: Use cases</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(For all use cases below, the <strong>System</strong> is the <code>THRIFT</code> and the <strong>Actor</strong> is the <code>user</code>, unless specified otherwise)</p>
+</div>
+<h3 id="use-case-setting-monthly-budget" class="discrete">Use case: Setting monthly budget</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to set their monthly budget to a certain amount.</p>
+</li>
+<li>
+<p>THRIFT processes the request and sets the amount as the monthly budget.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The parameters specified by the user are not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user and the monthly budget is not updated.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-add-an-expense-income-transaction" class="discrete">Use case: Add an expense/income transaction</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to add a new expense or income into the records.</p>
+</li>
+<li>
+<p>THRIFT processes the request and adds the expense/income into the transactions list.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The parameters specified by the user are not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user and the transactions list is not updated.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-delete-a-transaction" class="discrete">Use case: Delete a transaction</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to delete an existing transaction from the records.</p>
+</li>
+<li>
+<p>THRIFT processes the request and removes the transaction from the transactions list.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The command or transaction specified by the user is not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user and the transactions list is not updated.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-update-a-transaction-s-details" class="discrete">Use case: Update a transaction&#8217;s details</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to update a transaction&#8217;s name, cost or tags.</p>
+</li>
+<li>
+<p>THRIFT processes the request, updates the specified details in the transactions list and informs user of what has been changed.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. Some parameters specified by the user are not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user and does not update details for invalid parameters.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-clone-a-transaction" class="discrete">Use case: Clone a transaction</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to clone a transaction.</p>
+</li>
+<li>
+<p>THRIFT processes the request and adds an identical transaction to the transactions list.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The index parameter specified by the user is not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user and does not update the transactions list.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-show-help-window" class="discrete">Use case: Show help window</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to view to syntax of a specific command.</p>
+</li>
+<li>
+<p>THRIFT displays the syntax of the requested command.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The command specified by the user is not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid command error to user.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-list-monthly-transactions" class="discrete">Use case: List monthly transactions</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to view list of transactions for a specific month.</p>
+</li>
+<li>
+<p>THRIFT displays transactions of that month.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<h3 id="use-case-tag-a-transaction" class="discrete">Use case: Tag a transaction</h3>
+<div class="paragraph">
+<p><strong>MSS</strong>
+= <strong>Extensions</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to tag a specific transaction.</p>
+</li>
+<li>
+<p>THRIFT processes the request and adds the tag to the specific transaction.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The command specified by the user is not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid command error to user.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-untag-a-transaction" class="discrete">Use case: Untag a transaction</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to untag a specific transaction.</p>
+</li>
+<li>
+<p>THRIFT processes the request and removes the tag from the specific transaction.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The parameters specified by the user are not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user and the transaction is not updated.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-convert-a-transaction" class="discrete">Use case: Convert a transaction</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to convert the currency of a specific transaction to a new currency.</p>
+</li>
+<li>
+<p>THRIFT processes the request and updates specific transaction with the new value in the new currency.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The parameters specified by the user are not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user and the transaction is not updated.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-convert-a-value" class="discrete">Use case: Convert a value</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to convert a value in SGD to a specific currency.</p>
+</li>
+<li>
+<p>THRIFT processes the request and displays the new value in the new currency.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><strong>Extensions</strong></p>
+</div>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a. The parameters specified by the user are not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1a1. THRIFT displays an invalid parameter error to the user.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<h3 id="use-case-find-a-keyword-in-code-strong-transaction-s-remark-strong-code-and-code-strong-description-strong-code-field" class="discrete">Use case: Find a keyword in <code><strong>Transaction&#8217;s  Remark</strong></code> and <code><strong>Description</strong></code> field</h3>
+<div class="paragraph">
+<p><strong>MSS</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User requests to search for a keyword in THRIFT.</p>
+</li>
+<li>
+<p>THRIFT processes its currently saved entire transaction list to look for matches.</p>
+</li>
+<li>
+<p>THRIFT found matches and display the results at the <code><strong>TransactionListPanel</strong></code> screen.
+<em>Use case ends</em></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="non-functional-requirements"><a class="link" href="#non-functional-requirements">Appendix D: Non functional requirements</a></h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>THRIFT should be able to run on any <a href="#mainstream-os">mainstream OS</a> as long as it has <code>Java 11</code> installed.</p>
+</li>
+<li>
+<p>THRIFT should be able to hold up to 250 transactions without a noticeable drop in performance for typical usage.</p>
+</li>
+<li>
+<p>A user with above average typing speed for <a href="#regular-english-text">regular English text</a> (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.</p>
+</li>
+<li>
+<p>THRIFT should be able to run with or without internet connection.</p>
+</li>
+<li>
+<p>THRIFT should work for a single user only.</p>
+</li>
+<li>
+<p>THRIFT should not require user to install.</p>
+</li>
+<li>
+<p>Features implemented should be testable using manual testing and automated testing.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="glossary"><a class="link" href="#glossary">Appendix E: Glossary</a></h2>
+<div class="sectionbody">
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+<a id="thrift"></a> THRIFT
+</td>
+<td class="hdlist2">
+<p>Stands for "Terminal-input Human Readable Interactive Finance Tracker". It is the application this developer guide is for.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a id="nfr"></a> NFR
+</td>
+<td class="hdlist2">
+<p>Stands for "Non-functional Requirement"</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a id="mainstream-os"></a> Mainstream OS
+</td>
+<td class="hdlist2">
+<p>Stands for commonly used Operating Systems (OS) such as Windows, Linux, Unix, OS-X</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a id="regular-english-text"></a> Regular English Text
+</td>
+<td class="hdlist2">
+<p>Stands for text with ordinary english grammar structures and vocabulary generally used by the public.
+It excludes syntax related to programming and <a href="#system-administration">system administration</a>.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a id="system-administration"></a> System Administration
+</td>
+<td class="hdlist2">
+<p>Stands for the field of work in which someone manages one or more systems, be they software, hardware, servers or workstations
+with the goal of ensuring the systems are running efficiently and effectively.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="instructions-for-manual-testing"><a class="link" href="#instructions-for-manual-testing">Appendix F: Instructions for manual testing</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Given below are instructions to test the app manually.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+These instructions only provide a starting point for testers to work on; testers are expected to do more <em>exploratory</em> testing.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="launching-and-shutting-down"><a class="link" href="#launching-and-shutting-down">Launching and shutting down</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Initial launch</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Download the jar file and copy into an empty folder</p>
+</li>
+<li>
+<p>Double-click the jar file<br>
+Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Saving window preferences</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Resize the window to an optimum size. Move the window to a different location. Close the window.</p>
+</li>
+<li>
+<p>Re-launch the app by double-clicking the jar file.<br>
+Expected: The most recent window size and location is retained.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setting-the-monthly-budget"><a class="link" href="#setting-the-monthly-budget">Setting the monthly budget</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Setting the monthly budget to be a certain amount.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Test case: <code>budget v/1000 d/10/2019</code><br>
+Expected: The monthly budget for <code>10/2019</code> is now set to $<code>1000</code>. Details of the new monthly budget is shown in the status message. The monthly balance in the GUI is re-calculated to reflect the updated budget.</p>
+</li>
+<li>
+<p>Test case: <code>budget</code><br>
+Expected: The monthly budget is not updated. Error details shown in the status message (missing <code>d/MONTH</code> and <code>v/VALUE</code> parameters). Status bar remains the same.</p>
+</li>
+<li>
+<p>Test case: <code>budget v/10000000 d/10/2019</code><br>
+Expected: The monthly budget is not updated. Error details shown in the status message (<code>v/VALUE</code> input exceeds constraint of 1 million). Status bar remains the same.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="adding-a-transaction"><a class="link" href="#adding-a-transaction">Adding a transaction</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Adding a transaction, be it income or expense.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Test case: <code>add_expense n/Bought a pair of Apple Earpods v/350</code><br>
+Expected: A new expense transaction is added into the list. Details of the expense transaction shown in the status message. The date string is automatically saved into the transaction list.</p>
+</li>
+<li>
+<p>Test case: <code>add_income n/Awarded bursary prize v/500</code><br>
+Expected: A new income transaction is added into the list. Details of the income transaction shown in the status message. The date string is automatically saved into the transactions list.</p>
+</li>
+<li>
+<p>Test case: <code>add_expense n/Lunch in school</code><br>
+Expected: No transaction is added. Error details shown in the status message (missing <code>v/VALUE</code> parameter). Status bar remains the same.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="deleting-a-transaction"><a class="link" href="#deleting-a-transaction">Deleting a transaction</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Deleting a transaction while all transactions are listed</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List all transactions using the <code>list</code> command. Multiple transactions in the list.</p>
+</li>
+<li>
+<p>Test case: <code>delete i/1</code><br>
+Expected: First transaction is deleted from the list. Details of the deleted transaction shown in the status message. Timestamp in the status bar is updated.</p>
+</li>
+<li>
+<p>Test case: <code>delete i/0</code><br>
+Expected: No transaction is deleted. Error details shown in the status message. Status bar remains the same.</p>
+</li>
+<li>
+<p>Other incorrect delete commands to try: <code>delete</code>, <code>delete x</code> (where x is larger than the list size) <em>{give more}</em><br>
+Expected: Similar to previous.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="updating-a-transaction-s-details"><a class="link" href="#updating-a-transaction-s-details">Updating a transaction&#8217;s details</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Updating a transaction&#8217;s details and reflecting changes in the list.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List all transactions using the <code>list</code> command. The first transaction is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code>.</p>
+</li>
+<li>
+<p>Test case: <code>update i/1 n/Fried Rice</code><br>
+Expected: Details of the updated transaction and original transaction shown in status message. Displayed list scrolls to updated item which reflects the changes.</p>
+</li>
+<li>
+<p>Test case: <code>update i/1 v/20</code><br>
+Expected: Details of the updated transaction and original transaction shown in status message. Displayed list scrolls to updated item which reflects the changes.</p>
+</li>
+<li>
+<p>Test case: <code>update i/1 n/Fried Rice v/20 t/Lunch t/Food</code><br>
+Expected: Details of the updated transaction and original transaction shown in status message. Displayed list scrolls to updated item which reflects the changes.</p>
+</li>
+<li>
+<p>Test case: <code>update i/INVALID_INDEX</code> where <code>INVALID_INDEX</code> is a number less than 1 or more than list size.<br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>update i/1 z/Calamari</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>update firstTransaction</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>update</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cloning-a-transaction"><a class="link" href="#cloning-a-transaction">Cloning a transaction</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Creating a duplicate of a transaction.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List all transactions using the <code>list</code> command. At least one transaction in the list.</p>
+</li>
+<li>
+<p>Test case: <code>clone i/1</code><br>
+Expected: New transaction identical to first transaction in the list added to the bottom of the list. Details of the cloned transaction shown in the status message. Date string for new transaction is automatically saved into the transaction list.</p>
+</li>
+<li>
+<p>Test case: <code>clone i/INVALID_INDEX</code> where <code>INVALID_INDEX</code> is a number less than 1 or more than list size.<br>
+Expected: No transaction is cloned. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>clone firstTransaction</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>clone</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="listing-the-transactions"><a class="link" href="#listing-the-transactions">Listing the transactions</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Listing out transactions by month or by tag.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: At least one transaction in the list.</p>
+</li>
+<li>
+<p>Test case: <code>list</code><br>
+Expected: The entire list of transactions will be shown.</p>
+</li>
+<li>
+<p>Test case: <code>list m/Jan</code><br>
+Expected: The list of transactions for January will be shown.</p>
+</li>
+<li>
+<p>Test case: <code>list m/Jan t/Food</code><br>
+Expected: The list of transactions related to food for January will be shown.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tagging-a-transaction"><a class="link" href="#tagging-a-transaction">Tagging a transaction</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Tagging a transaction and reflecting changes in the list.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List all transactions using the <code>list</code> command. The first transaction is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code>.</p>
+</li>
+<li>
+<p>Test case: <code>tag i/1 t/EXPENSIVE</code><br>
+Expected: Details of the tagged transaction shown in status message. Listing the transaction reflects changes.</p>
+</li>
+<li>
+<p>Test case: <code>tag i/INVALID_INDEX</code> t/VALID_TAG` where <code>INVALID_INDEX</code> is a number less than 1 or more than list size and VALID_TAG is a valid tag.<br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>tag firstTransaction</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>tag</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="untagging-a-transaction"><a class="link" href="#untagging-a-transaction">Untagging a transaction</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Untagging a transaction and reflecting changes in the list.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List all transactions using the <code>list</code> command. The first transaction is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code>.</p>
+</li>
+<li>
+<p>Test case: <code>untag i/1 t/FOOD</code><br>
+Expected: Details of the untagged transaction shown in status message. Listing the transaction reflects changes.</p>
+</li>
+<li>
+<p>Test case: <code>untag i/INVALID_INDEX t/VALID_TAG</code> where <code>INVALID_INDEX</code> is a number less than 1 or more than list size and VALID_TAG is a valid tag.<br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>untag i/VALID_INDEX t/NOT_INSIDE_TAG</code> where <code>VALID_INDEX</code> is a valid transaction index and NOT_INSIDE_TAG is not inside the transaction specified.<br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>untag firstTransaction</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>untag</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="converting-a-transaction"><a class="link" href="#converting-a-transaction">Converting a transaction</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Converting a transaction&#8217;s currency and reflecting changes in the list.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List all transactions using the <code>list</code> command. The first transaction is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code>.</p>
+</li>
+<li>
+<p>Test case: <code>convert to/USD i/1</code><br>
+Expected: Details of the converted transaction shown in status message. Listing the transaction reflects changes.</p>
+</li>
+<li>
+<p>Test case: <code>convert to/USD i/INVALID_INDEX</code> where <code>INVALID_INDEX</code> is a number less than 1 or more than list size.<br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>convert to/INVALID_CURRENCY i/VALID_INDEX</code> where <code>INVALID_CURRENCY</code> is not a supported currency and <code>VALID_INDEX</code> is a valid transaction index.<br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>convert firstTransaction</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>convert</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="converting-a-value"><a class="link" href="#converting-a-value">Converting a value</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Converting a values&#8217;s currency and displaying it</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Test case: <code>convert from/SGD to/USD v/VALUE</code>.<br>
+Expected: Original value and converted value displayed to the user.</p>
+</li>
+<li>
+<p>Test case: <code>convert from/SGD to/INVALID_CURRENCY v/VALUE</code> where <code>INVALID_CURRENCY</code> is not a supported currency.<br>
+Expected: Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>convert from/INVALID_CURRENCY to/USD v/VALUE</code> where <code>INVALID_CURRENCY</code> is not a supported currency.<br>
+Expected: Error details shown in status message.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="finding-a-transaction"><a class="link" href="#finding-a-transaction">Finding a transaction</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Looking up transactions that have the supplied keywords in its <code><strong>Remark</strong></code> and <code><strong>Description</strong></code> fields.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Test case: <code>find Apple</code>.<br>
+Expected: Transactions with the word 'Apple' in its <code><strong>Remark</strong></code> or <code><strong>Description</strong></code> field will be displayed to the user.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="undoing-the-previous-command"><a class="link" href="#undoing-the-previous-command">Undoing the previous command</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Undoing previous command and reflecting changes in the list</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List all transactions using the <code>list</code> command</p>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>add expense n/Chicken rice v/3</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: Transaction regarding to the expense spent on chicken rice is removed from the list.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>add income n/Salary v/2500</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: Transaction regarding to the income received from salary is removed from the list.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>delete 1</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: First transaction removed from the list is restored back to its original position.</p>
+</div>
+</li>
+<li>
+<p>Test case: (Assuming that the first transaction is <code>1. [-] Chicken rice ($3.00)</code>)</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>update i/1 n/Fried Rice</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: The description of the first transaction is changed back to chicken rice.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>clone i/1</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: Newly cloned transaction is removed from the list.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>tag i/1 t/LUNCH</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: Lunch tag is removed from the first transaction in the list.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>untag i/1 t/LUNCH</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: Lunch tag is added back to the first transaction in the list.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>list</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: No changes. Message shown in the status message indicating that there are no available commands for user to undo.</p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="redoing-the-undone-command"><a class="link" href="#redoing-the-undone-command">Redoing the undone command</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Redoing undone command and reflecting changes in the list</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Prerequisites: List all transactions using the <code>list</code> command</p>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>add expense n/Laksa v/3</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+<li>
+<p><code>redo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: Transaction regarding to the expense spent on Laksa is added back to the list.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>add income n/bursary v/2500</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+<li>
+<p><code>redo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: Transaction regarding to the income received from bursary is added back to the list.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>delete i/1</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+<li>
+<p><code>redo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: First transaction removed from the list.</p>
+</div>
+</li>
+<li>
+<p>Test case: (Assume that the first transaction is <code>1. [-] Chicken rice ($3.00)</code>)</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>update i/1 n/Fried Rice</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+<li>
+<p><code>redo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: The description of the first transaction remains as fried rice.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>clone i/1</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+<li>
+<p><code>redo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: Newly cloned transaction is added back to the list.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>tag i/1 t/FOOD</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+<li>
+<p><code>redo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: Food tag is added back to the first transaction in the list.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>untag i/1 t/FOOD</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+<li>
+<p><code>redo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: Food tag is removed from the first transaction in the list.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>untag i/1 t/LUNCH</code></p>
+</li>
+<li>
+<p><code>undo</code></p>
+</li>
+<li>
+<p><code>clone i/1</code></p>
+</li>
+<li>
+<p><code>redo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: No changes. Message shown in the status message indicating that there are no available commands for user to redo.</p>
+</div>
+</li>
+<li>
+<p>Test case:</p>
+<div class="openblock">
+<div class="content">
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p><code>list</code></p>
+</li>
+<li>
+<p><code>redo</code></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="paragraph">
+<p>Expected: No changes. Message shown in the status message indicating that there are no available commands for user to redo.</p>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="showing-help-window"><a class="link" href="#showing-help-window">Showing help window</a></h3>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Test case: <code>help</code><br>
+Expected: A new pop-up help window is displayed.</p>
+</li>
+<li>
+<p>Test case: <code>help delete</code><br>
+Expected: Syntax of the <code>delete</code> command is shown in the status message.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="saving-data"><a class="link" href="#saving-data">Saving data</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Dealing with missing/corrupted data files</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Delete the data file at <code>.\data\thrift.json</code>.</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -381,4 +1861,4 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 <p><em>{Optionally, you may include other projects in your portfolio.}</em></p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-22 15:14:00 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-22 15:48:48 UTC</div></div></div></body></html>
