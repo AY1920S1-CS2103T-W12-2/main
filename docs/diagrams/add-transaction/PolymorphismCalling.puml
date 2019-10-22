@@ -14,21 +14,37 @@ activate LogicManager
 LogicManager -> ThriftParser : parseCommand("add_expense")
 activate ThriftParser
 
+create AddTransactionCommandParser
 ThriftParser -> AddTransactionCommandParser
 activate AddTransactionCommandParser
 
 ThriftParser <-- AddTransactionCommandParser
+deactivate AddTransactionCommandParser
+destroy AddTransactionCommandParser
+
 LogicManager <-- ThriftParser
+deactivate ThriftParser
+
 [<-- LogicManager
+deactivate LogicManager
+
 [-> LogicManager : execute("add_income")
+activate LogicManager
 
 LogicManager -> ThriftParser : parseCommand("add_income")
+activate ThriftParser
+
+create AddTransactionCommandParser
 ThriftParser -> AddTransactionCommandParser
+activate AddTransactionCommandParser
 
 ThriftParser <-- AddTransactionCommandParser
 deactivate AddTransactionCommandParser
+destroy AddTransactionCommandParser
+
 LogicManager <-- ThriftParser
 deactivate ThriftParser
+
 [<-- LogicManager
 deactivate LogicManager
 
