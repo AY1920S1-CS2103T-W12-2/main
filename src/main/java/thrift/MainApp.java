@@ -22,7 +22,6 @@ import thrift.model.ReadOnlyThrift;
 import thrift.model.ReadOnlyUserPrefs;
 import thrift.model.Thrift;
 import thrift.model.UserPrefs;
-import thrift.model.util.SampleDataUtil;
 import thrift.storage.JsonThriftStorage;
 import thrift.storage.JsonUserPrefsStorage;
 import thrift.storage.Storage;
@@ -84,7 +83,7 @@ public class MainApp extends Application {
             if (!thriftOptional.isPresent()) {
                 logger.info("Data file not found. Will be starting with a sample THRIFT");
             }
-            initialData = thriftOptional.orElseGet(SampleDataUtil::getSampleThrift);
+            initialData = thriftOptional.orElseGet(Thrift::new);
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with an empty THRIFT");
             initialData = new Thrift();
