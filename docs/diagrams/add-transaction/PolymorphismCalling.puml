@@ -11,7 +11,7 @@ end box
 [-> LogicManager : execute("add_expense")
 activate LogicManager
 
-LogicManager -> ThriftParser : execute("add_expense")
+LogicManager -> ThriftParser : parseCommand("add_expense")
 activate ThriftParser
 
 ThriftParser -> AddTransactionCommandParser
@@ -22,7 +22,7 @@ LogicManager <-- ThriftParser
 [<-- LogicManager
 [-> LogicManager : execute("add_income")
 
-LogicManager -> ThriftParser : execute("add_income")
+LogicManager -> ThriftParser : parseCommand("add_income")
 ThriftParser -> AddTransactionCommandParser
 
 ThriftParser <-- AddTransactionCommandParser
@@ -30,5 +30,6 @@ deactivate AddTransactionCommandParser
 LogicManager <-- ThriftParser
 deactivate ThriftParser
 [<-- LogicManager
+deactivate LogicManager
 
 @enduml
