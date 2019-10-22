@@ -18,6 +18,7 @@
 <ul class="sectlevel2">
 <li><a href="#purpose">1.1. Purpose</a></li>
 <li><a href="#scope">1.2. Scope</a></li>
+<li><a href="#about-the-document">1.3. About the document</a></li>
 </ul>
 </li>
 <li><a href="#setting-up">2. Setting up</a></li>
@@ -33,22 +34,25 @@
 </li>
 <li><a href="#implementation">4. Implementation</a>
 <ul class="sectlevel2">
-<li><a href="#add-expense-income-feature">4.1. Add Expense/Income feature</a></li>
-<li><a href="#proposed-undo-redo-feature">4.2. [Proposed] Undo/Redo feature</a></li>
-<li><a href="#proposed-data-encryption">4.3. [Proposed] Data Encryption</a></li>
-<li><a href="#logging">4.4. Logging</a></li>
-<li><a href="#Implementation-Configuration">4.5. Configuration</a></li>
+<li><a href="#adding-transactions">4.1. Adding transactions</a></li>
+<li><a href="#tagging-untagging-transactions">4.2. Tagging/Untagging transactions</a></li>
+<li><a href="#updating-transactions">4.3. Updating transactions</a></li>
+<li><a href="#undo-redoing-undoable-commands">4.4. Undo/Redoing undoable commands</a></li>
+<li><a href="#proposed-undo-redo-feature">4.5. [Proposed] Undo/Redo feature</a></li>
+<li><a href="#proposed-data-encryption">4.6. [Proposed] Data encryption</a></li>
+<li><a href="#logging">4.7. Logging</a></li>
+<li><a href="#Implementation-Configuration">4.8. Configuration</a></li>
 </ul>
 </li>
 <li><a href="#documentation">5. Documentation</a></li>
 <li><a href="#testing">6. Testing</a></li>
-<li><a href="#dev-ops">7. Dev Ops</a></li>
-<li><a href="#product-scope">Appendix A: Product Scope</a></li>
-<li><a href="#user-stories">Appendix B: User Stories</a></li>
-<li><a href="#use-cases">Appendix C: Use Cases</a></li>
-<li><a href="#non-functional-requirements">Appendix D: Non Functional Requirements</a></li>
+<li><a href="#dev-ops">7. Dev ops</a></li>
+<li><a href="#product-scope">Appendix A: Product scope</a></li>
+<li><a href="#user-stories">Appendix B: User stories</a></li>
+<li><a href="#use-cases">Appendix C: Use cases</a></li>
+<li><a href="#non-functional-requirements">Appendix D: Non functional requirements</a></li>
 <li><a href="#glossary">Appendix E: Glossary</a></li>
-<li><a href="#instructions-for-manual-testing">Appendix F: Instructions for Manual Testing</a>
+<li><a href="#instructions-for-manual-testing">Appendix F: Instructions for manual testing</a>
 <ul class="sectlevel2">
 <li><a href="#launching-and-shutting-down">F.1. Launching and shutting down</a></li>
 <li><a href="#setting-the-monthly-budget">F.2. Setting the monthly budget</a></li>
@@ -93,6 +97,37 @@ A developer should be able to understand the design, architecture and goals of T
 <div class="paragraph">
 <p>This developer guide specifies the technical and non-technical details of THRIFT.
 The technical aspects include the design and architecture while the non-technical aspects include the user stories, use cases and <a href="#nfr">NFRs</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="about-the-document"><a class="link" href="#about-the-document">1.3. About the document</a></h3>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+<strong>add_expense n/Laksa v/4</strong>
+</td>
+<td class="hdlist2">
+<p>Bold text indicates user input.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<code>Description</code>
+</td>
+<td class="hdlist2">
+<p>Text with grey highlight (called a mark-up) indicates that it is a method/variable name.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<code><strong>THRIFT</strong></code>
+</td>
+<td class="hdlist2">
+<p>Bold text with mark-up indicates a class/package name.</p>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -299,7 +334,7 @@ The lifeline for <code>DeleteCommandParser</code> should end at the destroy mark
 <h3 id="Design-Model"><a class="link" href="#Design-Model">3.4. Model component</a></h3>
 <div class="imageblock">
 <div class="content">
-<img src="images/ModelClassDiagram.png" alt="ModelClassDiagram">
+<img src="images/ModelClassDiagram.png" alt="628" width="600">
 </div>
 <div class="title">Figure 7. Structure of the Model Component</div>
 </div>
@@ -319,6 +354,9 @@ The lifeline for <code>DeleteCommandParser</code> should end at the destroy mark
 </li>
 <li>
 <p>stores <code><strong>BudgetList</strong></code> which contains budget set for different months by the user.</p>
+</li>
+<li>
+<p>stores <code><strong>PastUndoableCommands</strong></code> which keeps track of undoable commands for future undo and redo operation.</p>
 </li>
 <li>
 <p>exposes an unmodifiable <code><strong>ObservableList&lt;Transaction&gt;</strong></code> that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.</p>
@@ -396,7 +434,7 @@ As a more OOP model, we can store a <code>Tag</code> list in <code><strong>THRIF
 <p>This section describes some noteworthy details on how certain features are implemented.</p>
 </div>
 <div class="sect2">
-<h3 id="add-expense-income-feature"><a class="link" href="#add-expense-income-feature">4.1. Add Expense/Income feature</a></h3>
+<h3 id="adding-transactions"><a class="link" href="#adding-transactions">4.1. Adding transactions</a></h3>
 <div class="sect3">
 <h4 id="implementation-2"><a class="link" href="#implementation-2">4.1.1. Implementation</a></h4>
 <div class="paragraph">
@@ -611,9 +649,206 @@ are applied when restoring <code><strong>THRIFT</strong></code> data from the da
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-undo-redo-feature"><a class="link" href="#proposed-undo-redo-feature">4.2. [Proposed] Undo/Redo feature</a></h3>
+<h3 id="tagging-untagging-transactions"><a class="link" href="#tagging-untagging-transactions">4.2. Tagging/Untagging transactions</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="updating-transactions"><a class="link" href="#updating-transactions">4.3. Updating transactions</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="undo-redoing-undoable-commands"><a class="link" href="#undo-redoing-undoable-commands">4.4. Undo/Redoing undoable commands</a></h3>
+<div class="paragraph">
+<p><strong>Undo</strong> command allows the user to revert <code><strong>THRIFT</strong></code> to its previous state when they have made a mistake. <strong>Redo</strong> command does
+the opposite of <strong>undo</strong> command, useful for when the user wishes to execute the command instead.</p>
+</div>
+<div class="paragraph">
+<p>The underlying data structure of the undo and redo feature is implemented in <code><strong>PastUndoableCommands</strong></code>. It consists of two stacks:
+<code>UndoStack</code> and <code>RedoStack</code>. It provides the following methods:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>PastUndoableCommands#addPastCommand(Undoable undoable)</code>&#8201;&#8212;&#8201;Keeps track of the undoable commands.</p>
+</li>
+<li>
+<p><code>PastUndoableCommands#getCommandToUndo()</code>&#8201;&#8212;&#8201;Retrieves undoable commands from <code>UndoStack</code> for user to perform undo.</p>
+</li>
+<li>
+<p><code>PastUndoableCommands#hasUndoable()</code>&#8201;&#8212;&#8201;Checks if there are any commands to perform undo.</p>
+</li>
+<li>
+<p><code>PastUndoableCommands#getCommandToRedo()</code>&#8201;&#8212;&#8201;Retrieves undone commands from <code>RedoStack</code> for user to perform redo.</p>
+</li>
+<li>
+<p><code>PastUndoableCommands#hasRedoCommand()</code>&#8201;&#8212;&#8201;Checks if there are any commands to perform redo.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The function wrappers to these methods are <code>Model#keepTrackCommands(Undoable command)</code>, <code>Model#getPreviousUndoableCommand()</code>, <code>Model#hasUndoableCommand()</code>,
+<code>Model#getUndoneCommand()</code> and <code>Model#hasUndoneCommand()</code> respectively.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Undoable commands are <strong>add_expense</strong>, <strong>add_income</strong>, <strong>clone</strong>, <strong>delete</strong>, <strong>tag</strong>, <strong>untag</strong>, <strong>update</strong>.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Every undoable command will be stored in the <code>UndoStack</code> once it is executed. It will only be stored in <code>RedoStack</code> when the user executed
+<strong>undo</strong>.</p>
+</div>
 <div class="sect3">
-<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">4.2.1. Proposed Implementation</a></h4>
+<h4 id="implementation-3"><a class="link" href="#implementation-3">4.4.1. Implementation</a></h4>
+<div class="paragraph">
+<p>The below scenario illustrates how undo and redo feature works:</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The application is launched with an empty transaction list. Both <code>UndoStack</code> and <code>RedoStack</code> are empty upon initializing <code><strong>PastUndoableCommands</strong></code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/initialUndoRedo.PNG" alt="338" width="300">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 2. The user executes <strong>add_expense n/Laksa v/4</strong> to add Laksa to the <code><strong>TransactionList</strong></code>.
+The <code><strong>LogicManager</strong></code> invokes the method <code>Model#keepTrackCommands(Undoable undoable)</code> to keep track of the <code><strong>AddExpenseCommand</strong></code> object
+that was used to add Laksa. This <code><strong>AddExpenseCommand</strong></code> object is pushed into <code>UndoStack</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/addExpense.PNG" alt="357" width="300">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 3. The user executes <strong>update i/1 v/3.50</strong> to update the cost of the Laksa to $3.50.
+The <code><strong>LogicManager</strong></code> calls the method <code>Model#keepTrackCommands(Undoable undoable)</code> to keep track of the <code><strong>UpdateCommand</strong></code> object
+that was used to update the cost of the Laksa. This <code><strong>UpdateCommand</strong></code> object is pushed into <code>UndoStack</code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/updateExpense.PNG" alt="341" width="300">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 4. The user executes <strong>undo</strong> to revert the cost of the Laksa to $4.00.
+The <code><strong>UndoCommand</strong></code> invokes the method <code>Model#getPreviousUndoableCommand()</code> to retrieve the <code><strong>UpdateCommand</strong></code> object.
+<code><strong>UpdateCommand</strong></code> is popped from <code>UndoStack</code> and pushed into <code>RedoStack</code> before being returned to the callee.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/undo.PNG" alt="320" width="300">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 5. The user executes <strong>undo</strong> to remove Laksa from <code><strong>TransactionList</strong></code>.
+The <code><strong>UndoCommand</strong></code> invokes the method <code>Model#getPreviousUndoableCommand()</code> to retrieve the <code><strong>AddExpenseCommand</strong></code> object.
+<code><strong>AddExpenseCommand</strong></code> is popped from <code>UndoStack</code> and pushed into <code>RedoStack</code> before being returned to the callee.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/undo2.PNG" alt="326" width="300">
+</div>
+</div>
+<div class="paragraph">
+<p>The sequence diagram shows how <strong>undo</strong> work for <strong>add_expense</strong> command:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/UndoAddExpenseSequenceDiagram.png" alt="UndoAddExpenseSequenceDiagram">
+</div>
+<div class="title">Figure 10. Sequence diagram of how <strong>undo</strong> command is applied at the back-end</div>
+</div>
+<div class="paragraph">
+<p>Step 6. The user executes <strong>redo</strong> to add Laksa back to <code><strong>TransactionList</strong></code>.
+The <code><strong>RedoCommand</strong></code> invokes the method <code>Model#getUndoneCommand()</code> to retrieve the <code><strong>AddExpenseCommand</strong></code> object.
+<code><strong>AddExpenseCommand</strong></code> is popped from <code>RedoStack</code> and pushed into <code>UndoStack</code> before being returned to the callee.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/redo.PNG" alt="325" width="300">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+All commands stored in <code>RedoStack</code> are purged when the user executes another undoable command.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The sequence diagram shows how <strong>redo</strong> work for <strong>add_expense</strong> command:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/RedoAddExpenseSequenceDiagram.png" alt="RedoAddExpenseSequenceDiagram">
+</div>
+<div class="title">Figure 11. Sequence diagram of how <strong>redo</strong> command is applied at the back-end</div>
+</div>
+<div class="paragraph">
+<p>The following activity diagram shows what happens if the user executes a command:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/RunCommandActivityDiagrams.png" alt="RunCommandActivityDiagrams">
+</div>
+<div class="title">Figure 12. Activity diagram of the command execution.</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations-2"><a class="link" href="#design-considerations-2">4.4.2. Design considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-data-structure-used-to-keep-track-of-undoable-command"><a class="link" href="#aspect-data-structure-used-to-keep-track-of-undoable-command">Aspect: Data structure used to keep track of undoable command</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Use two stacks. One stack stores the command to undo while the other stack stores the command to redo.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Easy to implement.</p>
+</li>
+<li>
+<p>Cons: Need to carefully manage the two stacks. For example, you need to pop the command from one stack and push it into another stack.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Use an arraylist and a pointer to indicate the next command to undo.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Easy to implement.</p>
+</li>
+<li>
+<p>Cons: Need to carefully manage the pointer. For example, you need to ensure that the pointer stays within the size of an arraylist.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="proposed-undo-redo-feature"><a class="link" href="#proposed-undo-redo-feature">4.5. [Proposed] Undo/Redo feature</a></h3>
+<div class="sect3">
+<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">4.5.1. Proposed Implementation</a></h4>
 <div class="paragraph">
 <p>The undo/redo mechanism is facilitated by <code>VersionedAddressBook</code>.
 It extends <code>AddressBook</code> with an undo/redo history, stored internally as an <code>addressBookStateList</code> and <code>currentStatePointer</code>.
@@ -755,7 +990,7 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-2"><a class="link" href="#design-considerations-2">4.2.2. Design Considerations</a></h4>
+<h4 id="design-considerations-3"><a class="link" href="#design-considerations-3">4.5.2. Design Considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-how-undo-redo-executes"><a class="link" href="#aspect-how-undo-redo-executes">Aspect: How undo &amp; redo executes</a></h5>
 <div class="ulist">
@@ -825,20 +1060,20 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">4.3. [Proposed] Data Encryption</a></h3>
+<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">4.6. [Proposed] Data encryption</a></h3>
 <div class="paragraph">
 <p><em>{Explain here how the data encryption feature will be implemented}</em></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="logging"><a class="link" href="#logging">4.4. Logging</a></h3>
+<h3 id="logging"><a class="link" href="#logging">4.7. Logging</a></h3>
 <div class="paragraph">
 <p>We are using <code><strong>java.util.logging</strong></code> package for logging. The <code><strong>LogsCenter</strong></code> class is used to manage the logging levels and logging destinations:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 4.5, &#8220;Configuration&#8221;</a>)</p>
+<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 4.8, &#8220;Configuration&#8221;</a>)</p>
 </li>
 <li>
 <p>The <code><strong>Logger</strong></code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</p>
@@ -870,7 +1105,7 @@ instead of just its size</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">4.5. Configuration</a></h3>
+<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">4.8. Configuration</a></h3>
 <div class="paragraph">
 <p>Certain properties of the application can be controlled (e.g user prefs file location, logging level) through the configuration file (default: <em>config.json</em>).</p>
 </div>
@@ -894,7 +1129,7 @@ instead of just its size</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="dev-ops"><a class="link" href="#dev-ops">7. Dev Ops</a></h2>
+<h2 id="dev-ops"><a class="link" href="#dev-ops">7. Dev ops</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Refer to the guide <a href="DevOps.html">here</a>.</p>
@@ -902,7 +1137,7 @@ instead of just its size</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="product-scope"><a class="link" href="#product-scope">Appendix A: Product Scope</a></h2>
+<h2 id="product-scope"><a class="link" href="#product-scope">Appendix A: Product scope</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Target user profile</strong>:</p>
@@ -945,7 +1180,7 @@ instead of just its size</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="user-stories"><a class="link" href="#user-stories">Appendix B: User Stories</a></h2>
+<h2 id="user-stories"><a class="link" href="#user-stories">Appendix B: User stories</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Priorities: High (must have) - <code>* * *</code>, Medium (nice to have) - <code>* *</code>, Low (unlikely to have) - <code>*</code></p>
@@ -1211,7 +1446,7 @@ instead of just its size</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="use-cases"><a class="link" href="#use-cases">Appendix C: Use Cases</a></h2>
+<h2 id="use-cases"><a class="link" href="#use-cases">Appendix C: Use cases</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>(For all use cases below, the <strong>System</strong> is the <code>THRIFT</code> and the <strong>Actor</strong> is the <code>user</code>, unless specified otherwise)</p>
@@ -1625,7 +1860,7 @@ instead of just its size</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="non-functional-requirements"><a class="link" href="#non-functional-requirements">Appendix D: Non Functional Requirements</a></h2>
+<h2 id="non-functional-requirements"><a class="link" href="#non-functional-requirements">Appendix D: Non functional requirements</a></h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -1657,36 +1892,56 @@ instead of just its size</p>
 <div class="sect1">
 <h2 id="glossary"><a class="link" href="#glossary">Appendix E: Glossary</a></h2>
 <div class="sectionbody">
-<div class="dlist">
-<dl>
-<dt class="hdlist1"><a id="thrift"></a> THRIFT</dt>
-<dd>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+<a id="thrift"></a> THRIFT
+</td>
+<td class="hdlist2">
 <p>Stands for "Terminal-input Human Readable Interactive Finance Tracker". It is the application this developer guide is for.</p>
-</dd>
-<dt class="hdlist1"><a id="nfr"></a> NFR</dt>
-<dd>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a id="nfr"></a> NFR
+</td>
+<td class="hdlist2">
 <p>Stands for "Non-functional Requirement"</p>
-</dd>
-<dt class="hdlist1"><a id="mainstream-os"></a> Mainstream OS</dt>
-<dd>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a id="mainstream-os"></a> Mainstream OS
+</td>
+<td class="hdlist2">
 <p>Stands for commonly used Operating Systems (OS) such as Windows, Linux, Unix, OS-X</p>
-</dd>
-<dt class="hdlist1"><a id="regular-english-text"></a> Regular English Text</dt>
-<dd>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a id="regular-english-text"></a> Regular English Text
+</td>
+<td class="hdlist2">
 <p>Stands for text with ordinary english grammar structures and vocabulary generally used by the public.
 It excludes syntax related to programming and <a href="#system-administration">system administration</a>.</p>
-</dd>
-<dt class="hdlist1"><a id="system-administration"></a> System Administration</dt>
-<dd>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a id="system-administration"></a> System Administration
+</td>
+<td class="hdlist2">
 <p>Stands for the field of work in which someone manages one or more systems, be they software, hardware, servers or workstations
 with the goal of ensuring the systems are running efficiently and effectively.</p>
-</dd>
-</dl>
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="instructions-for-manual-testing"><a class="link" href="#instructions-for-manual-testing">Appendix F: Instructions for Manual Testing</a></h2>
+<h2 id="instructions-for-manual-testing"><a class="link" href="#instructions-for-manual-testing">Appendix F: Instructions for manual testing</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Given below are instructions to test the app manually.</p>
@@ -2318,7 +2573,7 @@ Expected: Transactions with the word 'Apple' in its <code><strong>Remark</strong
 <div class="olist lowerroman">
 <ol class="lowerroman" type="i">
 <li>
-<p><code>delete 1</code></p>
+<p><code>delete i/1</code></p>
 </li>
 <li>
 <p><code>undo</code></p>
@@ -2511,4 +2766,4 @@ Expected: Syntax of the <code>delete</code> command is shown in the status messa
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-22 04:23:30 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-22 09:21:13 UTC</div></div></div></body></html>
