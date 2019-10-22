@@ -312,9 +312,9 @@ image::tag-untag/TagUntagTransactionWoTag.png[]
 Step 2. The user executes the command **tag i/1 t/Delicious** to tag the `**Transaction**` at `**Index**` 1 with the `**Tag**` "Delicious". The input is checked with a `**TagCommandParser**` parser and an attempt to parse each parameter occurs:
 
 * `**Index**` is parsed by `ParserUtil#parseIndex(String)`
-* `**Tag**` strings are parsed by `ParserUtil#parseTags(Collection<String>)` which calls `ParserUtil#parseTag(String)` iteratively for every string in the collection.
+* `**Tag**` strings are parsed by `ParserUtil#parseTags(Collection<String>)` which calls `ParserUtil#parseTag(String)` iteratively for every string in the collection
 
-TIP: `**ParserUtil**` is a class that contains useful functions for parsing the inputs from the user
+TIP: `**ParserUtil**` is a class that contains useful functions for parsing the inputs from the user.
 
 [NOTE]
 Tags that already exist inside the specified `**Transaction**` will be ignored, and if that results in no tags being updated, an error will be shown to the user.
@@ -323,10 +323,10 @@ Since the user input is valid, a `**TagCommand**` command object is created and 
 
 image::tag-untag/TagUntagTransactionWTag.png[]
 
-Step 3. The user realises that the **Tag** added was not appropriate. The user then executes the command **untag i/1 t/Delicious** to untag the `**Tag**` "Delicious" from the `**Transaction**` at `**Index**` 1. The input is now checked with a `**UntagCommandParser**` parser and similarly, an attempt to parse each parameter occurs.
+Step 3. The user realises that the `**Tag**` added was not appropriate. The user then executes the command **untag i/1 t/Delicious** to untag the `**Tag**` "Delicious" from the `**Transaction**` at `**Index**` 1. The input is now checked with a `**UntagCommandParser**` parser and similarly, an attempt to parse each parameter occurs.
 
 * `**Index**` is parsed by `ParserUtil#parseIndex(String)`
-* `**Tag**` strings are parsed by `ParserUtil#parseTags(Collection<String>)` which calls `ParserUtil#parseTag(String)` iteratively for every string in the collection.
+* `**Tag**` strings are parsed by `ParserUtil#parseTags(Collection<String>)` which calls `ParserUtil#parseTag(String)` iteratively for every string in the collection
 
 [NOTE]
 Tags that do not exist inside the specified `**Transaction**` will be ignored, and if that results in no tags being updated, an error will be shown to the user.
