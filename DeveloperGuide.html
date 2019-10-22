@@ -35,7 +35,7 @@
 <li><a href="#implementation">4. Implementation</a>
 <ul class="sectlevel2">
 <li><a href="#adding-transactions">4.1. Adding transactions</a></li>
-<li><a href="#tagging-untagging-transactions">4.2. Tagging/Untagging transactions</a></li>
+<li><a href="#tag-untag-feature">4.2. Tag/Untag feature</a></li>
 <li><a href="#updating-transactions">4.3. Updating transactions</a></li>
 <li><a href="#undo-redoing-undoable-commands">4.4. Undo/Redoing undoable commands</a></li>
 <li><a href="#proposed-undo-redo-feature">4.5. [Proposed] Undo/Redo feature</a></li>
@@ -650,8 +650,236 @@ are applied when restoring <code><strong>THRIFT</strong></code> data from the da
 </div>
 </div>
 <div class="sect2">
-<h3 id="tagging-untagging-transactions"><a class="link" href="#tagging-untagging-transactions">4.2. Tagging/Untagging transactions</a></h3>
-
+<h3 id="tag-untag-feature"><a class="link" href="#tag-untag-feature">4.2. Tag/Untag feature</a></h3>
+<div class="sect3">
+<h4 id="implementation-3"><a class="link" href="#implementation-3">4.2.1. Implementation</a></h4>
+<div class="paragraph">
+<p>The <strong>tag</strong>/<strong>untag</strong> command performs modifications on existing <code><strong>Transaction</strong></code> entries. Due to polymorphism, both <strong>Expense</strong>` and <code><strong>Income</strong></code> objects extends the abstract class <code><strong>Transaction</strong></code>, and are treated the same way in the context of the <strong>tag</strong>/<strong>untag</strong> command.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/Polymorphism.png" alt="Polymorphism">
+</div>
+<div class="title">Figure 11. A Class Diagram illustrating the implementation of Tags inside a Transaction</div>
+</div>
+<div class="paragraph">
+<p>Due to the usage of  polymorphism, many of the driver functions in <code>THRIFT</code> uses <code>Transaction</code> for both <code>Expense</code>
+and <code>Income</code> objects. For example, when tagging a new <code>Expense</code>/<code>Income</code>, the <code>TagCommandParser</code> will treat them as the same object:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/TagSequence.png" alt="TagSequence">
+</div>
+<div class="title">Figure 12. An Sequence Diagram showing how the TagCommandParser is called</div>
+</div>
+<div class="paragraph">
+<p>When a user enters a <strong>tag</strong>/<strong>untag</strong> command, it is parsed by the respective <code>TagCommandParser#parse(String args)</code> and <code>UntagCommandParser#parse(String args)</code> parsers and returns a <code><strong>TagCommand</strong></code> command object or a <code><strong>UntagCommand</strong></code> command object  respectively, which will be executed. For both commands, the following conditions will cause a <code><strong>ParseException</strong></code> to be thrown by their respective parsers:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Missing parameters</p>
+</li>
+<li>
+<p>Incorrect syntax (i.e. missing prefix, if it is required)</p>
+</li>
+<li>
+<p>Illegal values in parameters (i.e. special characters and symbols entered for an integer-only field)</p>
+</li>
+<li>
+<p>Multiple occurrences of parameters which only expects a single entry</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the user input is incorrect due to any of the reasons above, the corresponding usage syntax will be shown.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The following is an example on how a <code><strong>Tag</strong></code> is added and removed from a <code><strong>Transaction</strong></code>, with details on the processes in the backend.</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user launches the application with data from previous sessions. THRIFT contains only one <code><strong>Transaction</strong></code> containing no tags and the user is going to perform tagging and un-tagging operations on it.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/TagUntagTransactionWoTag.png" alt="TagUntagTransactionWoTag">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 2. The user executes the command <strong>tag i/1 t/Delicious</strong> to tag the <code><strong>Transaction</strong></code> at <code><strong>Index</strong></code> 1 with the <code><strong>Tag</strong></code> "Delicious". The input is checked with a <code><strong>TagCommandParser</strong></code> parser and an attempt to parse each parameter occurs:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code><strong>Index</strong></code> is parsed by <code>ParserUtil#parseIndex(String)</code></p>
+</li>
+<li>
+<p><code><strong>Tag</strong></code> strings are parsed by <code>ParserUtil#parseTags(Collection&lt;String&gt;)</code> which calls <code>ParserUtil#parseTag(String)</code> iteratively for every string in the collection</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<code><strong>ParserUtil</strong></code> is a class that contains useful functions for parsing the inputs from the user.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Tags that already exist inside the specified <code><strong>Transaction</strong></code> will be ignored, and if that results in no tags being updated, an error will be shown to the user.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Since the user input is valid, a <code><strong>TagCommand</strong></code> command object is created and executed. As a result, a copy of the <code><strong>Transaction</strong></code> object with the specified <code><strong>Tag</strong></code> inside replaces the original in the <code><strong>TransactionList</strong></code> at the same position.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/TagUntagTransactionWTag.png" alt="TagUntagTransactionWTag">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 3. The user realises that the <code><strong>Tag</strong></code> added was not appropriate. The user then executes the command <strong>untag i/1 t/Delicious</strong> to untag the <code><strong>Tag</strong></code> "Delicious" from the <code><strong>Transaction</strong></code> at <code><strong>Index</strong></code> 1. The input is now checked with a <code><strong>UntagCommandParser</strong></code> parser and similarly, an attempt to parse each parameter occurs.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code><strong>Index</strong></code> is parsed by <code>ParserUtil#parseIndex(String)</code></p>
+</li>
+<li>
+<p><code><strong>Tag</strong></code> strings are parsed by <code>ParserUtil#parseTags(Collection&lt;String&gt;)</code> which calls <code>ParserUtil#parseTag(String)</code> iteratively for every string in the collection</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Tags that do not exist inside the specified <code><strong>Transaction</strong></code> will be ignored, and if that results in no tags being updated, an error will be shown to the user.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Again, since the user input is valid, a <code><strong>UntagCommand</strong></code> command object is created and executed. As a result, a copy of the <code><strong>Transaction</strong></code> object without the specified <code><strong>Tag</strong></code> replaces the original in the <code><strong>TransactionList</strong></code> at the same position.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/TagUntagTransactionWoTag.png" alt="TagUntagTransactionWoTag">
+</div>
+</div>
+<div class="paragraph">
+<p>The following activity diagrams summarises what happens when the user executes a command to <strong>tag</strong> or <strong>untag</strong> a <code><strong>Transaction</strong></code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/TagActivity.png" alt="TagActivity">
+</div>
+<div class="title">Figure 13. Activity Diagram of the Tagging process</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/UntagActivity.png" alt="UntagActivity">
+</div>
+<div class="title">Figure 14. Activity Diagram of the Un-tagging process</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations-2"><a class="link" href="#design-considerations-2">4.2.2. Design Considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-mutability-of-code-strong-transaction-strong-code-objects"><a class="link" href="#aspect-mutability-of-code-strong-transaction-strong-code-objects">Aspect: Mutability of <code><strong>Transaction</strong></code> objects</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1: (current choice)</strong>: Create a copy of the <code><strong>Transaction</strong></code> object with modified tags and replace the original in the <code><strong>TransactionList</strong></code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Adheres to the Open-Closed principle of the SOLID design principles, guarantees the resultant <code><strong>Transaction</strong></code> to be as expected and not modified incorrectly during the <strong>tag</strong>/<strong>untag</strong> process.</p>
+</li>
+<li>
+<p>Cons: Creates a copy of the <code><strong>Transaction</strong></code> during the <strong>tag</strong>/<strong>untag</strong> process and increases the space complexity of the process.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2</strong>: Modify the <code><strong>Transaction</strong></code> object directly to modify tags.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Modifies the <code><strong>Transaction</strong></code> object in place, thus the space complexity of the process is constant.</p>
+</li>
+<li>
+<p>Cons: Violates the Open-Closed principle of the SOLID design principles, the <code><strong>Transaction</strong></code> object can be modified incorrectly during the <strong>tag</strong>/<strong>untag</strong> process.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Alternative 1 was chosen as we want to ensure the correctness of the <strong>tag</strong>/<strong>untag</strong> process.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="aspect-uniqueness-of-code-strong-tag-strong-code-objects-within-a-code-strong-transaction-strong-code"><a class="link" href="#aspect-uniqueness-of-code-strong-tag-strong-code-objects-within-a-code-strong-transaction-strong-code">Aspect: Uniqueness of <code><strong>Tag</strong></code> objects within a <code><strong>Transaction</strong></code></a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1:</strong> Do not check if the <code><strong>Tag</strong></code> objects exist(s) within a <code><strong>Transaction</strong></code> when adding <code><strong>Tag</strong></code> objects and implicitly allow duplicates.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Results in a simpler implementation of <strong>tag</strong> command, as there is no need to check for potential duplicates.</p>
+</li>
+<li>
+<p>Cons: Makes each tag less meaningful as they are not longer unique.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2: (current choice)</strong> Check if the <code><strong>Tag</strong></code> objects exist(s) within a <code><strong>Transaction</strong></code> when adding <code><strong>Tag</strong></code> objects, explicitly prevent duplicates.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Makes each tag more meaningful as they are unique.</p>
+</li>
+<li>
+<p>Cons: Results in a more complex implementation of the <strong>tag</strong> command, as there is a need to check for potential duplicates.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="updating-transactions"><a class="link" href="#updating-transactions">4.3. Updating transactions</a></h3>
@@ -707,7 +935,7 @@ Undoable commands are <strong>add_expense</strong>, <strong>add_income</strong>,
 <strong>undo</strong>.</p>
 </div>
 <div class="sect3">
-<h4 id="implementation-3"><a class="link" href="#implementation-3">4.4.1. Implementation</a></h4>
+<h4 id="implementation-4"><a class="link" href="#implementation-4">4.4.1. Implementation</a></h4>
 <div class="paragraph">
 <p>The below scenario illustrates how undo and redo feature works:</p>
 </div>
@@ -766,7 +994,7 @@ The <code><strong>UndoCommand</strong></code> invokes the method <code>Model#get
 <div class="content">
 <img src="images/UndoAndRedo/UndoAddExpenseSequenceDiagram.png" alt="UndoAddExpenseSequenceDiagram">
 </div>
-<div class="title">Figure 11. Sequence diagram of how <strong>undo</strong> command is applied at the back-end</div>
+<div class="title">Figure 15. Sequence diagram of how <strong>undo</strong> command is applied at the back-end</div>
 </div>
 <div class="paragraph">
 <p>Step 6. The user executes <strong>redo</strong> to add Laksa back to <code><strong>TransactionList</strong></code>.
@@ -797,7 +1025,7 @@ All commands stored in <code>RedoStack</code> are purged when the user executes 
 <div class="content">
 <img src="images/UndoAndRedo/RedoAddExpenseSequenceDiagram.png" alt="RedoAddExpenseSequenceDiagram">
 </div>
-<div class="title">Figure 12. Sequence diagram of how <strong>redo</strong> command is applied at the back-end</div>
+<div class="title">Figure 16. Sequence diagram of how <strong>redo</strong> command is applied at the back-end</div>
 </div>
 <div class="paragraph">
 <p>The following activity diagram shows what happens if the user executes a command:</p>
@@ -806,11 +1034,11 @@ All commands stored in <code>RedoStack</code> are purged when the user executes 
 <div class="content">
 <img src="images/UndoAndRedo/RunCommandActivityDiagrams.png" alt="RunCommandActivityDiagrams">
 </div>
-<div class="title">Figure 13. Activity diagram of the command execution.</div>
+<div class="title">Figure 17. Activity diagram of the command execution.</div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-2"><a class="link" href="#design-considerations-2">4.4.2. Design considerations</a></h4>
+<h4 id="design-considerations-3"><a class="link" href="#design-considerations-3">4.4.2. Design considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-data-structure-used-to-keep-track-of-undoable-command"><a class="link" href="#aspect-data-structure-used-to-keep-track-of-undoable-command">Aspect: Data structure used to keep track of undoable command</a></h5>
 <div class="ulist">
@@ -991,7 +1219,7 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-3"><a class="link" href="#design-considerations-3">4.5.2. Design Considerations</a></h4>
+<h4 id="design-considerations-4"><a class="link" href="#design-considerations-4">4.5.2. Design Considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-how-undo-redo-executes"><a class="link" href="#aspect-how-undo-redo-executes">Aspect: How undo &amp; redo executes</a></h5>
 <div class="ulist">
@@ -2767,4 +2995,4 @@ Expected: Syntax of the <code>delete</code> command is shown in the status messa
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-22 13:45:16 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-22 14:06:29 UTC</div></div></div></body></html>
