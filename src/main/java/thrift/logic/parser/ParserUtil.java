@@ -144,6 +144,7 @@ public class ParserUtil {
 
     /**
      * Checks if the currencies are valid
+     *
      * @param currencies The currencies
      * @return the same currencies (without modification)
      * @throws ParseException

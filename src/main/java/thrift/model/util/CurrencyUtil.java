@@ -63,19 +63,18 @@ public class CurrencyUtil {
      * to the currency specified in the input.
      *
      * @param currencyMappings Mapping of currency rates scaling from
-     *     {@link Value#DEFAULT_CURRENCY}.
+     * {@link Value#DEFAULT_CURRENCY}.
      * @param value Amount to convert.
      * @param currency Target currency to convert to.
      * @return Amount in target currency as a double.
      */
     public static double convertFromDefaultCurrency(Map<String, Double> currencyMappings, double value,
-            String currency) {
+                                                    String currency) {
         requireNonNull(currencyMappings);
         requireNonNull(value);
         requireNonNull(currency);
         if (currencyMappings.containsKey(currency.toUpperCase())) {
             return (value * currencyMappings.get(currency.toUpperCase()));
-            //return value;
         } else {
             return value;
         }
@@ -86,7 +85,7 @@ public class CurrencyUtil {
      * from the currency specified in the input.
      *
      * @param currencyMappings Mapping of currency rates scaling from
-     *     {@link Value#DEFAULT_CURRENCY}.
+     * {@link Value#DEFAULT_CURRENCY}.
      * @param value Amount to convert.
      * @param currency Target currency to convert from.
      * @return Amount in {@link Value#DEFAULT_CURRENCY} denomination as a double.
@@ -104,15 +103,16 @@ public class CurrencyUtil {
 
     /**
      * Converts input currency amount from {@code currencyFrom} to {@code currencyTo} via {@link Value#DEFAULT_CURRENCY}
+     *
      * @param currencyMappings Mapping of currency rates scaling from
-     *      *     {@link Value#DEFAULT_CURRENCY}.
+     * *     {@link Value#DEFAULT_CURRENCY}.
      * @param value Amount to convert
      * @param currencyFrom Target currency to convert from
      * @param currencyTo Target currency to convert to
      * @return Amount in {@code currencyTo} denomination as a double.
      */
     public static double convert(Map<String, Double> currencyMappings, double value,
-                 String currencyFrom, String currencyTo) {
+                                 String currencyFrom, String currencyTo) {
         requireNonNull(currencyMappings);
         requireNonNull(value);
         requireNonNull(currencyTo);

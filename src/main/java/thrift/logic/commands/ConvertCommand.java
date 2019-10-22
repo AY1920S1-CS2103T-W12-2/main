@@ -28,7 +28,7 @@ public class ConvertCommand extends NonScrollingCommand {
             + CliSyntax.PREFIX_CURRENCY + "MYR";
     public static final String CURRENCY_SOURCE_URL =
             "https://www.ecb.europa.eu/"
-            + "stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html";
+                    + "stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html";
     public static final String CURRENCY_SOURCE =
             "European Central Bank (" + CURRENCY_SOURCE_URL + ")";
     public static final String MESSAGE_CREDITS = "\nExchange rates sourced from " + CURRENCY_SOURCE + ".";
@@ -60,6 +60,7 @@ public class ConvertCommand extends NonScrollingCommand {
 
     /**
      * Generates the result message for conversions using instance variables
+     *
      * @return Result message for conversions
      */
     private String generateConvertResult() {
@@ -68,6 +69,7 @@ public class ConvertCommand extends NonScrollingCommand {
 
     /**
      * Generates the result message for conversions
+     *
      * @return Result message for conversions
      */
     public static String generateConvertResult(double amount, List<String> currencies) {

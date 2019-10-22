@@ -44,8 +44,8 @@ public class ConvertCommandParser implements Parser<ConvertCommand> {
         } catch (ParseException pe) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT_WITH_PE,
-                    ConvertCommand.MESSAGE_USAGE,
-                    pe.getMessage()), pe);
+                            ConvertCommand.MESSAGE_USAGE,
+                            pe.getMessage()), pe);
         }
 
         return new ConvertCommand(value, currencies);
