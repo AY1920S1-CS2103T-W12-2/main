@@ -1,5 +1,7 @@
 package thrift.logic.commands;
 
+import static thrift.model.transaction.Value.DECIMAL_FORMATTER;
+
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +35,8 @@ public class ConvertCommand extends NonScrollingCommand {
             "European Central Bank (" + CURRENCY_SOURCE_URL + ")";
     public static final String MESSAGE_CREDITS = "\nExchange rates sourced from " + CURRENCY_SOURCE + ".";
 
-    public static final String MESSAGE_BASE_CURRENCY_FORMAT = "Converting from %1$S%2$.2f\n";
-    public static final String MESSAGE_TARGET_CURRENCY_FORMAT = "To %1$S: %1$S%2$.2f\n";
+    public static final String MESSAGE_BASE_CURRENCY_FORMAT = "Converting from %1$S%2$s\n";
+    public static final String MESSAGE_TARGET_CURRENCY_FORMAT = "To %1$S: %1$S%2$s\n";
 
     private double amount;
     private List<String> currencies;
@@ -76,7 +78,8 @@ public class ConvertCommand extends NonScrollingCommand {
         StringBuilder convertResultMsgSb = new StringBuilder();
         String baseCurrency = currencies.get(0);
 
-        convertResultMsgSb.append(String.format(MESSAGE_BASE_CURRENCY_FORMAT, baseCurrency, amount));
+        convertResultMsgSb.append(String.format(MESSAGE_BASE_CURRENCY_FORMAT, baseCurrency,
+                DECIMAL_FORMATTER.format(amount)));
 
         for (int i = 1; i < currencies.size(); i++) {
             Map<String, Double> currencyMap = CurrencyUtil.getCurrencyMap();
@@ -84,7 +87,8 @@ public class ConvertCommand extends NonScrollingCommand {
             String targetCurrency = currencies.get(i);
             double convertedValue = CurrencyUtil.convert(currencyMap, amount, baseCurrency, targetCurrency);
 
-            convertResultMsgSb.append(String.format(MESSAGE_TARGET_CURRENCY_FORMAT, targetCurrency, convertedValue));
+            convertResultMsgSb.append(String.format(MESSAGE_TARGET_CURRENCY_FORMAT, targetCurrency,
+                    DECIMAL_FORMATTER.format(convertedValue)));
         }
 
         convertResultMsgSb.append(MESSAGE_CREDITS);
