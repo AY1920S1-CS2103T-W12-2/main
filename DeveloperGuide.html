@@ -38,10 +38,11 @@
 <li><a href="#tag-untag-feature">4.2. Tag/Untag feature</a></li>
 <li><a href="#updating-transactions">4.3. Updating transactions</a></li>
 <li><a href="#undo-redoing-undoable-commands">4.4. Undo/Redoing undoable commands</a></li>
-<li><a href="#proposed-undo-redo-feature">4.5. [Proposed] Undo/Redo feature</a></li>
-<li><a href="#proposed-data-encryption">4.6. [Proposed] Data encryption</a></li>
-<li><a href="#logging">4.7. Logging</a></li>
-<li><a href="#Implementation-Configuration">4.8. Configuration</a></li>
+<li><a href="#filtering-transactions">4.5. Filtering Transactions</a></li>
+<li><a href="#proposed-undo-redo-feature">4.6. [Proposed] Undo/Redo feature</a></li>
+<li><a href="#proposed-data-encryption">4.7. [Proposed] Data encryption</a></li>
+<li><a href="#logging">4.8. Logging</a></li>
+<li><a href="#Implementation-Configuration">4.9. Configuration</a></li>
 </ul>
 </li>
 <li><a href="#documentation">5. Documentation</a></li>
@@ -1075,9 +1076,112 @@ All commands stored in <code>RedoStack</code> are purged when the user executes 
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-undo-redo-feature"><a class="link" href="#proposed-undo-redo-feature">4.5. [Proposed] Undo/Redo feature</a></h3>
+<h3 id="filtering-transactions"><a class="link" href="#filtering-transactions">4.5. Filtering Transactions</a></h3>
+<div class="paragraph">
+<p>The <strong>List</strong> command allows the user to bring up a list of <code><strong>Transactions</strong></code>, and filter it by month or by its tags.
+This feature is implemented by using a <code><strong>Predicate&lt;Transaction&gt;</strong></code> to filter the <code><strong>Transactions</strong></code> by month or tags.</p>
+</div>
 <div class="sect3">
-<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">4.5.1. Proposed Implementation</a></h4>
+<h4 id="implementation-5"><a class="link" href="#implementation-5">4.5.1. Implementation</a></h4>
+<div class="paragraph">
+<p><code><strong>ListCommand</strong></code> is instantiated by <code>ListCommandParser#parse(String args)</code>,
+which attempts to parse the various parameters supplied in <code>args</code> and return a <code><strong>ListCommand</strong></code> object.</p>
+</div>
+<div class="paragraph">
+<p>The following conditions will cause a <code><strong>ParseException</strong></code> to be thrown by the parser:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Incorrect syntax (i.e. having a prefix that does not refer to month nor tag)</p>
+</li>
+<li>
+<p>Illegal values in parameters (i.e. special characters and symbols entered for a integer-only field)</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the user input is incorrect due to any of the reasons above, the usage syntax will be shown.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The scenario below shows an example of how the feature works:</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user executes <strong>list m/jan</strong> to filter the list to bring up transactions of January.</p>
+</div>
+<div class="paragraph">
+<p>Step 2. The <code><strong>ListCommandParser</strong></code> will parse the arguments using the method <code>ListCommandParser#parse(String args)</code>.</p>
+</div>
+<div class="paragraph">
+<p>Step 3. Since user input is correct and the arguments have been parsed, a new <code><strong>ListCommand</strong></code> object will be created by the
+<code><strong>ListCommandParser</strong></code>.</p>
+</div>
+<div class="paragraph">
+<p>Step 4. This <code><strong>ListCommand</strong></code> object will contain a <code><strong>Predicate</strong></code> which is used to filter through each <code><strong>Transaction</strong></code>.</p>
+</div>
+<div class="paragraph">
+<p>Step 5. The final list of filtered transactions will be brought up.</p>
+</div>
+<div class="paragraph">
+<p>The activity diagram below will give an overview of what is happening when the command is executed.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/list/ListActivityDiagram.PNG" alt="ListActivityDiagram">
+</div>
+<div class="title">Figure 18. Activity diagram of the command execution.</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations-4"><a class="link" href="#design-considerations-4">4.5.2. Design Considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-using-code-strong-predicate-strong-code-to-improve-extendability-of-the-feature-in-the-future"><a class="link" href="#aspect-using-code-strong-predicate-strong-code-to-improve-extendability-of-the-feature-in-the-future">Aspect: Using <code><strong>Predicate</strong></code> to improve extendability of the feature in the future</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Create a new <code><strong>Predicate</strong></code> based on the arguments each time.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: The filter feature could be easily improved in the future to further accommodate new arguments other than month and tag.</p>
+</li>
+<li>
+<p>Cons: Not as easy to implement.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Use a fixed <code><strong>Predicate</strong></code> written beforehand to filter the list for each argument.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Straightforward to implement, a specific <code><strong>Predicate</strong></code> can be used for the specific argument.</p>
+</li>
+<li>
+<p>Cons: Not easily extendable as in the future if we want to filter by new arguments, we will have to write a new <code><strong>Predicate</strong></code> for each argument.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="proposed-undo-redo-feature"><a class="link" href="#proposed-undo-redo-feature">4.6. [Proposed] Undo/Redo feature</a></h3>
+<div class="sect3">
+<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">4.6.1. Proposed Implementation</a></h4>
 <div class="paragraph">
 <p>The undo/redo mechanism is facilitated by <code>VersionedAddressBook</code>.
 It extends <code>AddressBook</code> with an undo/redo history, stored internally as an <code>addressBookStateList</code> and <code>currentStatePointer</code>.
@@ -1219,7 +1323,7 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-4"><a class="link" href="#design-considerations-4">4.5.2. Design Considerations</a></h4>
+<h4 id="design-considerations-5"><a class="link" href="#design-considerations-5">4.6.2. Design Considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-how-undo-redo-executes"><a class="link" href="#aspect-how-undo-redo-executes">Aspect: How undo &amp; redo executes</a></h5>
 <div class="ulist">
@@ -1289,20 +1393,20 @@ If the <code>currentStatePointer</code> is at index <code>addressBookStateList.s
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">4.6. [Proposed] Data encryption</a></h3>
+<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">4.7. [Proposed] Data encryption</a></h3>
 <div class="paragraph">
 <p><em>{Explain here how the data encryption feature will be implemented}</em></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="logging"><a class="link" href="#logging">4.7. Logging</a></h3>
+<h3 id="logging"><a class="link" href="#logging">4.8. Logging</a></h3>
 <div class="paragraph">
 <p>We are using <code><strong>java.util.logging</strong></code> package for logging. The <code><strong>LogsCenter</strong></code> class is used to manage the logging levels and logging destinations:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 4.8, &#8220;Configuration&#8221;</a>)</p>
+<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 4.9, &#8220;Configuration&#8221;</a>)</p>
 </li>
 <li>
 <p>The <code><strong>Logger</strong></code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</p>
@@ -1334,7 +1438,7 @@ instead of just its size</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">4.8. Configuration</a></h3>
+<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">4.9. Configuration</a></h3>
 <div class="paragraph">
 <p>Certain properties of the application can be controlled (e.g user prefs file location, logging level) through the configuration file (default: <em>config.json</em>).</p>
 </div>
@@ -2995,4 +3099,4 @@ Expected: Syntax of the <code>delete</code> command is shown in the status messa
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-22 14:06:29 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-22 14:51:47 UTC</div></div></div></body></html>
