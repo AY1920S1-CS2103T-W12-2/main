@@ -1,0 +1,19 @@
+@startuml
+!include ../style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor MODEL_COLOR
+skinparam classBackgroundColor MODEL_COLOR
+show members
+
+class BudgetList {
+    <color:#white>List<Budget>
+}
+
+class Budget {
+    <color:#white>Calendar
+    <color:#white>BudgetValue
+}
+
+BudgetList *-> "*" Budget : > contains unique
+
+@enduml
