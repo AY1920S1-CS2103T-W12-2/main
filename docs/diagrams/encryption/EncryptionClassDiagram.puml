@@ -1,6 +1,6 @@
 @startuml
 !include ../style.puml
-!define KEYSTORE_COLOR #14FF1E
+!define KEYSTORE_COLOR #6AB441
 !define KEYSTORE_COLOR_T1 #DCFF81
 
 skinparam arrowThickness 1.1
