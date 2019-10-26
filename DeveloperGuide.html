@@ -35,12 +35,14 @@
 <li><a href="#implementation">4. Implementation</a>
 <ul class="sectlevel2">
 <li><a href="#adding-transactions">4.1. Adding transactions</a></li>
-<li><a href="#tag-untag-feature">4.2. Tag/Untag feature</a></li>
-<li><a href="#updating-transactions">4.3. Updating transactions</a></li>
-<li><a href="#undo-redoing-undoable-commands">4.4. Undo/Redoing undoable commands</a></li>
-<li><a href="#filtering-transactions">4.5. Filtering transactions</a></li>
-<li><a href="#logging">4.6. Logging</a></li>
-<li><a href="#Implementation-Configuration">4.7. Configuration</a></li>
+<li><a href="#setting-budgets">4.2. Setting budgets</a></li>
+<li><a href="#tag-untag-feature">4.3. Tag/Untag feature</a></li>
+<li><a href="#updating-transactions">4.4. Updating transactions</a></li>
+<li><a href="#undo-redoing-undoable-commands">4.5. Undo/Redoing undoable commands</a></li>
+<li><a href="#filtering-transactions">4.6. Filtering transactions</a></li>
+<li><a href="#proposed-data-encryption">4.7. [Proposed] Data encryption</a></li>
+<li><a href="#logging">4.8. Logging</a></li>
+<li><a href="#Implementation-Configuration">4.9. Configuration</a></li>
 </ul>
 </li>
 <li><a href="#documentation">5. Documentation</a></li>
@@ -54,7 +56,7 @@
 <li><a href="#instructions-for-manual-testing">Appendix F: Instructions for manual testing</a>
 <ul class="sectlevel2">
 <li><a href="#launching-and-shutting-down">F.1. Launching and shutting down</a></li>
-<li><a href="#setting-the-monthly-budget">F.2. Setting the monthly budget</a></li>
+<li><a href="#setting-a-monthly-budget">F.2. Setting a monthly budget</a></li>
 <li><a href="#adding-a-transaction">F.3. Adding a transaction</a></li>
 <li><a href="#deleting-a-transaction">F.4. Deleting a transaction</a></li>
 <li><a href="#updating-a-transaction-s-details">F.5. Updating a transaction&#8217;s details</a></li>
@@ -112,7 +114,15 @@ The technical aspects include the design and architecture while the non-technica
 </tr>
 <tr>
 <td class="hdlist1">
-<code>Description</code>
+<em>/src/java/thrift/logic/Logic.java</em>
+</td>
+<td class="hdlist2">
+<p>Italic text indicates that it is a file path.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<code>currentMonth</code>
 </td>
 <td class="hdlist2">
 <p>Text with grey highlight (called a mark-up) indicates that it is a method/variable name.</p>
@@ -142,16 +152,32 @@ The technical aspects include the design and architecture while the non-technica
 <div class="sect1">
 <h2 id="design"><a class="link" href="#design">3. Design</a></h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>In this section, we will be introducing the individual components that combine together to form <code><strong>THRIFT</strong></code>. We will be including diagrams
+drawn with the PlantUML software.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+There is a limitation with PlantUML sequence diagrams whereby the participation line of a member does not terminate after it is destroyed.
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
 <h3 id="Design-Architecture"><a class="link" href="#Design-Architecture">3.1. Architecture</a></h3>
 <div class="imageblock">
 <div class="content">
 <img src="images/ArchitectureDiagram.png" alt="ArchitectureDiagram">
 </div>
-<div class="title">Figure 1. Architecture Diagram</div>
+<div class="title">Figure 1. Architecture diagram</div>
 </div>
 <div class="paragraph">
-<p>The architecture diagram given above explains the high-level design of the application. Given below is a quick overview of each component.</p>
+<p>The architecture diagram given above explains the high-level design of the application. We provide a quick overview of each component below.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -167,7 +193,7 @@ Refer to the <a href="UsingPlantUml.html">Using PlantUML guide</a> to learn how 
 </table>
 </div>
 <div class="paragraph">
-<p><code>Main</code> has two classes called <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/Main.java"><code>Main</code></a> and <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/MainApp.java"><code>MainApp</code></a>. It is responsible for:</p>
+<p><code><strong>Main</strong></code> has two classes called <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/Main.java"><code><strong>Main</strong></code></a> and <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/MainApp.java"><code><strong>MainApp</strong></code></a>. It is responsible for:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -180,7 +206,7 @@ Refer to the <a href="UsingPlantUml.html">Using PlantUML guide</a> to learn how 
 </ul>
 </div>
 <div class="paragraph">
-<p><a href="#Design-Commons"><strong><code>Commons</code></strong></a> represents a collection of classes used by multiple other components.
+<p><a href="#Design-Commons"><code><strong>Commons</strong></code></a> represents a collection of classes used by multiple other components.
 The following class plays an important role at the architecture level:</p>
 </div>
 <div class="ulist">
@@ -196,16 +222,16 @@ The following class plays an important role at the architecture level:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="#Design-Ui"><strong><code>UI</code></strong></a>: Displays the UI of the application.</p>
+<p><a href="#Design-Ui"><code><strong>UI</strong></code></a>: Displays the UI of the application.</p>
 </li>
 <li>
-<p><a href="#Design-Logic"><strong><code>Logic</code></strong></a>: Executes the various commands.</p>
+<p><a href="#Design-Logic"><code><strong>Logic</strong></code></a>: Executes the various commands.</p>
 </li>
 <li>
-<p><a href="#Design-Model"><strong><code>Model</code></strong></a>: Holds the data of the application in-memory.</p>
+<p><a href="#Design-Model"><code><strong>Model</strong></code></a>: Holds the data of the application in-memory.</p>
 </li>
 <li>
-<p><a href="#Design-Storage"><strong><code>Storage</code></strong></a>: Reads data from, and writes data to, the hard disk.</p>
+<p><a href="#Design-Storage"><code><strong>Storage</strong></code></a>: Reads data from, and writes data to, the hard disk.</p>
 </li>
 </ul>
 </div>
@@ -215,7 +241,7 @@ The following class plays an important role at the architecture level:</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Defines its <em>API</em> in an interface with the same name as the component.</p>
+<p>Defines its API in an interface with the same name as the component.</p>
 </li>
 <li>
 <p>Exposes its functionality using a <code><strong>{Component Name}Manager</strong></code> class.</p>
@@ -223,17 +249,17 @@ The following class plays an important role at the architecture level:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>For example, the <code><strong>Logic</strong></code> component (see the class diagram given below) defines it&#8217;s API in the <em>Logic.java</em> interface and exposes its functionality using the <em>LogicManager.java</em> class.</p>
+<p>For example, the <code><strong>Logic</strong></code> component (see the class diagram given below) defines its API in the <em>Logic.java</em> interface and exposes its functionality using the <em>LogicManager.java</em> class.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/LogicClassDiagramv1.png" alt="LogicClassDiagramv1">
 </div>
-<div class="title">Figure 2. Class Diagram of the Logic Component</div>
+<div class="title">Figure 2. Class diagram of the <code><strong>Logic</strong></code> component</div>
 </div>
 <h4 id="how-the-architecture-components-interact-with-each-other" class="discrete">How the architecture components interact with each other</h4>
 <div class="paragraph">
-<p>The <em>Sequence Diagram</em> below shows how the components interact with each other for the scenario where the user issues the command <strong>delete i/1</strong>.</p>
+<p>The sequence diagram below shows how the components interact with each other for the scenario where the user issues the command: <strong>delete i/1</strong>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -251,19 +277,19 @@ The following class plays an important role at the architecture level:</p>
 <div class="content">
 <img src="images/UiClassDiagram.png" alt="UiClassDiagram">
 </div>
-<div class="title">Figure 4. Structure of the UI Component</div>
+<div class="title">Figure 4. Structure of the <code><strong>UI</strong></code> component</div>
 </div>
 <div class="paragraph">
-<p><strong>API</strong> : <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/ui/Ui.java"><code>Ui.java</code></a></p>
+<p>API : <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/ui/Ui.java"><code><em>Ui.java</em></code></a></p>
 </div>
 <div class="paragraph">
 <p>The UI consists of a <code><strong>MainWindow</strong></code> that is made up of parts e.g.<code><strong>BalanceBar</strong></code>, <code><strong>CommandBox</strong></code>, <code><strong>ResultDisplay</strong></code>, <code><strong>TransactionListPanel</strong></code>, <code><strong>StatusBarFooter</strong></code> etc. All these, including the <code><strong>MainWindow</strong></code>, inherit from the abstract <code><strong>UiPart</strong></code> class.</p>
 </div>
 <div class="paragraph">
-<p>The <code><strong>UI</strong></code> component uses JavaFx UI framework. The layout of these UI parts are defined in matching <em>.fxml</em> files that are in the <em>src/main/resources/view</em> folder. For example, the layout of the <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/ui/MainWindow.java"><strong><code>MainWindow</code></strong></a> is specified in <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/resources/view/MainWindow.fxml"><code><strong>MainWindow.fxml</strong></code></a></p>
+<p>The <code><strong>UI</strong></code> component uses JavaFx UI framework. The layout of these UI parts are defined in matching <em>.fxml</em> files that are in the <em>src/main/resources/view</em> folder. For example, the layout of the <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/ui/MainWindow.java"><code><strong>MainWindow</strong></code></a> is specified in <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/resources/view/MainWindow.fxml"><code><strong>MainWindow.fxml</strong></code></a></p>
 </div>
 <div class="paragraph">
-<p>The <code><strong>UI</strong></code> component,</p>
+<p>The <code><strong>UI</strong></code> component does the following actions:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -282,16 +308,19 @@ The following class plays an important role at the architecture level:</p>
 <div class="content">
 <img src="images/LogicClassDiagramv1.png" alt="LogicClassDiagramv1">
 </div>
-<div class="title">Figure 5. Structure of the Logic Component</div>
+<div class="title">Figure 5. Structure of the <code><strong>Logic</strong></code> component</div>
 </div>
 <div class="paragraph">
-<p><strong>API</strong> :
-<a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/logic/Logic.java"><code>Logic.java</code></a></p>
+<p>API : <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/logic/Logic.java"><code><em>Logic.java</em></code></a></p>
+</div>
+<div class="paragraph">
+<p><code><strong>Logic</strong></code> is an interface where <code><strong>LogicManager</strong></code> implements, allowing access to the API. The following items are examples on how the <code><strong>LogicManager</strong></code>
+class can be interacted with:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><code><strong>Logic</strong></code> uses the <code><strong>ThriftParser</strong></code> class to parse the user command.</p>
+<p><code><strong>LogicManager</strong></code> uses the <code><strong>ThriftParser</strong></code> class to parse the user command.</p>
 </li>
 <li>
 <p>This results in a <code><strong>Command</strong></code> object which is executed by the <code><strong>LogicManager</strong></code>.</p>
@@ -308,13 +337,13 @@ The following class plays an important role at the architecture level:</p>
 </ol>
 </div>
 <div class="paragraph">
-<p>Given below is the Sequence Diagram for interactions within the <code><strong>Logic</strong></code> component for the <strong>execute("delete i/1")</strong> API call.</p>
+<p>Given below is the sequence diagram for interactions within the <code><strong>Logic</strong></code> component for the <strong>execute("delete i/1")</strong> API call.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/DeleteSequenceDiagram.png" alt="DeleteSequenceDiagram">
 </div>
-<div class="title">Figure 6. Interactions Inside the Logic Component for the <code>delete i/1</code> Command</div>
+<div class="title">Figure 6. Interactions inside the <code><strong>Logic</strong></code> component for the <code>delete i/1</code> command</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -335,10 +364,10 @@ The lifeline for <code>DeleteCommandParser</code> should end at the destroy mark
 <div class="content">
 <img src="images/ModelClassDiagram.png" alt="628" width="600">
 </div>
-<div class="title">Figure 7. Structure of the Model Component</div>
+<div class="title">Figure 7. Structure of the <code><strong>Model</strong></code> component</div>
 </div>
 <div class="paragraph">
-<p><strong>API</strong> : <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/model/Model.java"><code>Model.java</code></a></p>
+<p><strong>API</strong> : <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/model/Model.java"><code><em>Model.java</em></code></a></p>
 </div>
 <div class="paragraph">
 <p>The <code><strong>Model</strong></code>,</p>
@@ -386,13 +415,13 @@ As a more OOP model, we can store a <code>Tag</code> list in <code><strong>THRIF
 <div class="content">
 <img src="images/StorageClassDiagram.png" alt="StorageClassDiagram">
 </div>
-<div class="title">Figure 8. Structure of the Storage Component</div>
+<div class="title">Figure 8. Structure of the <code><strong>Storage</strong></code> component</div>
 </div>
 <div class="paragraph">
-<p><strong>API</strong> : <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/storage/Storage.java"><code>Storage.java</code></a></p>
+<p>API : <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/src/main/java/thrift/storage/Storage.java"><code><em>Storage.java</em></code></a></p>
 </div>
 <div class="paragraph">
-<p>The <code>Storage</code> component,</p>
+<p>The <code><strong>Storage</strong></code> component,</p>
 </div>
 <div class="ulist">
 <ul>
@@ -430,16 +459,26 @@ As a more OOP model, we can store a <code>Tag</code> list in <code><strong>THRIF
 <h2 id="implementation"><a class="link" href="#implementation">4. Implementation</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This section describes some noteworthy details on how certain features are implemented.</p>
+<p>This section describes some noteworthy details on how we implemented certain features and various considerations
+that we had.</p>
 </div>
 <div class="sect2">
 <h3 id="adding-transactions"><a class="link" href="#adding-transactions">4.1. Adding transactions</a></h3>
+<div class="paragraph">
+<p>We allow users to add <code><strong>Expense</strong></code>/<code><strong>Income</strong></code> transactions into <code><strong>THRIFT</strong></code> which enables record-keeping. This section will show how we handle such
+requests from the user at the back-end.</p>
+</div>
 <div class="sect3">
 <h4 id="implementation-2"><a class="link" href="#implementation-2">4.1.1. Implementation</a></h4>
 <div class="paragraph">
-<p>The <strong>add_expense</strong>/<strong>add_income</strong> feature is implemented through polymorphism. <code><strong>Expense</strong></code> and <code><strong>Income</strong></code> are both subclasses of the abstract class <code>Transaction</code>.
-Each <code><strong>Transaction</strong></code> contains the following mandatory fields: <code>Description</code>, <code>TransactionDate</code> and <code>Value</code>; as well as optional fields: <code>Remark</code>,
-and <code>Set&lt;Tag&gt;</code>.</p>
+<p>We store every single <code><strong>Transaction</strong></code> added by the user into <code><strong>ObservableList&lt;Transaction&gt;</strong></code>, which is a list object in <code><strong>TransactionList</strong></code>. This list gets updated whenever the user
+adds, updates or removes a <code><strong>Transaction</strong></code> from it. We used an <code><strong>ObservableList</strong></code> because whenever there are changes to the list, any other component
+of <code><strong>THRIFT</strong></code> using it will automatically reflect its changes.</p>
+</div>
+<div class="paragraph">
+<p>We implemented adding a <code><strong>Transaction</strong></code> through the following commands: <strong>add_expense</strong>/<strong>add_income</strong>. This adding process leverages on polymorphism: <code><strong>Expense</strong></code> and <code><strong>Income</strong></code> are both subclasses of the abstract class <code><strong>Transaction</strong></code>.
+Each <code><strong>Transaction</strong></code> contains the following mandatory fields: <code><strong>Description</strong></code>, <code><strong>TransactionDate</strong></code> and <code><strong>Value</strong></code>; as well as optional fields: <code><strong>Remark</strong></code>,
+and <code><strong>Set&lt;Tag&gt;</strong></code>. The following class diagram depicts this relation:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -447,9 +486,9 @@ and <code>Set&lt;Tag&gt;</code>.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Because of this polymorphism relation, many of the driver functions in <code>THRIFT</code> simply references <code>Transaction</code> and it will work for both <code>Expense</code>
-and <code>Income</code> transaction objects. For example, when inserting a new <code>Expense</code>/<code>Income</code>, the <code>AddTransactionCommandParser</code> will determine
-which object to initialize:</p>
+<p>Because of this polymorphism relation, many of the driver functions in <code><strong>THRIFT</strong></code> simply references <code><strong>Transaction</strong></code> and it will work for both <code><strong>Expense</strong></code>
+and <code><strong>Income</strong></code> transaction objects. For example, when inserting a new <code><strong>Expense</strong></code>/<code><strong>Income</strong></code>, the <code><strong>AddTransactionCommandParser</strong></code> will determine
+which object to initialize. The sequence diagram below shows how adding a <code><strong>Transaction</strong></code> work in the back-end:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -491,10 +530,10 @@ If the user input is incorrect due to any of the reasons above, the usage syntax
 </table>
 </div>
 <div class="paragraph">
-<p>Below is a given example on how a <code><strong>Transaction</strong></code> is added into <code><strong>THRIFT</strong></code> and how the back-end handles each step of the process:</p>
+<p>We will demonstrate how a <code><strong>Transaction</strong></code> is added into <code><strong>THRIFT</strong></code> and how the back-end handles each step of the process:</p>
 </div>
 <div class="paragraph">
-<p>Step 1. The user launches the application for the first time. THRIFT does not contain any other <code><strong>Transaction</strong></code> and the user is
+<p>Step 1. The user launches the application for the first time. <code><strong>THRIFT</strong></code> does not contain any other <code><strong>Transaction</strong></code> and the user is
 about to add their own. An empty transaction list is initialized.</p>
 </div>
 <div class="imageblock">
@@ -520,11 +559,11 @@ The input is now checked and an attempt to parse each parameter occurs:</p>
 </li>
 </ul>
 </div>
-<div class="admonitionblock tip">
+<div class="admonitionblock note">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
+<i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
 <code><strong>ArgumentMultimap</strong></code> is a class that stores all the parsed parameters taken from the user input.
@@ -568,13 +607,17 @@ now contains 2 <code><strong>Transaction</strong></code> objects.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/add-transaction/AddTransactionSequence.png" alt="AddTransactionSequence">
+<img src="images/add-transaction/AddTransactionActivity.png" alt="AddTransactionActivity" width="650">
 </div>
-<div class="title">Figure 10. Activity diagram of adding a transaction into the transaction list</div>
+<div class="title">Figure 10. Activity diagram of adding a <code><strong>Transaction</strong></code> into the transaction list</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="design-considerations"><a class="link" href="#design-considerations">4.1.2. Design considerations</a></h4>
+<div class="paragraph">
+<p>There are many different ways to implement how a transaction is added into <code><strong>THRIFT</strong></code>. In this section, we will be
+justifying why we chose to implement it the way we did.</p>
+</div>
 <div class="sect4">
 <h5 id="aspect-differentiating-between-code-strong-expense-strong-code-and-code-strong-income-strong-code"><a class="link" href="#aspect-differentiating-between-code-strong-expense-strong-code-and-code-strong-income-strong-code">Aspect: Differentiating between <code><strong>Expense</strong></code> and <code><strong>Income</strong></code></a></h5>
 <div class="ulist">
@@ -610,6 +653,10 @@ have very similar methods.</p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>Alternative 1 was chosen because we want to model it close to the real world: both <code><strong>Expense</strong></code> and <code><strong>Income</strong></code> are described
+as being a <code><strong>Transaction</strong></code>.</p>
+</div>
 </div>
 <div class="sect4">
 <h5 id="aspect-managing-how-code-strong-value-strong-code-is-stored-and-handled-in-code-strong-expense-strong-code-and-code-strong-income-strong-code"><a class="link" href="#aspect-managing-how-code-strong-value-strong-code-is-stored-and-handled-in-code-strong-expense-strong-code-and-code-strong-income-strong-code">Aspect: Managing how <code><strong>Value</strong></code> is stored and handled in <code><strong>Expense</strong></code> and <code><strong>Income</strong></code></a></h5>
@@ -625,7 +672,7 @@ for both <code><strong>Expense</strong></code> and <code><strong>Income</strong>
 are applied when restoring <code><strong>THRIFT</strong></code> data from the data file.</p>
 </li>
 <li>
-<p>Cons: Requires the developer to negate the <code><strong>Value</strong></code> whenever calculations are done with a <code><strong>Expense</strong></code> object.</p>
+<p>Cons: Requires the developer to manually negate the <code><strong>Value</strong></code> whenever calculations are done with a <code><strong>Expense</strong></code> object.</p>
 </li>
 </ul>
 </div>
@@ -645,13 +692,173 @@ are applied when restoring <code><strong>THRIFT</strong></code> data from the da
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>Alternative 1 was chosen because we want to keep the transaction list "clean" - only positive integers are stored.</p>
+</div>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="tag-untag-feature"><a class="link" href="#tag-untag-feature">4.2. Tag/Untag feature</a></h3>
+<h3 id="setting-budgets"><a class="link" href="#setting-budgets">4.2. Setting budgets</a></h3>
+<div class="paragraph">
+<p>We allow the user to maintain a <code><strong>Budget</strong></code> for each calendar month. This section details how <code><strong>THRIFT</strong></code> handles
+requests made by the user who is trying to set a budget for their desired month. Each <code><strong>Budget</strong></code> stores a <code><strong>Calendar</strong></code> attribute <code>period</code>
+and a <code><strong>BudgetValue</strong></code> attribute <code>value</code>. The following class diagram shows how a <code><strong>Budget</strong></code> object looks like:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/add-budget/BudgetClassDiagram.png" alt="BudgetClassDiagram">
+</div>
+</div>
 <div class="sect3">
 <h4 id="implementation-3"><a class="link" href="#implementation-3">4.2.1. Implementation</a></h4>
+<div class="paragraph">
+<p>We store every <code><strong>Budget</strong></code> set by the user into <code><strong>BudgetList</strong></code>, which is a class containing a <code><strong>List</strong></code> object named <code>internalList</code>.
+This list will contain only one <code><strong>Budget</strong></code> object for each month, with the month uniqueness indicated by <code>period</code> in the "MM/YYYY" format.
+Below is a class diagram explaining how the relations look:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/add-budget/BudgetListClassDiagram.png" alt="BudgetListClassDiagram">
+</div>
+</div>
+<div class="paragraph">
+<p>Whenever the user attempts to set a <code><strong>Budget</strong></code>, <code><strong>THRIFT</strong></code> will check if that <code><strong>Budget</strong></code> currently exists in <code>internalList</code>.
+To facilitate the checking, <code><strong>BudgetList</strong></code> contains a few methods that simplify the process:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>BudgetList#getBudgetForMonthYear(Calendar toCheck)</code> - Checks if <code>toCheck</code> matches any of the <code>period</code> from a <code><strong>Budget</strong></code> in <code>internalList</code>.</p>
+</li>
+<li>
+<p><code>BudgetList#setBudget(Budget toSet)</code> - Adds <code>toSet</code> into <code>internalList</code>, possibly overwriting a <code><strong>Budget</strong></code> in <code>internalList</code> if its <code>period</code> matches the <code>period</code> in <code>toSet</code>.</p>
+</li>
+<li>
+<p><code>BudgetList#removeBudget(Budget toRemove)</code> - Removes <code>toRemove</code> from <code>internalList</code>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>We will demonstrate what happens at the back-end whenever the user sets a budget and overwrites it afterwards. The user has not set any <code><strong>Budget</strong></code>
+before, so <code>internalList</code> is empty:</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user wishes to set their budget for October 2019 as $1500. They execute the command: <strong>budget v/1500 d/10/2019</strong>.
+The user&#8217;s entry is checked by <code>BudgetCommandParser#parse()</code> and an attempt to parse each parameter occurs:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code><strong>Calendar</strong></code> is parsed by <code>ParseUtil#parseDate(ArgumentMultimap)</code></p>
+</li>
+<li>
+<p><code><strong>BudgetValue</strong></code> is parsed by <code>ParseUtil#parseBudgetValue(ArgumentMultimap)</code></p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code><strong>ArgumentMultimap</strong></code> is a class that stores all the parsed parameters taken from the user input.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Since the user input is valid, the <code><strong>Budget</strong></code> is successfully created and inserted into <code>internalList</code>.</p>
+</div>
+<div class="paragraph">
+<p>Step 2. The user wishes to set a new budget for October 2019 as $2000. They execute the command: <strong>budget v/2000 d/10/2019</strong>.
+The user&#8217;s entry is once again checked to be valid and a new <code><strong>Budget</strong></code> is created. Before it is inserted into
+<code>internalList</code>, a check to see if a budget is already set for that month will occur. Since there is already a
+budget set for October 2019, the existing budget is replaced by this newly created <code><strong>Budget</strong></code>.</p>
+</div>
+<div class="paragraph">
+<p>The following code snippet is part of <code>BudgetList#setBudget(Budget toSet)</code> and demonstrates how this checking is done:</p>
+</div>
+<div class="listingblock">
+<div class="title">BudgetList.java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">// The following variable is declared above:</span>
+<span class="comment">// List&lt;Budget&gt; internalList = new ArrayList&lt;&gt;();</span>
+
+Optional&lt;Budget&gt; optBudget = getBudgetForMonthYear(toSet.getBudgetDate());
+<span class="keyword">if</span> (optBudget.isPresent()) {
+    Budget existingBudget = optBudget.get();
+    internalList.set(internalList.indexOf(existingBudget), toSet);
+} <span class="keyword">else</span> {
+    internalList.add(toSet);
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The sequence diagram below depicts what was just elaborated:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/add-budget/BudgetSequenceDiagram.png" alt="BudgetSequenceDiagram">
+</div>
+<div class="title">Figure 11. Sequence diagram showing how a <code><strong>Budget</strong></code> is set</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations-2"><a class="link" href="#design-considerations-2">4.2.2. Design considerations</a></h4>
+<div class="paragraph">
+<p>We have considered various ways as to how <code><strong>Budget</strong></code> should be stored in <code><strong>THRIFT</strong></code>. In this section, we will explain the
+rationale on our course of actions.</p>
+</div>
+<div class="sect4">
+<h5 id="aspect-treat-code-strong-budget-strong-code-as-an-code-strong-income-strong-code-therefore-extending-from-code-strong-transaction-strong-code"><a class="link" href="#aspect-treat-code-strong-budget-strong-code-as-an-code-strong-income-strong-code-therefore-extending-from-code-strong-transaction-strong-code">Aspect: Treat <code><strong>Budget</strong></code> as an <code><strong>Income</strong></code>, therefore extending from <code><strong>Transaction</strong></code></a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> <code><strong>Budget</strong></code> should remain separate from <code><strong>Transaction</strong></code> as it can introduce unnecessary
+coupling. Budget does not need to contain <code><strong>Remark</strong></code> nor <code><strong>Tag</strong></code>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Freedom in dealing with <code><strong>Budget</strong></code> objects, no need to comply with <code><strong>Transaction</strong></code> attributes.</p>
+</li>
+<li>
+<p>Cons: Overhead in dealing with a separate list in <code><strong>Thrift</strong></code> class, ultimately requiring 2 lists to hold <code><strong>Transaction</strong></code>
+and <code><strong>Budget</strong></code> respectively.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Alternative 2: <code><strong>Budget</strong></code> should extend <code><strong>Transaction</strong></code> since it is somewhat a form of <code><strong>Income</strong></code>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Able to store <code><strong>Budget</strong></code> into <code><strong>TransactionList</strong></code>, resulting in only one list to manage. <code><strong>Budget</strong></code> can also
+be easily displayed as a <code><strong>Transaction</strong></code> card on the UI, reducing the need to handle a separate list.</p>
+</li>
+<li>
+<p>Cons: May cause possible complications to arise if the user wishes to set a different budget and the <code><strong>TransactionList</strong></code>
+is huge. <code><strong>THRIFT</strong></code> needs to look through the huge list to find the <code><strong>Budget</strong></code> to replace.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Again, we went with alternative 1 because we wanted to simulate the real-world relation. Otherwise, there might be confusion
+since <code><strong>Budget</strong></code> is not really related to <code><strong>Transaction</strong></code> in the real world.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tag-untag-feature"><a class="link" href="#tag-untag-feature">4.3. Tag/Untag feature</a></h3>
+<div class="sect3">
+<h4 id="implementation-4"><a class="link" href="#implementation-4">4.3.1. Implementation</a></h4>
 <div class="paragraph">
 <p>The <strong>tag</strong>/<strong>untag</strong> command performs modifications on existing <code><strong>Transaction</strong></code> entries. Due to polymorphism, both <strong>Expense</strong>` and <code><strong>Income</strong></code> objects extends the abstract class <code><strong>Transaction</strong></code>, and are treated the same way in the context of the <strong>tag</strong>/<strong>untag</strong> command.</p>
 </div>
@@ -659,7 +866,7 @@ are applied when restoring <code><strong>THRIFT</strong></code> data from the da
 <div class="content">
 <img src="images/tag-untag/Polymorphism.png" alt="Polymorphism">
 </div>
-<div class="title">Figure 11. A Class Diagram illustrating the implementation of Tags inside a Transaction</div>
+<div class="title">Figure 12. A Class Diagram illustrating the implementation of Tags inside a Transaction</div>
 </div>
 <div class="paragraph">
 <p>Due to the usage of  polymorphism, many of the driver functions in <code>THRIFT</code> uses <code>Transaction</code> for both <code>Expense</code>
@@ -669,7 +876,7 @@ and <code>Income</code> objects. For example, when tagging a new <code>Expense</
 <div class="content">
 <img src="images/tag-untag/TagSequence.png" alt="TagSequence">
 </div>
-<div class="title">Figure 12. An Sequence Diagram showing how the TagCommandParser is called</div>
+<div class="title">Figure 13. An Sequence Diagram showing how the TagCommandParser is called</div>
 </div>
 <div class="paragraph">
 <p>When a user enters a <strong>tag</strong>/<strong>untag</strong> command, it is parsed by the respective <code>TagCommandParser#parse(String args)</code> and <code>UntagCommandParser#parse(String args)</code> parsers and returns a <code><strong>TagCommand</strong></code> command object or a <code><strong>UntagCommand</strong></code> command object  respectively, which will be executed. For both commands, the following conditions will cause a <code><strong>ParseException</strong></code> to be thrown by their respective parsers:</p>
@@ -798,17 +1005,17 @@ Tags that do not exist inside the specified <code><strong>Transaction</strong></
 <div class="content">
 <img src="images/tag-untag/TagActivity.png" alt="TagActivity">
 </div>
-<div class="title">Figure 13. Activity Diagram of the Tagging process</div>
+<div class="title">Figure 14. Activity Diagram of the Tagging process</div>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/tag-untag/UntagActivity.png" alt="UntagActivity">
 </div>
-<div class="title">Figure 14. Activity Diagram of the Un-tagging process</div>
+<div class="title">Figure 15. Activity Diagram of the Un-tagging process</div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-2"><a class="link" href="#design-considerations-2">4.2.2. Design considerations</a></h4>
+<h4 id="design-considerations-3"><a class="link" href="#design-considerations-3">4.3.2. Design considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-mutability-of-code-strong-transaction-strong-code-objects"><a class="link" href="#aspect-mutability-of-code-strong-transaction-strong-code-objects">Aspect: Mutability of <code><strong>Transaction</strong></code> objects</a></h5>
 <div class="ulist">
@@ -881,12 +1088,12 @@ Tags that do not exist inside the specified <code><strong>Transaction</strong></
 </div>
 </div>
 <div class="sect2">
-<h3 id="updating-transactions"><a class="link" href="#updating-transactions">4.3. Updating transactions</a></h3>
+<h3 id="updating-transactions"><a class="link" href="#updating-transactions">4.4. Updating transactions</a></h3>
 <div class="paragraph">
 <p>The <strong>update </strong>functionality modifies details of a specified <code><strong>Transaction</strong></code> in the existing list and saves modifications to the external storage file.</p>
 </div>
 <div class="sect3">
-<h4 id="implementation-4"><a class="link" href="#implementation-4">4.3.1. Implementation</a></h4>
+<h4 id="implementation-5"><a class="link" href="#implementation-5">4.4.1. Implementation</a></h4>
 <div class="paragraph">
 <p><strong>Update</strong> mechanism utilizes <a href="#Design-Logic"><strong>Logic</strong></a> operations with the <code><strong>UpdateCommand</strong></code> class in place of <code><strong>Command</strong></code>.
 The following methods are concrete implementations for <strong>update</strong> operations:</p>
@@ -921,7 +1128,7 @@ The following methods are concrete implementations for <strong>update</strong> o
 <div class="content">
 <img src="images/UpdateObjectDiagram.png" alt="UpdateObjectDiagram">
 </div>
-<div class="title">Figure 15. Existing objects when executing <strong>update</strong> on an <code><strong>Income</strong></code></div>
+<div class="title">Figure 16. Existing objects when executing <strong>update</strong> on an <code><strong>Income</strong></code></div>
 </div>
 <div class="sect4">
 <h5 id="example-of-usage"><a class="link" href="#example-of-usage">Example of usage</a></h5>
@@ -996,12 +1203,12 @@ The 1st transaction specified here is an <code><strong>Income</strong></code>
 <div class="content">
 <img src="images/UpdateActivityDiagram.png" alt="UpdateActivityDiagram">
 </div>
-<div class="title">Figure 16. Activity Diagram for execution of update command</div>
+<div class="title">Figure 17. Activity Diagram for execution of update command</div>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-3"><a class="link" href="#design-considerations-3">4.3.2. Design considerations</a></h4>
+<h4 id="design-considerations-4"><a class="link" href="#design-considerations-4">4.4.2. Design considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-modifying-details-of-a-transaction"><a class="link" href="#aspect-modifying-details-of-a-transaction">Aspect: Modifying details of a transaction</a></h5>
 <div class="ulist">
@@ -1041,7 +1248,7 @@ The 1st transaction specified here is an <code><strong>Income</strong></code>
 </div>
 </div>
 <div class="sect2">
-<h3 id="undo-redoing-undoable-commands"><a class="link" href="#undo-redoing-undoable-commands">4.4. Undo/Redoing undoable commands</a></h3>
+<h3 id="undo-redoing-undoable-commands"><a class="link" href="#undo-redoing-undoable-commands">4.5. Undo/Redoing undoable commands</a></h3>
 <div class="paragraph">
 <p><strong>Undo</strong> command allows the user to revert <code><strong>THRIFT</strong></code> to its previous state when they have made a mistake. <strong>Redo</strong> command does
 the opposite of <strong>undo</strong> command, useful for when the user wishes to execute the command instead.</p>
@@ -1090,7 +1297,7 @@ Undoable commands are <strong>add_expense</strong>, <strong>add_income</strong>,
 <strong>undo</strong>.</p>
 </div>
 <div class="sect3">
-<h4 id="implementation-5"><a class="link" href="#implementation-5">4.4.1. Implementation</a></h4>
+<h4 id="implementation-6"><a class="link" href="#implementation-6">4.5.1. Implementation</a></h4>
 <div class="paragraph">
 <p>The below scenario illustrates how undo and redo feature works:</p>
 </div>
@@ -1149,7 +1356,7 @@ The <code><strong>UndoCommand</strong></code> invokes the method <code>Model#get
 <div class="content">
 <img src="images/UndoAndRedo/UndoAddExpenseSequenceDiagram.png" alt="UndoAddExpenseSequenceDiagram">
 </div>
-<div class="title">Figure 17. Sequence diagram of how <strong>undo</strong> command is applied at the back-end</div>
+<div class="title">Figure 18. Sequence diagram of how <strong>undo</strong> command is applied at the back-end</div>
 </div>
 <div class="paragraph">
 <p>Step 6. The user executes <strong>redo</strong> to add Laksa back to <code><strong>TransactionList</strong></code>.
@@ -1180,7 +1387,7 @@ All commands stored in <code>RedoStack</code> are purged when the user executes 
 <div class="content">
 <img src="images/UndoAndRedo/RedoAddExpenseSequenceDiagram.png" alt="RedoAddExpenseSequenceDiagram">
 </div>
-<div class="title">Figure 18. Sequence diagram of how <strong>redo</strong> command is applied at the back-end</div>
+<div class="title">Figure 19. Sequence diagram of how <strong>redo</strong> command is applied at the back-end</div>
 </div>
 <div class="paragraph">
 <p>The following activity diagram shows what happens if the user executes a command:</p>
@@ -1189,11 +1396,11 @@ All commands stored in <code>RedoStack</code> are purged when the user executes 
 <div class="content">
 <img src="images/UndoAndRedo/RunCommandActivityDiagrams.png" alt="RunCommandActivityDiagrams">
 </div>
-<div class="title">Figure 19. Activity diagram of the command execution.</div>
+<div class="title">Figure 20. Activity diagram of the command execution.</div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-4"><a class="link" href="#design-considerations-4">4.4.2. Design considerations</a></h4>
+<h4 id="design-considerations-5"><a class="link" href="#design-considerations-5">4.5.2. Design considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-data-structure-used-to-keep-track-of-undoable-command"><a class="link" href="#aspect-data-structure-used-to-keep-track-of-undoable-command">Aspect: Data structure used to keep track of undoable command</a></h5>
 <div class="ulist">
@@ -1230,13 +1437,13 @@ All commands stored in <code>RedoStack</code> are purged when the user executes 
 </div>
 </div>
 <div class="sect2">
-<h3 id="filtering-transactions"><a class="link" href="#filtering-transactions">4.5. Filtering transactions</a></h3>
+<h3 id="filtering-transactions"><a class="link" href="#filtering-transactions">4.6. Filtering transactions</a></h3>
 <div class="paragraph">
 <p>The <strong>List</strong> command allows the user to bring up a list of <code><strong>Transactions</strong></code>, and filter it by month or by its tags.
 This feature is implemented by using a <code><strong>Predicate&lt;Transaction&gt;</strong></code> to filter the <code><strong>Transactions</strong></code> by month or tags.</p>
 </div>
 <div class="sect3">
-<h4 id="implementation-6"><a class="link" href="#implementation-6">4.5.1. Implementation</a></h4>
+<h4 id="implementation-7"><a class="link" href="#implementation-7">4.6.1. Implementation</a></h4>
 <div class="paragraph">
 <p><code><strong>ListCommand</strong></code> is instantiated by <code>ListCommandParser#parse(String args)</code>,
 which attempts to parse the various parameters supplied in <code>args</code> and return a <code><strong>ListCommand</strong></code> object.</p>
@@ -1292,11 +1499,11 @@ If the user input is incorrect due to any of the reasons above, the usage syntax
 <div class="content">
 <img src="images/list/ListActivityDiagram.png" alt="ListActivityDiagram">
 </div>
-<div class="title">Figure 20. Activity diagram of the command execution.</div>
+<div class="title">Figure 21. Activity diagram of the command execution.</div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-5"><a class="link" href="#design-considerations-5">4.5.2. Design considerations</a></h4>
+<h4 id="design-considerations-6"><a class="link" href="#design-considerations-6">4.6.2. Design considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-using-code-strong-predicate-strong-code-to-improve-extendability-of-the-feature-in-the-future"><a class="link" href="#aspect-using-code-strong-predicate-strong-code-to-improve-extendability-of-the-feature-in-the-future">Aspect: Using <code><strong>Predicate</strong></code> to improve extendability of the feature in the future</a></h5>
 <div class="ulist">
@@ -1333,14 +1540,109 @@ If the user input is incorrect due to any of the reasons above, the usage syntax
 </div>
 </div>
 <div class="sect2">
-<h3 id="logging"><a class="link" href="#logging">4.6. Logging</a></h3>
+<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">4.7. [Proposed] Data encryption</a></h3>
+<div class="paragraph">
+<p>With the emphasis on information security these days, we are concerned about protecting the privacy of our users. We have
+discussed on how we can protect our users' data on <code><strong>THRIFT</strong></code> by making use of modern encryption schemes to protect against
+prying eyes. The encryption will take place at the back-end with minimal disruptions to the user. The user does not need additional
+knowledge about how the encryption work as <code><strong>THRIFT</strong></code> will handle all encryption and decryption operations for them.</p>
+</div>
+<div class="sect3">
+<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">4.7.1. Proposed implementation</a></h4>
+<div class="paragraph">
+<p>In order to ensure a seamless experience, we propose a new <code><strong>Keystore</strong></code> module, along with a <code><strong>KeystoreManager</strong></code> that will
+be interacting closely with the <code><strong>Logic</strong></code> and <code><strong>Storage</strong></code> modules. The class diagram below gives an overview of how the
+new <code><strong>Keystore</strong></code> would fit in:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/encryption/EncryptionClassDiagram.png" alt="EncryptionClassDiagram">
+</div>
+</div>
+<div class="paragraph">
+<p>We recommend that the <code><strong>KeystoreManager</strong></code> implements the following methods:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>KeystoreManager#setEncryptionScheme(Cipher)</code> - Sets the encryption scheme to be that of <code>Cipher</code>.</p>
+</li>
+<li>
+<p><code>KeystoreManager#encryptThrift(Thrift)</code> - Encrypts the current <code><strong>Thrift</strong></code> object with the encryption scheme set in <code><strong>KeystoreManager</strong></code>.</p>
+</li>
+<li>
+<p><code>KeystoreManager#decryptThrift()</code> - Decrypts the encrypted text file, restore the <code><strong>Thrift</strong></code> object and replace the current <code><strong>Thrift</strong></code>.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The decryption will take place upon <code>MainApp#init()</code> while encryption will happen every time <code>LogicManager#execute()</code> is called.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations-7"><a class="link" href="#design-considerations-7">4.7.2. Design considerations</a></h4>
+<div class="paragraph">
+<p>There is one factor about the way encryption should be implemented that we considered.</p>
+</div>
+<div class="sect4">
+<h5 id="aspect-allowing-the-user-to-specify-the-encryption-strength"><a class="link" href="#aspect-allowing-the-user-to-specify-the-encryption-strength">Aspect: Allowing the user to specify the encryption strength</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Alternative 1: The user can specify the algorithm, as well as the key size of the encryption scheme.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Power users have the freedom to fine-tune the encryption strength to suit their needs.</p>
+</li>
+<li>
+<p>Cons: Regular users might not know which encryption scheme to use.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Alternative 2: Preset the encryption scheme to use AES-256, which provides one of the best protections in the market
+due to its key size.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Encrypted data will be secured even if stolen, preventing unauthorised access.</p>
+</li>
+<li>
+<p>Cons: Users with slower processor chips on their computer might experience a noticeable performance drop when using
+<code><strong>THRIFT</strong></code>.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We believe that both alternatives have reasonable pros and cons and choosing either option would be beneficial to <code><strong>THRIFT</strong></code>.
+The added data security will assure the user that their data is safe and allows them to use <code><strong>THRIFT</strong></code> with a peace of mind.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="logging"><a class="link" href="#logging">4.8. Logging</a></h3>
 <div class="paragraph">
 <p>We are using <code><strong>java.util.logging</strong></code> package for logging. The <code><strong>LogsCenter</strong></code> class is used to manage the logging levels and logging destinations:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 4.7, &#8220;Configuration&#8221;</a>)</p>
+<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 4.9, &#8220;Configuration&#8221;</a>)</p>
 </li>
 <li>
 <p>The <code><strong>Logger</strong></code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</p>
@@ -1372,7 +1674,7 @@ instead of just its size</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">4.7. Configuration</a></h3>
+<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">4.9. Configuration</a></h3>
 <div class="paragraph">
 <p>Certain properties of the application can be controlled (e.g user prefs file location, logging level) through the configuration file (default: <em>config.json</em>).</p>
 </div>
@@ -2171,6 +2473,22 @@ instead of just its size</p>
 </tr>
 <tr>
 <td class="hdlist1">
+<a id="api"></a> API
+</td>
+<td class="hdlist2">
+<p>Stands for "Application Programming Interface" which simplifies programming by abstracting the underlying implementation and only exposing objects or actions the developer needs.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a id="puml"></a> PlantUML
+</td>
+<td class="hdlist2">
+<p>Stands for a software tool that we use to render the diagrams used in this document.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
 <a id="nfr"></a> NFR
 </td>
 <td class="hdlist2">
@@ -2261,11 +2579,11 @@ Expected: The most recent window size and location is retained.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="setting-the-monthly-budget"><a class="link" href="#setting-the-monthly-budget">F.2. Setting the monthly budget</a></h3>
+<h3 id="setting-a-monthly-budget"><a class="link" href="#setting-a-monthly-budget">F.2. Setting a monthly budget</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Setting the monthly budget to be a certain amount.</p>
+<p>Setting a monthly budget to be a certain amount.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -3033,4 +3351,4 @@ Expected: Syntax of the <code>delete</code> command is shown in the status messa
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-26 06:53:58 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-26 14:29:51 UTC</div></div></div></body></html>
