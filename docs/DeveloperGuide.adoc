@@ -305,29 +305,28 @@ Alternative 1 was chosen because we want to keep the transaction list "clean" - 
 
 //tag::setbudget[]
 === Setting budgets
-We allow the user to maintain a `**Budget**` for each calendar month. This section details how `**THRIFT**` handle
-requests made by the user who is trying to set a budget for their desired month. Each `**Budget**` stores a `**Calendar**`
-and a `**BudgetValue**`. The following class diagram shows how a `**Budget**` object looks like:
+We allow the user to maintain a `**Budget**` for each calendar month. This section details how `**THRIFT**` handles
+requests made by the user who is trying to set a budget for their desired month. Each `**Budget**` stores a `**Calendar**` attribute `period`
+and a `**BudgetValue**` attribute `value`. The following class diagram shows how a `**Budget**` object looks like:
 
 image::add-budget/BudgetClassDiagram.png[]
 
 ==== Implementation
-We store every `**Budget**` set by the user into `BudgetList#List<Budget>`, which is a list object in `**BudgetList**`.
-This list will contain only one unique `**Budget**` object for each month, with the month uniqueness indicated by `Budget#period` in the "MM/YYYY" format.
+We store every `**Budget**` set by the user into `**BudgetList**`, which is a class containing a `**List**` object named `internalList`.
+This list will contain only one `**Budget**` object for each month, with the month uniqueness indicated by `period` in the "MM/YYYY" format.
 Below is a class diagram explaining how the relations look:
 
 image::add-budget/BudgetListClassDiagram.png[]
 
-Whenever the user attempts to add a `**Budget**`, `**THRIFT**` will check if the `**Budget**` currently exists in `BudgetList#List<Budget>`.
-`**BudgetList**` contains a few methods that simplifies such management of the list:
+Whenever the user attempts to set a `**Budget**`, `**THRIFT**` will check if that `**Budget**` currently exists in `internalList`.
+To facilitate the checking, `**BudgetList**` contains a few methods that simplify the process:
 
-. `BudgetList#getBudgetForMonthYear(Calendar toCheck)` - Checks if `toCheck` matches any of the `Budget#period` in `List<Budget>`.
-. `BudgetList#setBudget(Budget toSet)` - Adds `toSet` into `List<Budget>` if `toSet#period` does not match any of the `Budget#period` in the list. Otherwise,
-overwrite the matching `**Budget**` in `List<Budget>` with `toSet`.
-. `BudgetList#removeBudget(Budget toRemove)` - Removes `toRemove` from `List<Budget>`.
+. `BudgetList#getBudgetForMonthYear(Calendar toCheck)` - Checks if `toCheck` matches any of the `period` from a `**Budget**` in `internalList`.
+. `BudgetList#setBudget(Budget toSet)` - Adds `toSet` into `internalList`, possibly overwriting a `**Budget**` in `internalList` if its `period` matches the `period` in `toSet`.
+. `BudgetList#removeBudget(Budget toRemove)` - Removes `toRemove` from `internalList`.
 
 We will demonstrate what happens at the back-end whenever the user sets a budget and overwrites it afterwards. The user has not set any `**Budget**`
-before, so `BudgetList#List<Budget>` is empty:
+before, so `internalList` is empty:
 
 Step 1. The user wishes to set their budget for October 2019 as $1500. They execute the command: **budget v/1500 d/10/2019**.
 The user's entry is checked by `BudgetCommandParser#parse()` and an attempt to parse each parameter occurs:
@@ -337,11 +336,11 @@ The user's entry is checked by `BudgetCommandParser#parse()` and an attempt to p
 
 NOTE: `**ArgumentMultimap**` is a class that stores all the parsed parameters taken from the user input.
 
-Since the user input is valid, the `**Budget**` is successfully created and inserted into `BudgetList#List<Budget>`.
+Since the user input is valid, the `**Budget**` is successfully created and inserted into `internalList`.
 
 Step 2. The user wishes to set a new budget for October 2019 as $2000. They execute the command: **budget v/2000 d/10/2019**.
 The user's entry is once again checked to be valid and a new `**Budget**` is created. Before it is inserted into
-`BudgetList#List<Budget>`, a check to see if a budget is already set for that month will occur. Since there is already a
+`internalList`, a check to see if a budget is already set for that month will occur. Since there is already a
 budget set for October 2019, the existing budget is replaced by this newly created `**Budget**`.
 
 The following code snippet is part of `BudgetList#setBudget(Budget toSet)` and demonstrates how this checking is done:
@@ -349,7 +348,8 @@ The following code snippet is part of `BudgetList#setBudget(Budget toSet)` and d
 .BudgetList.java
 [source,java]
 ----
-//List<Budget> internalList = new ArrayList<>();
+// The following variable is declared above:
+// List<Budget> internalList = new ArrayList<>();
 
 Optional<Budget> optBudget = getBudgetForMonthYear(toSet.getBudgetDate());
 if (optBudget.isPresent()) {
@@ -379,9 +379,9 @@ and `**Budget**` respectively.
 ** Pros: Able to store `**Budget**` into `**TransactionList**`, resulting in only one list to manage. `**Budget**` can also
 be easily displayed as a `**Transaction**` card on the UI, reducing the need to handle a separate list.
 ** Cons: May cause possible complications to arise if the user wishes to set a different budget and the `**TransactionList**`
-is huge. Need to look through the huge list to find the `**Budget**` to replace.
+is huge. `**THRIFT**` needs to look through the huge list to find the `**Budget**` to replace.
 
-Again, we went with alternative 1 because we wanted to simulate the real world relations. Otherwise, there might be confusion
+Again, we went with alternative 1 because we wanted to simulate the real-world relation. Otherwise, there might be confusion
 since `**Budget**` is not really related to `**Transaction**` in the real world.
 // end::setbudget[]
 
@@ -697,14 +697,14 @@ We recommend that the `**KeystoreManager**` implements the following methods:
 * `KeystoreManager#encryptThrift(Thrift)` - Encrypts the current `**Thrift**` object with the encryption scheme set in `**KeystoreManager**`.
 * `KeystoreManager#decryptThrift()` - Decrypts the encrypted text file, restore the `**Thrift**` object and replace the current `**Thrift**`.
 
-TIP: The encryption and decryption will take place every time after `LogicManager#execute()` is called.
+TIP: The decryption will take place upon `MainApp#init()` while encryption will happen every time `LogicManager#execute()` is called.
 
 ==== Design considerations
 There is one factor about the way encryption should be implemented that we considered.
 
 ===== Aspect: Allowing the user to specify the encryption strength
 * Alternative 1: The user can specify the algorithm, as well as the key size of the encryption scheme.
-** Pros: Power users have the freedom to fine tune the encryption strength to suit their needs.
+** Pros: Power users have the freedom to fine-tune the encryption strength to suit their needs.
 ** Cons: Regular users might not know which encryption scheme to use.
 
 * Alternative 2: Preset the encryption scheme to use AES-256, which provides one of the best protections in the market

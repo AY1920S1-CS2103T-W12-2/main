@@ -5,12 +5,13 @@
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":ThriftParser" as ThriftParser LOGIC_COLOR
+participant ":BudgetCommandParser" as BudgetCommandParser LOGIC_COLOR
+participant ":BudgetCommand" as BudgetCommand LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
-participant ":BudgetCommandParser" as BudgetCommandParser MODEL_COLOR
+
 participant ":Budget" as Budget MODEL_COLOR
-participant ":BudgetCommand" as BudgetCommand MODEL_COLOR
 participant ":ModelManager" as ModelManager MODEL_COLOR
 end box
 
@@ -24,8 +25,10 @@ create BudgetCommandParser
 ThriftParser -> BudgetCommandParser
 activate BudgetCommandParser
 ThriftParser <-- BudgetCommandParser
+deactivate BudgetCommandParser
 
 ThriftParser -> BudgetCommandParser : parse("v/1500,\nd/10/2019")
+activate BudgetCommandParser
 create Budget
 BudgetCommandParser -> Budget : Budget("10/2019", "1500")
 activate Budget

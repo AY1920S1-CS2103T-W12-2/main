@@ -6,8 +6,8 @@ skinparam classBackgroundColor MODEL_COLOR
 show members
 
 class Budget {
-    <color:#white>Calendar
-    <color:#white>BudgetValue
+    <color:#white>period:Calendar
+    <color:#white>value:BudgetValue
 }
 
 @enduml
