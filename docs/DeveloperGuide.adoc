@@ -202,11 +202,10 @@ We allow users to add `**Expense**`/`**Income**` transactions into `**THRIFT**` 
 requests from the user at the back-end.
 
 ==== Implementation
-We store every single `**Transaction**` added by the user into `**ObservableList<Transaction>**`, which is a list object in `**TransactionList**`. This list gets updated whenever the user
-adds, updates or removes a `**Transaction**` from it. We used an `**ObservableList**` because whenever there are changes to the list, any other component
+We store every single `**Transaction**` added by the user into `**ObservableList<Transaction>**`, which is a list object in `**TransactionList**`. We used an `**ObservableList**` because whenever there are changes to the list, any other component
 of `**THRIFT**` using it will automatically reflect its changes.
 
-We implemented adding a `**Transaction**` through the following commands: **add_expense**/**add_income**. This adding process leverages on polymorphism: `**Expense**` and `**Income**` are both subclasses of the abstract class `**Transaction**`.
+We implemented adding a `**Transaction**` through the following commands: **add_expense**/**add_income**. This process leverages on polymorphism: `**Expense**` and `**Income**` are both subclasses of the abstract class `**Transaction**`.
 Each `**Transaction**` contains the following mandatory fields: `**Description**`, `**TransactionDate**` and `**Value**`; as well as optional fields: `**Remark**`,
 and `**Set<Tag>**`. The following class diagram depicts this relation:
 
@@ -253,10 +252,8 @@ The transaction list now contains 1 `**Transaction**` object.
 
 image::add-transaction/AddTransaction1.png[]
 
-Step 3. The user executes **add_income n/Bursary v/500 r/Awarded for doing well in school** to insert an `**Income**` with
-the `**Description**` set to "Bursary", `**Value**` set to "500" and `**Remark**` set to "Awarded for doing well in school".
-The `**TransactionDate**` is set to the user's current system date in the form "dd/mm/yyyy". The input is now checked in
-a similar fashion as in Step 2 except for:
+Step 3. The user executes **add_income n/Bursary v/500 r/Awarded for doing well in school** to insert an `**Income**`.
+The input is now checked in a similar fashion as in Step 2 except for:
 
 * `**Remark**` is parsed by `AddTransactionCommandParser#parseTransactionRemark(ArgumentMultimap)`
 
@@ -689,7 +686,7 @@ In order to ensure a seamless experience, we propose a new `**Keystore**` module
 be interacting closely with the `**Logic**` and `**Storage**` modules. The class diagram below gives an overview of how the
 new `**Keystore**` would fit in:
 
-image::encryption/EncryptionClassDiagram.png[]
+image::encryption/EncryptionClassDiagram.png[,250]
 
 We recommend that the `**KeystoreManager**` implements the following methods:
 
