@@ -154,6 +154,7 @@ public class MainApp extends Application {
         Path currencyMappingsFilePath = storage.getCurrencyMappingsFilePath();
         logger.info("Using currency file : " + currencyMappingsFilePath);
 
+
         try {
             HashMap<String, Double> currencyMappings = storage.readCurrencyMappings().get();
             CurrencyUtil.setCurrencyMap(currencyMappings);
@@ -161,22 +162,16 @@ public class MainApp extends Application {
             logger.warning("Currency Mappings file at " + currencyMappingsFilePath
                     + " is not in the correct format. "
                     + "Using default currency mappings");
-
-            Map<String, Double> defaultCurrencyMappings = CurrencyUtil.getCurrencyMap();
-            try {
-                storage.saveCurrencyMappings(defaultCurrencyMappings);
-            } catch (IOException ioe) {
-                //do nothing
-            }
         } catch (IOException | NoSuchElementException e) {
             logger.warning("Problem while reading from the file. Using default currency mappings");
+        }
 
-            Map<String, Double> defaultCurrencyMappings = CurrencyUtil.getCurrencyMap();
-            try {
-                storage.saveCurrencyMappings(defaultCurrencyMappings);
-            } catch (IOException ioe) {
-                //do nothing
-            }
+        // Update the file in case it disappeared during usage or a valid one never existed to begin with
+        Map<String, Double> loadedCurrencyMappings = CurrencyUtil.getCurrencyMap();
+        try {
+            storage.saveCurrencyMappings(loadedCurrencyMappings);
+        } catch (IOException e) {
+            logger.warning("Failed to save config file : " + StringUtil.getDetails(e));
         }
 
     }
