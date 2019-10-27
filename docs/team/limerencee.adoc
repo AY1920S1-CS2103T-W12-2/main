@@ -122,12 +122,7 @@ If the user input is incorrect due to any of the reasons above, the usage syntax
 
 We will demonstrate how a `**Transaction**` is added into `**THRIFT**` and how the back-end handles each step of the process:
 
-Step 1. The user launches the application for the first time. `**THRIFT**` does not contain any other `**Transaction**` and the user is
-about to add their own. An empty transaction list is initialized.
-
-image::add-transaction/AddTransaction0.png[,350]
-
-Step 2. The user executes **add_expense n/Laksa v/3.50** to insert an `**Expense**` with `**Description**` set to "Laksa"
+Step 1. The user executes **add_expense n/Laksa v/3.50** to insert an `**Expense**` with `**Description**` set to "Laksa"
 and `**Value**` set to "3.50". The `**TransactionDate**` is set to the user's current system date in the form "dd/mm/yyyy".
 The input is now checked and an attempt to parse each parameter occurs:
 
@@ -142,7 +137,7 @@ The transaction list now contains 1 `**Transaction**` object.
 
 image::add-transaction/AddTransaction1.png[,350]
 
-Step 3. The user executes **add_income n/Bursary v/500 r/Awarded for doing well in school** to insert an `**Income**`.
+Step 2. The user executes **add_income n/Bursary v/500 r/Awarded for doing well in school** to insert an `**Income**`.
 The input is now checked in a similar fashion as in Step 2 except for:
 
 * `**Remark**` is parsed by `AddTransactionCommandParser#parseTransactionRemark(ArgumentMultimap)`
