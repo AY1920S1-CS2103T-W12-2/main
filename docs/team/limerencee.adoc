@@ -78,14 +78,8 @@ This makes the **delete** command syntax consistent with the **update** command.
 == 3. Contributions to the User Guide
 The following sections illustrate my ability in writing documentation targeting end-users to guide them in using the various features of the application.
 
-=== 3.1 Current enhancement
-
-=== 3.2 Proposed enhancement for v2.0
-
 == 4. Contributions to the Developer Guide
 The following sections illustrate my ability in writing documentation to provide developers insights on the design of the application. It also showcase the technical depth of my contributions to the project.
-
-=== 4.1 Current enhancement
 
 === Adding transactions
 We allow users to add `**Expense**`/`**Income**` transactions into `**THRIFT**` which enables record-keeping. This section will show how we handle such
@@ -183,43 +177,3 @@ are applied when restoring `**THRIFT**` data from the data file.
 ** Cons: Overhead to parse user input to allow only a single negative symbol and no other symbols.
 
 Alternative 1 was chosen because we want to keep the transaction list "clean" - only positive integers are stored.
-
-=== 4.2 Proposed enhancement for v2.0
-
-=== Data encryption
-With the emphasis on information security these days, we are concerned about protecting the privacy of our users. We have
-discussed on how we can protect our users' data on `**THRIFT**` by making use of modern encryption schemes to protect against
-prying eyes. The encryption will take place at the back-end with minimal disruptions to the user. The user does not need additional
-knowledge about how the encryption work as `**THRIFT**` will handle all encryption and decryption operations for them.
-
-==== Proposed implementation
-In order to ensure a seamless experience, we propose a new `**Keystore**` module, along with a `**KeystoreManager**` that will
-be interacting closely with the `**Logic**` and `**Storage**` modules. The class diagram below gives an overview of how the
-new `**Keystore**` would fit in:
-
-image::encryption/EncryptionClassDiagram.png[,250]
-
-We recommend that the `**KeystoreManager**` implements the following methods:
-
-* `KeystoreManager#setEncryptionScheme(Cipher)` - Sets the encryption scheme to be that of `Cipher`.
-* `KeystoreManager#encryptThrift(Thrift)` - Encrypts the current `**Thrift**` object with the encryption scheme set in `**KeystoreManager**`.
-* `KeystoreManager#decryptThrift()` - Decrypts the encrypted text file, restore the `**Thrift**` object and replace the current `**Thrift**`.
-
-TIP: The decryption will take place upon `MainApp#init()` while encryption will happen every time `LogicManager#execute()` is called.
-
-==== Design considerations
-There is one factor about the way encryption should be implemented that we considered.
-
-===== Aspect: Allowing the user to specify the encryption strength
-* Alternative 1: The user can specify the algorithm, as well as the key size of the encryption scheme.
-** Pros: Power users have the freedom to fine-tune the encryption strength to suit their needs.
-** Cons: Regular users might not know which encryption scheme to use.
-
-* Alternative 2: Preset the encryption scheme to use AES-256, which provides one of the best protections in the market
-due to its key size.
-** Pros: Encrypted data will be secured even if stolen, preventing unauthorised access.
-** Cons: Users with slower processor chips on their computer might experience a noticeable performance drop when using
-`**THRIFT**`.
-
-We believe that both alternatives have reasonable pros and cons and choosing either option would be beneficial to `**THRIFT**`.
-The added data security will assure the user that their data is safe and allows them to use `**THRIFT**` with a peace of mind.
