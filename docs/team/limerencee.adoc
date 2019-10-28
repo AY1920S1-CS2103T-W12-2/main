@@ -76,17 +76,17 @@ This makes the **delete** command syntax consistent with the **update** command.
 ** Reviewed pull requests with (non-trivial comments): https://github.com/AY1920S1-CS2103T-W12-2/main/pull/69[#69], https://github.com/AY1920S1-CS2103T-W12-2/main/pull/168[#168], https://github.com/AY1920S1-CS2103T-W12-2/main/pull/174[#174], https://github.com/AY1920S1-CS2103T-W12-2/main/pull/175[#175]
 
 == 3. Contributions to the User Guide
-The following sections illustrate my ability in writing documentation targeting end-users to guide them in using the various features of the application.
+The following sections illustrate my ability in writing documentation targeting end-users which guides them in using the various features of the application.
 
 == 4. Contributions to the Developer Guide
-The following sections illustrate my ability in writing documentation to provide developers insights on the design of the application. It also showcase the technical depth of my contributions to the project.
+The following sections illustrate my ability in writing documentation to provide developers insights on the design of the application. It also showcases the technical depth of my contributions to the project.
 
 === Adding transactions
 We allow users to add `**Expense**`/`**Income**` transactions into `**THRIFT**` which enables record-keeping. This section will show how we handle such
 requests from the user at the back-end.
 
 ==== Implementation
-We store every single `**Transaction**` added by the user into `**ObservableList<Transaction>**`, which is a list object in `**TransactionList**`. We used an `**ObservableList**` because whenever there are changes to the list, any other component
+We store every single `**Transaction**` added by the user into an `**ObservableList<Transaction>**`, which is a list object in `**TransactionList**`. We used an `**ObservableList**` because whenever there are changes to the list, any other component
 of `**THRIFT**` using it will automatically reflect its changes.
 
 We implemented adding a `**Transaction**` through the following commands: **add_expense**/**add_income**. This process leverages on polymorphism: `**Expense**` and `**Income**` are both subclasses of the abstract class `**Transaction**`.
@@ -116,8 +116,8 @@ If the user input is incorrect due to any of the reasons above, the usage syntax
 
 We will demonstrate how a `**Transaction**` is added into `**THRIFT**` and how the back-end handles each step of the process:
 
-Step 1. The user executes **add_expense n/Laksa v/3.50** to insert an `**Expense**` with `**Description**` set to "Laksa"
-and `**Value**` set to "3.50". The `**TransactionDate**` is set to the user's current system date in the form "dd/mm/yyyy".
+Step 1. The user executes **add_expense n/Laksa v/3.50** to insert an `**Expense**` with its `**Description**` set to "Laksa"
+and its `**Value**` set to "3.50". The `**TransactionDate**` is set to the user's current system date in the form "dd/mm/yyyy".
 The input is now checked and an attempt to parse each parameter occurs:
 
 * `**Description**` is parsed by `AddTransactionCommandParser#parseTransactionDescription(ArgumentMultimap)`
@@ -132,7 +132,7 @@ The transaction list now contains 1 `**Transaction**` object.
 image::add-transaction/AddTransaction1.png[,350]
 
 Step 2. The user executes **add_income n/Bursary v/500 r/Awarded for doing well in school** to insert an `**Income**`.
-The input is now checked in a similar fashion as in Step 2 except for:
+The input is now checked in a similar fashion as in Step 2 except that:
 
 * `**Remark**` is parsed by `AddTransactionCommandParser#parseTransactionRemark(ArgumentMultimap)`
 
@@ -173,7 +173,7 @@ are applied when restoring `**THRIFT**` data from the data file.
 ** Cons: Requires the developer to manually negate the `**Value**` whenever calculations are done with a `**Expense**` object.
 
 * **Alternative 2:** Allow only negative amount in `**Expense**` object and only positive amount in `**Income**` object
-** Pros: Calculations become trivial: to get balance, sum up the entire `**List<Transaction>**`.
-** Cons: Overhead to parse user input to allow only a single negative symbol and no other symbols.
+** Pros: Calculating the balance becomes trivial - simply sum up the entire `**List<Transaction>**`.
+** Cons: Parsing the user input to allow only a single negative symbol and no other symbols causes an overhead.
 
-Alternative 1 was chosen because we want to keep the transaction list "clean" - only positive integers are stored.
+Alternative 1 was chosen because we want to keep the transaction list clean - only positive integers are stored.
