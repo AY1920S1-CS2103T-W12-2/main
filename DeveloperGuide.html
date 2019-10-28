@@ -1486,7 +1486,7 @@ If the user input is incorrect due to any of the reasons above, the usage syntax
 <p>The scenario below shows an example of how the feature works:</p>
 </div>
 <div class="paragraph">
-<p>Step 1. The user executes <strong>list m/jan</strong> to filter the list to bring up transactions of January.</p>
+<p>Step 1. The user executes <strong>list m/01/2019</strong> to filter the list to bring up transactions of January 2019.</p>
 </div>
 <div class="paragraph">
 <p>Step 2. The <code><strong>ListCommandParser</strong></code> will parse the arguments using the method <code>ListCommandParser#parse(String args)</code>.</p>
@@ -1496,7 +1496,7 @@ If the user input is incorrect due to any of the reasons above, the usage syntax
 <code><strong>ListCommandParser</strong></code>.</p>
 </div>
 <div class="paragraph">
-<p>Step 4. This <code><strong>ListCommand</strong></code> object will contain a <code><strong>Predicate</strong></code> which is used to filter through each <code><strong>Transaction</strong></code>.</p>
+<p>Step 4. This <code><strong>ListCommand</strong></code> object will use a <code><strong>Predicate</strong></code> based on the specified month which is used to filter through each <code><strong>Transaction</strong></code>.</p>
 </div>
 <div class="paragraph">
 <p>Step 5. The final list of filtered transactions will be brought up.</p>
@@ -1522,7 +1522,8 @@ If the user input is incorrect due to any of the reasons above, the usage syntax
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: The filter feature could be easily improved in the future to further accommodate new arguments other than month and tag.</p>
+<p>Pros: The filter feature could be added to and improved in the future to further accommodate new arguments other than month and tag,
+and still be able to filter by a combination of the different arguments.</p>
 </li>
 <li>
 <p>Cons: Not as easy to implement.</p>
@@ -1544,6 +1545,10 @@ If the user input is incorrect due to any of the reasons above, the usage syntax
 </div>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Eventually we may decide to use a combination of both alternatives as it is possible that different arguments are easier to
+implement using different methods.</p>
 </div>
 </div>
 </div>
@@ -2847,12 +2852,12 @@ Expected: No changes. Error details shown in status message.</p>
 Expected: The entire list of transactions will be shown.</p>
 </li>
 <li>
-<p>Test case: <code>list m/Jan</code><br>
-Expected: The list of transactions for January will be shown.</p>
+<p>Test case: <code>list m/01/2019</code><br>
+Expected: The list of transactions for January 2019 will be shown.</p>
 </li>
 <li>
-<p>Test case: <code>list m/Jan t/Food</code><br>
-Expected: The list of transactions related to food for January will be shown.</p>
+<p>Test case: <code>list m/01/2019 t/Food</code><br>
+Expected: The list of transactions related to food for January 2019 will be shown.</p>
 </li>
 </ol>
 </div>
@@ -3445,4 +3450,4 @@ Expected: Syntax of the <code>delete</code> command is shown in the status messa
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-28 04:28:44 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-28 14:59:51 UTC</div></div></div></body></html>
