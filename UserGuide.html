@@ -785,6 +785,11 @@ Assume entry at index 1 is <code>[-] Laksa ($10.50) Date: 18/10/2019 Remarks: Un
 <div class="sect2">
 <h3 id="UndoTag"><a class="link" href="#UndoTag">3.10. Undoing the previous undoable command: <code>undo</code></a></h3>
 <div class="paragraph">
+<p>Do not panic if you have accidentally made a mistake in THRIFT, like deleting the wrong transaction.
+THRIFT provides an <code>undo</code> command to solve your trouble! You can revert to the previous state
+of THRIFT using <code>undo</code>.</p>
+</div>
+<div class="paragraph">
 <p>Format: <code>undo</code></p>
 </div>
 <div class="admonitionblock note">
@@ -794,7 +799,19 @@ Assume entry at index 1 is <code>[-] Laksa ($10.50) Date: 18/10/2019 Remarks: Un
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Undoable commands are commands that modify the data of THRIFT application.
+<code>Undo</code> can only apply to undoable commands. Undoable commands refers to commands that modify the data of the THRIFT application.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You cannot undo undoable commands once the application exits.
 </td>
 </tr>
 </table>
@@ -803,87 +820,120 @@ Undoable commands are commands that modify the data of THRIFT application.
 <div class="title">List of undoable commands<a id="Undoable"></a>:</div>
 <ul>
 <li>
-<p><a href="#ExpenseTag">add_expense</a></p>
+<p><code><a href="#ExpenseTag">add_expense</a></code></p>
 </li>
 <li>
-<p><a href="#IncomeTag">add_income</a></p>
+<p><code><a href="#IncomeTag">add_income</a></code></p>
 </li>
 <li>
-<p><a href="#DeleteTag">delete</a></p>
+<p><code><a href="#DeleteTag">delete</a></code></p>
 </li>
 <li>
-<p><a href="#UpdateTag">update</a></p>
+<p><code><a href="#UpdateTag">update</a></code></p>
 </li>
 <li>
-<p><a href="#CloneTag">clone</a></p>
+<p><code><a href="#CloneTag">clone</a></code></p>
 </li>
 <li>
-<p><a href="#TagTag">tag</a></p>
+<p><code><a href="#TagTag">tag</a></code></p>
 </li>
 <li>
-<p><a href="#UntagTag">untag</a></p>
+<p><code><a href="#UntagTag">untag</a></code></p>
+</li>
+<li>
+<p><code><a href="#BudgetTag">budget</a></code></p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>add_expense n/Laksa v/10.50 t/Lunch t/Food</code><br>
-<code>undo</code></p>
-</li>
-<li>
-<p><code>add_income n/Allowance v/1000 t/Monthly</code><br>
-<code>list</code><br>
-<code>undo</code></p>
-</li>
-</ul>
+<p>Examples:<br>
+Suppose you want to delete the second transaction (Bursary) in THRIFT, but you remove the third transaction instead!
+One possible solution is that you add the transaction manually back into THRIFT, but this is too troublesome! You can
+retrieve the deleted transaction by performing <code>undo</code>.</p>
 </div>
 <div class="paragraph">
-<p>Expected output:</p>
+<p>To <code>undo</code> the <code>delete</code> command:</p>
 </div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>Deletes the expense spent on Laksa from THRIFT.</p>
+<p>Type <strong>undo</strong> into the command box and press <kbd>Enter</kbd>:</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/undocommand.PNG" alt="undocommand" width="600">
+</div>
+</div>
 </li>
 <li>
-<p>Deletes the allowance income from THRIFT.</p>
+<p>You will see a success message displays in the result box, and the transaction (Chicken Rice)
+adds back to its original position in the list:</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/undocommandresult.PNG" alt="undocommandresult" width="600">
+</div>
+</div>
 </li>
-</ul>
+</ol>
 </div>
 </div>
 <div class="sect2">
 <h3 id="RedoTag"><a class="link" href="#RedoTag">3.11. Redoing the undone command: <code>redo</code></a></h3>
 <div class="paragraph">
-<p>Redo the <a href="#Undoable">undoable command</a> that was previously undone by the user.</p>
+<p>Misuse of <code>undo</code> command? No worries, THRIFT provides <code>redo</code> command to help you in this situation.
+You can restore back the previous state of the undone transaction.</p>
 </div>
 <div class="paragraph">
 <p>Format: <code>redo</code></p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<code>Redo</code> command is only applicable to <a href="#Undoable">undoable command</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+You cannot redo undone commands once the application exits or new undoable command is executed after <code>undo</code>.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>Examples:</p>
+<p>Examples:<br>
+Suppose you had undone the addition of the transaction (Bursary) (See: <a href="#UndoTag">Undoing the previous undoable command</a>),
+but you decide to track the transaction using THRIFT. Instead of adding the transaction manually, you can add back
+the transaction by executing <code>redo</code>.</p>
 </div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p><code>add_expense n/Laksa v/10.50 t/Lunch t/Food</code><br>
-<code>undo</code><br>
-<code>redo</code></p>
+<p>Type <strong>redo</strong> into the command box and press <kbd>Enter</kbd>:</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/redocommand.PNG" alt="redocommand" width="600">
+</div>
+</div>
 </li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Expected output:</p>
-</div>
-<div class="ulist">
-<ul>
 <li>
-<p>Adds the expense spent on Laksa back to THRIFT.</p>
+<p>You will see a success message displays in the result box and the transaction adds back to the list:</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/redocommandresult.PNG" alt="redocommandresult" width="600">
+</div>
+</div>
 </li>
-</ul>
+</ol>
 </div>
 </div>
 <div class="sect2">
@@ -980,37 +1030,68 @@ how often you visit there.</p>
 <div class="sect2">
 <h3 id="HelpTag"><a class="link" href="#HelpTag">3.14. Displaying help page: <code>help</code></a></h3>
 <div class="paragraph">
+<p>New to THRIFT? Or forget about some of the commands used in THRIFT? You can run <strong>help</strong> to obtain the link to this
+comprehensive user guide. It saves the trouble of saving the URL of this user guide.</p>
+</div>
+<div class="paragraph">
 <p>Format: <code>help [COMMAND]</code></p>
 </div>
 <div class="paragraph">
-<p>Examples:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>help</code></p>
-</li>
-<li>
-<p><code>help delete</code></p>
-</li>
-</ul>
+<p>Example:<br>
+Suppose you want to add a transaction to THRIFT, but you had forgotten about the command to perform this function.</p>
 </div>
 <div class="paragraph">
-<p>Expected output:</p>
+<p>To get the URL of this user guide:</p>
 </div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>Displays a detailed list of information regarding all the THRIFT commands.</p>
+<p>Type <strong>help</strong> in the command box and press <kbd>Enter</kbd>:</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/Help-exit/helpcommand.PNG" alt="helpcommand">
+</div>
+</div>
 </li>
 <li>
-<p>Returns syntax of <code>delete</code> command.</p>
+<p>You will see the URL of the user guide in the popup window:</p>
+<div class="paragraph">
+<p><span class="image"><img src="images/Help-exit/userguideurl.PNG" alt="userguideurl"></span></p>
+</div>
 </li>
-</ul>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Alternative methods: press <kbd>F1</kbd> or click on <strong>Help</strong> in the menu bar, and then click on <strong>Help</strong> in its sub menu.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>If you still remember about <code>add_expense</code> command but had forgotten about how to use it. You can view a simplified version of this
+command by entering <strong>help add_expense</strong> instead of <strong>help</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Below is a simplified version of the <code>add_expense</code> command:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/Help-exit/specifichelpcommand.PNG" alt="specifichelpcommand">
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="ExitTag"><a class="link" href="#ExitTag">3.15. Exiting THRIFT application: <code>exit</code></a></h3>
+<div class="paragraph">
+<p>Think about exiting THRIFT after you have added the transaction? You can enter <strong>exit</strong> in the
+command box or click on the close button at the top-right corner of the application.</p>
+</div>
 <div class="paragraph">
 <p>Format: <code>exit</code></p>
 </div>
@@ -1109,4 +1190,4 @@ Example: <code>help delete</code></p>
 </ul>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-29 02:48:50 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-29 06:48:14 UTC</div></div></div></body></html>
