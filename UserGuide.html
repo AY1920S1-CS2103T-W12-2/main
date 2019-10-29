@@ -40,6 +40,7 @@
 </li>
 <li><a href="#faq">4. FAQ</a></li>
 <li><a href="#command-summary">5. Command summary</a></li>
+<li><a href="#glossary">6. Glossary</a></li>
 </ul>
 </div>
 </div>
@@ -54,7 +55,7 @@
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/Ui_Labelled.png" alt="Ui Labelled">
+<img src="images/UGUI.png" alt="UGUI">
 </div>
 <div class="title">Figure 1. The graphical user interface for THRIFT</div>
 </div>
@@ -105,6 +106,42 @@
 <div class="sectionbody">
 <div class="paragraph">
 <p>Understanding this document:</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+This symbol indicates a tip that you may find useful when using THRIFT.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This symbol indicates information that you may want to take note of when using THRIFT.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+This symbol indicates information that you need to be cautious of when using THRIFT.
+</td>
+</tr>
+</table>
 </div>
 <div class="hdlist">
 <table>
@@ -237,7 +274,7 @@ It is not compulsory to set a budget for each month and you can use THRIFT norma
 <p>Your current budget for the month <em>October 2019</em> is $<em>0</em>.</p>
 <div class="imageblock">
 <div class="content">
-<img src="/images/add-budget/Step1.png" alt="Step1" width="550">
+<img src="images/add-budget/Step1.png" alt="Step1" width="550">
 </div>
 </div>
 </li>
@@ -245,7 +282,7 @@ It is not compulsory to set a budget for each month and you can use THRIFT norma
 <p>You type: <strong>budget v/2000 d/10/2019</strong> in the command box and press <kbd>Enter</kbd>.</p>
 <div class="imageblock">
 <div class="content">
-<img src="/images/add-budget/Step2.png" alt="Step2" width="550">
+<img src="images/add-budget/Step2.png" alt="Step2" width="550">
 </div>
 </div>
 </li>
@@ -253,7 +290,7 @@ It is not compulsory to set a budget for each month and you can use THRIFT norma
 <p>You should see in the result box that your budget for <em>October 2019</em> has been set to $<em>2000</em>.</p>
 <div class="imageblock">
 <div class="content">
-<img src="/images/add-budget/Step3.png" alt="Step3" width="550">
+<img src="images/add-budget/Step3.png" alt="Step3" width="550">
 </div>
 </div>
 </li>
@@ -431,7 +468,7 @@ The transaction date is automatically populated based on your system time.
 <p>You have a balance of $2000 at the beginning.</p>
 <div class="imageblock">
 <div class="content">
-<img src="/images/add-transaction/income/Step1.png" alt="Step1" width="550">
+<img src="images/add-transaction/income/Step1.png" alt="Step1" width="550">
 </div>
 </div>
 </li>
@@ -503,7 +540,7 @@ The transaction date is automatically populated based on your system time.
 <p>This transaction is currently the first transaction in your transaction list.</p>
 <div class="imageblock">
 <div class="content">
-<img src="/images/delete/Step1.png" alt="Step1" width="550">
+<img src="images/delete/Step1.png" alt="Step1" width="550">
 </div>
 </div>
 </li>
@@ -511,7 +548,7 @@ The transaction date is automatically populated based on your system time.
 <p>You type: <strong>delete i/1</strong> and press <kbd>Enter</kbd>.</p>
 <div class="imageblock">
 <div class="content">
-<img src="/images/delete/Step2.png" alt="Step2" width="550">
+<img src="images/delete/Step2.png" alt="Step2" width="550">
 </div>
 </div>
 </li>
@@ -519,7 +556,7 @@ The transaction date is automatically populated based on your system time.
 <p>You should see that the bursary transaction has been deleted from THRIFT and your balance has been updated accordingly.</p>
 <div class="imageblock">
 <div class="content">
-<img src="/images/delete/Step3.png" alt="Step3" width="550">
+<img src="images/delete/Step3.png" alt="Step3" width="550">
 </div>
 </div>
 </li>
@@ -789,9 +826,6 @@ Assume entry at index 1 is <code>[-] Laksa ($10.50) Date: 18/10/2019 Remarks: Un
 THRIFT provides an <code>undo</code> command to solve your trouble! You can revert to the previous state
 of THRIFT using <code>undo</code>.</p>
 </div>
-<div class="paragraph">
-<p>Format: <code>undo</code></p>
-</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -816,8 +850,10 @@ You cannot undo undoable commands once the application exits.
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>List of undoable commands<a id="Undoable"></a>:</p>
+</div>
 <div class="ulist">
-<div class="title">List of undoable commands<a id="Undoable"></a>:</div>
 <ul>
 <li>
 <p><code><a href="#ExpenseTag">add_expense</a></code></p>
@@ -845,9 +881,16 @@ You cannot undo undoable commands once the application exits.
 </li>
 </ul>
 </div>
+<div class="sect3">
+<h4 id="command-syntax-8"><a class="link" href="#command-syntax-8">3.10.1. Command syntax:</a></h4>
 <div class="paragraph">
-<p>Examples:<br>
-Suppose you want to delete the second transaction (Bursary) in THRIFT, but you remove the third transaction instead!
+<p><code>undo</code></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="example-usage-5"><a class="link" href="#example-usage-5">3.10.2. Example usage:</a></h4>
+<div class="paragraph">
+<p>Suppose you want to delete the second transaction (Bursary) in THRIFT, but you remove the third transaction (Chicken Rice) instead!
 One possible solution is that you add the transaction manually back into THRIFT, but this is too troublesome! You can
 retrieve the deleted transaction by performing <code>undo</code>.</p>
 </div>
@@ -860,7 +903,7 @@ retrieve the deleted transaction by performing <code>undo</code>.</p>
 <p>Type <strong>undo</strong> into the command box and press <kbd>Enter</kbd>:</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/UndoAndRedo/undocommand.PNG" alt="undocommand" width="600">
+<img src="images/UndoAndRedo/undocommand.png" alt="undocommand" width="550">
 </div>
 </div>
 </li>
@@ -869,21 +912,19 @@ retrieve the deleted transaction by performing <code>undo</code>.</p>
 adds back to its original position in the list:</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/UndoAndRedo/undocommandresult.PNG" alt="undocommandresult" width="600">
+<img src="images/UndoAndRedo/undocommandresult.png" alt="undocommandresult" width="550">
 </div>
 </div>
 </li>
 </ol>
 </div>
 </div>
+</div>
 <div class="sect2">
 <h3 id="RedoTag"><a class="link" href="#RedoTag">3.11. Redoing the undone command: <code>redo</code></a></h3>
 <div class="paragraph">
 <p>Misuse of <code>undo</code> command? No worries, THRIFT provides <code>redo</code> command to help you in this situation.
-You can restore back the previous state of the undone transaction.</p>
-</div>
-<div class="paragraph">
-<p>Format: <code>redo</code></p>
+You can restore the previous state of the undone transaction.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -909,11 +950,21 @@ You cannot redo undone commands once the application exits or new undoable comma
 </tr>
 </table>
 </div>
+<div class="sect3">
+<h4 id="command-syntax-9"><a class="link" href="#command-syntax-9">3.11.1. Command syntax:</a></h4>
 <div class="paragraph">
-<p>Examples:<br>
-Suppose you had undone the addition of the transaction (Bursary) (See: <a href="#UndoTag">Undoing the previous undoable command</a>),
+<p><code>redo</code></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="example-usage-6"><a class="link" href="#example-usage-6">3.11.2. Example usage:</a></h4>
+<div class="paragraph">
+<p>Suppose you had undone the addition of the transaction (Chicken Rice) (See: <a href="#UndoTag">Undoing the previous undoable command</a>),
 but you decide to track the transaction using THRIFT. Instead of adding the transaction manually, you can add back
 the transaction by executing <code>redo</code>.</p>
+</div>
+<div class="paragraph">
+<p>To <code>redo</code> undone <code>add_expense</code> command:</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -921,19 +972,20 @@ the transaction by executing <code>redo</code>.</p>
 <p>Type <strong>redo</strong> into the command box and press <kbd>Enter</kbd>:</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/UndoAndRedo/redocommand.PNG" alt="redocommand" width="600">
+<img src="images/UndoAndRedo/redocommand.png" alt="redocommand" width="550">
 </div>
 </div>
 </li>
 <li>
-<p>You will see a success message displays in the result box and the transaction adds back to the list:</p>
+<p>You will see a success message displays in the result box and the transaction (Chicken Rice) adds back to the list:</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/UndoAndRedo/redocommandresult.PNG" alt="redocommandresult" width="600">
+<img src="images/UndoAndRedo/redocommandresult.png" alt="redocommandresult" width="550">
 </div>
 </div>
 </li>
 </ol>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -942,7 +994,7 @@ the transaction by executing <code>redo</code>.</p>
 <p>THRIFT lets you find and list all transactions whose <code>REMARK</code> or <code>DESCRIPTION</code> contain your specified search term.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-8"><a class="link" href="#command-syntax-8">3.12.1. Command syntax:</a></h4>
+<h4 id="command-syntax-10"><a class="link" href="#command-syntax-10">3.12.1. Command syntax:</a></h4>
 <div class="paragraph">
 <p><code>find SEARCH_WORD [SEARCH_WORD]</code></p>
 </div>
@@ -959,7 +1011,7 @@ the transaction by executing <code>redo</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="example-usage-5"><a class="link" href="#example-usage-5">3.12.2. Example usage:</a></h4>
+<h4 id="example-usage-7"><a class="link" href="#example-usage-7">3.12.2. Example usage:</a></h4>
 <div class="paragraph">
 <p>Imagine that you wish to find all of your transactions that contain the words <em>The Deck</em> because you would like to see
 how often you visit there.</p>
@@ -970,7 +1022,7 @@ how often you visit there.</p>
 <p>Your transaction list already contains a few transactions with meals that you ate at <em>The Deck</em>:</p>
 <div class="imageblock">
 <div class="content">
-<img src="/images/find/Step1.png" alt="Step1" width="550">
+<img src="images/find/Step1.png" alt="Step1" width="550">
 </div>
 </div>
 </li>
@@ -979,7 +1031,7 @@ how often you visit there.</p>
 <strong>find The Deck</strong> and press <kbd>Enter</kbd>:</p>
 <div class="imageblock">
 <div class="content">
-<img src="/images/find/Step2.png" alt="Step2" width="550">
+<img src="images/find/Step2.png" alt="Step2" width="550">
 </div>
 </div>
 </li>
@@ -987,7 +1039,7 @@ how often you visit there.</p>
 <p>Your transaction list will now only contain transactions containing the words <em>The</em> or <em>Deck</em>.</p>
 <div class="imageblock">
 <div class="content">
-<img src="/images/find/Step3.png" alt="Step3" width="550">
+<img src="images/find/Step3.png" alt="Step3" width="550">
 </div>
 </div>
 </li>
@@ -1033,12 +1085,16 @@ how often you visit there.</p>
 <p>New to THRIFT? Or forget about some of the commands used in THRIFT? You can run <strong>help</strong> to obtain the link to this
 comprehensive user guide. It saves the trouble of saving the URL of this user guide.</p>
 </div>
+<div class="sect3">
+<h4 id="command-syntax-11"><a class="link" href="#command-syntax-11">3.14.1. Command syntax:</a></h4>
 <div class="paragraph">
-<p>Format: <code>help [COMMAND]</code></p>
+<p><code>help [COMMAND]</code></p>
 </div>
+</div>
+<div class="sect3">
+<h4 id="example-usage-8"><a class="link" href="#example-usage-8">3.14.2. Example usage:</a></h4>
 <div class="paragraph">
-<p>Example:<br>
-Suppose you want to add a transaction to THRIFT, but you had forgotten about the command to perform this function.</p>
+<p>Suppose you want to add a transaction to THRIFT, but you had forgotten about the command to perform this function.</p>
 </div>
 <div class="paragraph">
 <p>To get the URL of this user guide:</p>
@@ -1074,15 +1130,16 @@ Alternative methods: press <kbd>F1</kbd> or click on <strong>Help</strong> in th
 </table>
 </div>
 <div class="paragraph">
-<p>If you still remember about <code>add_expense</code> command but had forgotten about how to use it. You can view a simplified version of this
-command by entering <strong>help add_expense</strong> instead of <strong>help</strong>.</p>
+<p>However, if you just want to view the usage syntax of the <code>add_expense</code> command because you had forgotten the exact format,
+you can enter <strong>help add_expense</strong> instead of <strong>help</strong>.</p>
 </div>
 <div class="paragraph">
-<p>Below is a simplified version of the <code>add_expense</code> command:</p>
+<p>You will see a simplified help version of the <code>add_expense</code> command displays in the result box:</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/Help-exit/specifichelpcommand.PNG" alt="specifichelpcommand">
+</div>
 </div>
 </div>
 </div>
@@ -1091,9 +1148,6 @@ command by entering <strong>help add_expense</strong> instead of <strong>help</s
 <div class="paragraph">
 <p>Think about exiting THRIFT after you have added the transaction? You can enter <strong>exit</strong> in the
 command box or click on the close button at the top-right corner of the application.</p>
-</div>
-<div class="paragraph">
-<p>Format: <code>exit</code></p>
 </div>
 </div>
 <div class="sect2">
@@ -1190,4 +1244,29 @@ Example: <code>help delete</code></p>
 </ul>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-29 13:03:34 UTC</div></div></div></body></html>
+</div>
+<div class="sect1">
+<h2 id="glossary"><a class="link" href="#glossary">6. Glossary</a></h2>
+<div class="sectionbody">
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+<a id="thrift"></a>THRIFT
+</td>
+<td class="hdlist2">
+<p>Stands for "Terminal-input Human Readable Interactive Finance Tracker". It is the application this user guide is for.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a id="url"></a> URL
+</td>
+<td class="hdlist2">
+<p>Stands for "Uniform Resource Locator" which is used to access a particular website.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-29 14:03:11 UTC</div></div></div></body></html>
