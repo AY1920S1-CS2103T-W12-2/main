@@ -19,7 +19,7 @@ not to overspend as they will constantly see their remaining balance for that mo
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="../images/Ui.png" alt="Ui" width="600">
+<img src="../images/Ui.png" alt="Ui" width="550">
 </div>
 <div class="title">Figure 1. Main window of <code><strong>THRIFT</strong></code> which shows the user&#8217;s balance as well as transactions</div>
 </div>
@@ -43,40 +43,51 @@ We all had important and major roles to play in order to ensure that <code><stro
 <div class="sect2">
 <h3 id="1-4-legend"><a class="link" href="#1-4-legend">1.4 Legend</a></h3>
 <div class="paragraph">
-<p>There are various text styles used in this portfolio and its usages are explained below:</p>
+<p>There are various text styles used in this portfolio and its usages are explained below.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This symbol denotes information that you may want to take note of when using the application.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+This symbol denotes a tip which you may find useful when using the application.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>As our User Guide and Developer Guide are formatted differently, you should refer to their respective formatting guide below:</p>
 </div>
 <div class="hdlist">
 <table>
 <tr>
 <td class="hdlist1">
-<strong>add_expense n/Laksa v/4</strong>
+User Guide: 
 </td>
 <td class="hdlist2">
-<p>Bold text indicates user input.</p>
+<p><a href="../UserGuide.html#features">Formatting</a> of the User Guide</p>
 </td>
 </tr>
 <tr>
 <td class="hdlist1">
-<em>/src/java/thrift/logic/Logic.java</em>
+Developer Guide: 
 </td>
 <td class="hdlist2">
-<p>Italic text indicates that it is a file path.</p>
-</td>
-</tr>
-<tr>
-<td class="hdlist1">
-<code>currentMonth</code>
-</td>
-<td class="hdlist2">
-<p>Text with grey highlight (called a mark-up) indicates that it is a method/variable name.</p>
-</td>
-</tr>
-<tr>
-<td class="hdlist1">
-<code><strong>THRIFT</strong></code>
-</td>
-<td class="hdlist2">
-<p>Bold text with mark-up indicates a class/package name.</p>
+<p><a href="../DeveloperGuide.html#about-the-document">Formatting</a> of the Developer Guide</p>
 </td>
 </tr>
 </table>
@@ -191,6 +202,153 @@ This makes the <strong>delete</strong> command syntax consistent with the <stron
 <div class="sectionbody">
 <div class="paragraph">
 <p>The following sections illustrate my ability in writing documentation targeting end-users which guides them in using the various features of the application.</p>
+</div>
+<div class="sect2">
+<h3 id="setting-monthly-budget-code-budget-code"><a class="link" href="#setting-monthly-budget-code-budget-code">Setting monthly budget: <code>budget</code></a></h3>
+<div class="paragraph">
+<p>You are able to set a budget for each month in THRIFT. This allows THRIFT to display your remaining balance for the month and lets you keep your spending in check.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is not compulsory to set a budget for each month and you can use THRIFT normally without setting budgets.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="command-syntax"><a class="link" href="#command-syntax">Command syntax:</a></h4>
+<div class="paragraph">
+<p><code>budget v/VALUE d/MONTH</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Sets your budget for the month specified in <code>MONTH</code> as <code>VALUE</code>.</p>
+</li>
+<li>
+<p><code>VALUE</code> is any positive integer below one billion.</p>
+</li>
+<li>
+<p><code>MONTH</code> is in <code>MM/YYYY</code> and <code>MM</code> is between <code>01-12</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="example-usage"><a class="link" href="#example-usage">Example usage:</a></h4>
+<div class="paragraph">
+<p>You wish to set your budget for the month <em>October 2019</em> as $<em>2000</em>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Your current budget for the month <em>October 2019</em> is $<em>0</em>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/add-budget/Step1.png" alt="Step1" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>You type: <strong>budget v/2000 d/10/2019</strong> in the command box and press <kbd>Enter</kbd>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/add-budget/Step2.png" alt="Step2" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>You should see in the result box that your budget for <em>October 2019</em> has been set to $<em>2000</em>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/add-budget/Step3.png" alt="Step3" width="550">
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are changing your budget for the current displayed month, you should see the changes on the GUI immediately.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="deleting-a-transaction-code-delete-code"><a class="link" href="#deleting-a-transaction-code-delete-code">Deleting a transaction: <code>delete</code></a></h3>
+<div class="paragraph">
+<p>If you find that a transaction is no longer relevant to you, you may delete it from THRIFT.</p>
+</div>
+<div class="sect3">
+<h4 id="command-syntax-2"><a class="link" href="#command-syntax-2">Command syntax:</a></h4>
+<div class="paragraph">
+<p><code>delete i/INDEX</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Deletes the transaction with the specified <code>INDEX</code> as shown on the transaction list GUI.</p>
+</li>
+<li>
+<p><code>INDEX</code> <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="example-usage-2"><a class="link" href="#example-usage-2">Example usage:</a></h4>
+<div class="paragraph">
+<p>Assume that you wish to delete a bursary income transaction from your transaction list because the bursary was mistakenly awarded to you.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>This transaction is currently the first transaction in your transaction list.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/delete/Step1.png" alt="Step1" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>You type: <strong>delete i/1</strong> and press <kbd>Enter</kbd>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/delete/Step2.png" alt="Step2" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>You should see that the bursary transaction has been deleted from THRIFT and your balance has been updated accordingly.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/delete/Step3.png" alt="Step3" width="550">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -425,4 +583,4 @@ are applied when restoring <code><strong>THRIFT</strong></code> data from the da
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-28 14:59:51 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-29 02:48:50 UTC</div></div></div></body></html>

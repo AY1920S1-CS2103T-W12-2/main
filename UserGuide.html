@@ -29,12 +29,13 @@
 <li><a href="#CloneTag">3.9. Cloning a transaction: <code>clone</code></a></li>
 <li><a href="#UndoTag">3.10. Undoing the previous undoable command: <code>undo</code></a></li>
 <li><a href="#RedoTag">3.11. Redoing the undone command: <code>redo</code></a></li>
-<li><a href="#ListTag">3.12. List expenses for the month: <code>list</code></a></li>
-<li><a href="#HelpTag">3.13. Displaying help page: <code>help</code></a></li>
-<li><a href="#ExitTag">3.14. Exiting THRIFT application: <code>exit</code></a></li>
-<li><a href="#generating-an-external-report-code-coming-in-v2-0-code">3.15. Generating an external report <code>[coming in v2.0]</code></a></li>
-<li><a href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.16. Recommending dining options based on budget <code>[coming in v2.0]</code></a></li>
-<li><a href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.17. Encrypting THRIFT data <code>[coming in v2.0]</code></a></li>
+<li><a href="#FindTag">3.12. Finding transactions with keywords: <code>find</code></a></li>
+<li><a href="#ListTag">3.13. List expenses for the month: <code>list</code></a></li>
+<li><a href="#HelpTag">3.14. Displaying help page: <code>help</code></a></li>
+<li><a href="#ExitTag">3.15. Exiting THRIFT application: <code>exit</code></a></li>
+<li><a href="#generating-an-external-report-code-coming-in-v2-0-code">3.16. Generating an external report <code>[coming in v2.0]</code></a></li>
+<li><a href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.17. Recommending dining options based on budget <code>[coming in v2.0]</code></a></li>
+<li><a href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.18. Encrypting THRIFT data <code>[coming in v2.0]</code></a></li>
 </ul>
 </li>
 <li><a href="#faq">4. FAQ</a></li>
@@ -47,6 +48,15 @@
 <div class="sectionbody">
 <div class="paragraph">
 <p>THRIFT is for money-conscious NUS students who wish to track their spending, in order to make better informed decisions when it comes to saving money. Maintain records of your daily incoming and outgoing transactions and constantly keep track of your spending and income! THRIFT is optimized for those who prefer to work with a Command Line Interface (CLI) while still enjoying the benefits of having a Graphical User Interface (GUI). If you want a simple, no-frills finance tracker, look no further than THRIFT!</p>
+</div>
+<div class="paragraph">
+<p>This is how THRIFT looks like:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/Ui_Labelled.png" alt="Ui Labelled">
+</div>
+<div class="title">Figure 1. The graphical user interface for THRIFT</div>
 </div>
 </div>
 </div>
@@ -94,59 +104,217 @@
 <h2 id="features"><a class="link" href="#features">3. Features:</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Command format:</p>
+<p>Understanding this document:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Words in <code>UPPER_CASE</code> are parameters to be supplied by the user e.g. <code>expense n/EXPENSE_NAME v/VALUE</code>.</p>
-</li>
-<li>
-<p>Items in square brackets <code>[ ]</code> are optional e.g. <code>n/EXPENSE_NAME [t/TAG]</code> can be used as <code>n/Laksa</code>.</p>
-</li>
-<li>
-<p>Items in round brackets <code>( )</code> with <code>|</code> are mandatory parameters where a selection is needed e.g. <code>tag (add | delete)</code> means you need to input either <code>tag add</code> or <code>tag delete</code>.</p>
-</li>
-<li>
-<p>Items with <code>&#8230;&#8203;</code> after them can be used multiple times including zero times e.g. <code>[t/TAG] …</code> can be used as ` ` (i.e. 0 times), <code>t/Food t/Dinner</code> etc.</p>
-</li>
-<li>
-<p>Parameters can be in any order e.g. if the command specifies <code>n/EXPENSE_NAME v/VALUE</code>, <code>v/VALUE n/EXPENSE_NAME</code> will achieve the same outcome.</p>
-</li>
-</ul>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+<code>add_expense</code>
+</td>
+<td class="hdlist2">
+<p>Words with a grey highlight (called a mark-up) indicates that it is a command, or a part of it.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<kbd>Enter</kbd>
+</td>
+<td class="hdlist2">
+<p>Words styled like this indicates a keyboard button.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+UPPER_CASE
+</td>
+<td class="hdlist2">
+<p>Words in UPPER_CASE are parameters to be supplied by you. e.g. <code>add_expense n/EXPENSE_NAME v/VALUE</code>.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Parameters can be in any order e.g. if the command specifies <code>n/EXPENSE_NAME v/VALUE</code>, <code>v/VALUE n/EXPENSE_NAME</code> will achieve the same outcome.
+</td>
+</tr>
+</table>
+</div>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<strong>add_expense n/Lunch v/5</strong>
+</td>
+<td class="hdlist2">
+<p>Words in bold indicates the input that would be entered by you.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<em>Debt</em>
+</td>
+<td class="hdlist2">
+<p>Words in italics indicate the literals used in the example commands.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+[ ] 
+</td>
+<td class="hdlist2">
+<p>Words in square brackets <code>[ ]</code> are optional e.g. <code>n/EXPENSE_NAME [t/TAG]</code> can be used as <code>n/Laksa</code>.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+( | ) 
+</td>
+<td class="hdlist2">
+<p>Words in round brackets <code>( )</code> with <code>|</code> are mandatory parameters where a selection is required e.g. <code>tag (add | delete)</code> means you need to input either <code>tag add</code> or <code>tag delete</code>.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+&#8230;&#8203; 
+</td>
+<td class="hdlist2">
+<p>Parameters with <code>&#8230;&#8203;</code> after them can be used as often as zero to multiple times. e.g. <code>[t/TAG] …</code> can be used as ` ` (i.e. 0 times), <code>t/Food t/Dinner</code> etc.</p>
+</td>
+</tr>
+</table>
 </div>
 <div class="sect2">
 <h3 id="BudgetTag"><a class="link" href="#BudgetTag">3.1. Setting monthly budget: <code>budget</code></a></h3>
 <div class="paragraph">
-<p>Format: <code>budget v/VALUE d/MONTH</code>, where <code>MONTH</code> are digits in <code>MM/YYYY</code>.</p>
+<p>You are able to set a budget for each month in THRIFT. This allows THRIFT to display your remaining balance for the month and lets you keep your spending in check.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+It is not compulsory to set a budget for each month and you can use THRIFT normally without setting budgets.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="command-syntax"><a class="link" href="#command-syntax">3.1.1. Command syntax:</a></h4>
 <div class="paragraph">
-<p>Example:</p>
+<p><code>budget v/VALUE d/MONTH</code></p>
 </div>
+<div class="sidebarblock">
+<div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p><code>budget v/1000 d/10/2019</code></p>
+<p>Sets your budget for the month specified in <code>MONTH</code> as <code>VALUE</code>.</p>
 </li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Expected output:</p>
-</div>
-<div class="ulist">
-<ul>
 <li>
-<p><code>New budget:<br>
-Amount: $1,000.00<br>
-Month: 10/2019</code></p>
+<p><code>VALUE</code> is any positive integer below one billion.</p>
+</li>
+<li>
+<p><code>MONTH</code> is in <code>MM/YYYY</code> and <code>MM</code> is between <code>01-12</code>.</p>
 </li>
 </ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="example-usage"><a class="link" href="#example-usage">3.1.2. Example usage:</a></h4>
+<div class="paragraph">
+<p>You wish to set your budget for the month <em>October 2019</em> as $<em>2000</em>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Your current budget for the month <em>October 2019</em> is $<em>0</em>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="/images/add-budget/Step1.png" alt="Step1" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>You type: <strong>budget v/2000 d/10/2019</strong> in the command box and press <kbd>Enter</kbd>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="/images/add-budget/Step2.png" alt="Step2" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>You should see in the result box that your budget for <em>October 2019</em> has been set to $<em>2000</em>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="/images/add-budget/Step3.png" alt="Step3" width="550">
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you are changing your budget for the current displayed month, you should see the changes on the GUI immediately.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="ExpenseTag"><a class="link" href="#ExpenseTag">3.2. Adding an expense: <code>add_expense</code></a></h3>
 <div class="paragraph">
-<p>Format: <code>add_expense n/EXPENSE_NAME v/VALUE [r/REMARKS] [t/TAG]&#8230;&#8203;</code></p>
+<p>One of the most important features of THRIFT is to allow you to track your expenses by adding them into THRIFT.</p>
+</div>
+<div class="sect3">
+<h4 id="command-syntax-2"><a class="link" href="#command-syntax-2">3.2.1. Command syntax:</a></h4>
+<div class="paragraph">
+<p><code>add_expense n/EXPENSE_NAME v/VALUE [r/REMARK] [t/TAG]&#8230;&#8203;</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Adds an expense with:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the name <code>EXPENSE_NAME</code></p>
+</li>
+<li>
+<p>the value <code>VALUE</code></p>
+</li>
+<li>
+<p>an optional remark <code>REMARK</code></p>
+</li>
+<li>
+<p>one or more optional <code>TAG</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>VALUE</code> is any positive integer below one billion.</p>
+</li>
+<li>
+<p><code>TAG</code> does not have spaces nor special characters.</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -160,79 +328,161 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 </tr>
 </table>
 </div>
+</div>
+<div class="sect3">
+<h4 id="example-usage-2"><a class="link" href="#example-usage-2">3.2.2. Example usage:</a></h4>
 <div class="paragraph">
-<p>Examples:</p>
+<p>You had the famous Laksa from "The Deck" for lunch which cost $10.50 and you wish to track it in THRIFT:</p>
 </div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p><code>add_expense n/Laksa v/10.50 t/Lunch t/Food</code></p>
-</li>
-<li>
-<p><code>add_expense n/Travel v/53 r/Went to Johor Bahru t/Travel</code></p>
-</li>
-</ul>
+<p>You have a remaining balance of $2000 at the beginning.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/add-transaction/expense/Step1.png" alt="Step1" width="550">
 </div>
-<div class="paragraph">
-<p>Expected output:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>New expense added: [-] Laksa ($10.50) Date: 12/10/2019 Remarks:  Tags: [Lunch][Food]</code></p>
 </li>
 <li>
-<p><code>New expense added: [-] Travel ($53.00) Date: 12/10/2019 Remarks: Went to Johor Bahru Tags: [Travel]</code></p>
+<p>You type: <strong>add_expense n/Laksa v/10.50 r/Delicious! From "The Deck" t/Lunch</strong> into the command box and press <kbd>Enter</kbd>.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The transaction date is automatically populated based on your system time.
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/add-transaction/expense/Step2.png" alt="Step2" width="550">
+</div>
+</div>
 </li>
-</ul>
+<li>
+<p>You should see that your Laksa lunch has been added into THRIFT with the details that you specified, as well as your new balance.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/add-transaction/expense/Step3.png" alt="Step3" width="550">
+</div>
+</div>
+</li>
+</ol>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="IncomeTag"><a class="link" href="#IncomeTag">3.3. Adding an income: <code>add_income</code></a></h3>
 <div class="paragraph">
-<p>Format: <code>add_income n/INCOME_NAME v/VALUE [r/REMARKS] [t/TAG]&#8230;&#8203;</code></p>
+<p>Being able to add an income transaction is just as important as tracking your expenses. THRIFT is able to track all of your incoming transactions as well.</p>
 </div>
+<div class="sect3">
+<h4 id="command-syntax-3"><a class="link" href="#command-syntax-3">3.3.1. Command syntax:</a></h4>
 <div class="paragraph">
-<p>Examples:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>add_income n/Allowance v/1000 t/Monthly</code></p>
-</li>
-<li>
-<p><code>add_income n/Bursary v/500 r/Did well in previous semester. t/Award</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Expected output:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>New income added: [+] Allowance ($1,000.00) Date: 12/10/2019 Remarks:  Tags: [Monthly]</code></p>
-</li>
-<li>
-<p><code>New income added: [+] Bursary ($500.00) Date: 12/10/2019 Remarks: Did well in previous semester. Tags: [Award]</code></p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="DeleteTag"><a class="link" href="#DeleteTag">3.4. Deleting a transaction: <code>delete</code></a></h3>
-<div class="paragraph">
-<p>Format: <code>delete i/INDEX</code></p>
+<p><code>add_income n/INCOME_NAME v/VALUE [r/REMARK] [t/TAG]&#8230;&#8203;</code></p>
 </div>
 <div class="sidebarblock">
 <div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>Deletes the transaction at the specified <code>INDEX</code>.</p>
+<p>Adds an income with:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>the name <code>INCOME_NAME</code></p>
 </li>
 <li>
-<p><code>INDEX</code> refers to the index number currently shown in the UI (after filtering, if any).</p>
+<p>the value <code>VALUE</code></p>
+</li>
+<li>
+<p>an optional remark <code>REMARK</code></p>
+</li>
+<li>
+<p>one or more optional <code>TAG</code></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><code>VALUE</code> is any positive integer below one billion.</p>
+</li>
+<li>
+<p><code>TAG</code> does not have spaces nor special characters.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="example-usage-3"><a class="link" href="#example-usage-3">3.3.2. Example usage:</a></h4>
+<div class="paragraph">
+<p>You studied extremely hard during the year and you were awarded a bursary incentive of $500. You wish to add it to THRIFT to update your remaining balance with this reward:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You have a balance of $2000 at the beginning.</p>
+<div class="imageblock">
+<div class="content">
+<img src="/images/add-transaction/income/Step1.png" alt="Step1" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>You type: <strong>add_income n/Bursary v/500 r/For studying hard in the year t/Award</strong> into the command box and press <kbd>Enter</kbd>.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The transaction date is automatically populated based on your system time.
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/add-transaction/income/Step2.png" alt="Step2" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>You should see that your bursary has been added into THRIFT with the details that you specified, as well as your new balance.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/add-transaction/income/Step3.png" alt="Step3" width="550">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="DeleteTag"><a class="link" href="#DeleteTag">3.4. Deleting a transaction: <code>delete</code></a></h3>
+<div class="paragraph">
+<p>If you find that a transaction is no longer relevant to you, you may delete it from THRIFT.</p>
+</div>
+<div class="sect3">
+<h4 id="command-syntax-4"><a class="link" href="#command-syntax-4">3.4.1. Command syntax:</a></h4>
+<div class="paragraph">
+<p><code>delete i/INDEX</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Deletes the transaction with the specified <code>INDEX</code> as shown on the transaction list GUI.</p>
 </li>
 <li>
 <p><code>INDEX</code> <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
@@ -241,25 +491,40 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 </div>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="example-usage-4"><a class="link" href="#example-usage-4">3.4.2. Example usage:</a></h4>
 <div class="paragraph">
-<p>Example:</p>
+<p>Assume that you wish to delete a bursary income transaction from your transaction list because the bursary was mistakenly awarded to you.</p>
 </div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p><code>delete i/1</code></p>
+<p>This transaction is currently the first transaction in your transaction list.</p>
+<div class="imageblock">
+<div class="content">
+<img src="/images/delete/Step1.png" alt="Step1" width="550">
+</div>
+</div>
 </li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Expected output:</p>
-</div>
-<div class="ulist">
-<ul>
 <li>
-<p><code>Deleted Transaction: [-] Laksa ($10.50) Date: 12/10/2019 Remarks:  Tags: [Lunch][Food]</code></p>
+<p>You type: <strong>delete i/1</strong> and press <kbd>Enter</kbd>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="/images/delete/Step2.png" alt="Step2" width="550">
+</div>
+</div>
 </li>
-</ul>
+<li>
+<p>You should see that the bursary transaction has been deleted from THRIFT and your balance has been updated accordingly.</p>
+<div class="imageblock">
+<div class="content">
+<img src="/images/delete/Step3.png" alt="Step3" width="550">
+</div>
+</div>
+</li>
+</ol>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -345,7 +610,7 @@ Assume 2nd command occurs after 1st
 <p>The <code>tag</code> command allows you to tag a <code>Transaction</code> entry.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax"><a class="link" href="#command-syntax">3.6.1. Command Syntax:</a></h4>
+<h4 id="command-syntax-5"><a class="link" href="#command-syntax-5">3.6.1. Command Syntax:</a></h4>
 <div class="paragraph">
 <p><code>tag i/INDEX t/TAG_NAME&#8230;&#8203;</code></p>
 </div>
@@ -386,7 +651,7 @@ Assume 2nd command occurs after 1st
 <p>The <code>untag</code> command allows you to un-tag a <code>Transaction</code> entry.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-2"><a class="link" href="#command-syntax-2">3.7.1. Command Syntax:</a></h4>
+<h4 id="command-syntax-6"><a class="link" href="#command-syntax-6">3.7.1. Command Syntax:</a></h4>
 <div class="paragraph">
 <p><code>untag i/INDEX t/TAG_NAME&#8230;&#8203;</code></p>
 </div>
@@ -427,7 +692,7 @@ Assume 2nd command occurs after 1st
 <p>The convert command allows you to convert money from one currency to another.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-3"><a class="link" href="#command-syntax-3">3.8.1. Command Syntax</a></h4>
+<h4 id="command-syntax-7"><a class="link" href="#command-syntax-7">3.8.1. Command Syntax</a></h4>
 <div class="paragraph">
 <p><code>convert [v/VALUE] c/CURRENCY&#8230;&#8203;</code></p>
 </div>
@@ -622,7 +887,66 @@ Undoable commands are commands that modify the data of THRIFT application.
 </div>
 </div>
 <div class="sect2">
-<h3 id="ListTag"><a class="link" href="#ListTag">3.12. List expenses for the month: <code>list</code></a></h3>
+<h3 id="FindTag"><a class="link" href="#FindTag">3.12. Finding transactions with keywords: <code>find</code></a></h3>
+<div class="paragraph">
+<p>THRIFT lets you find and list all transactions whose <code>REMARK</code> or <code>DESCRIPTION</code> contain your specified search term.</p>
+</div>
+<div class="sect3">
+<h4 id="command-syntax-8"><a class="link" href="#command-syntax-8">3.12.1. Command syntax:</a></h4>
+<div class="paragraph">
+<p><code>find SEARCH_WORD [SEARCH_WORD]</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Multiple <code>SEARCH_WORD</code> can be defined, and transactions that matches any of a <code>SEARCH_WORD</code> will be listed.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="example-usage-5"><a class="link" href="#example-usage-5">3.12.2. Example usage:</a></h4>
+<div class="paragraph">
+<p>Imagine that you wish to find all of your transactions that contain the words <em>The Deck</em> because you would like to see
+how often you visit there.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Your transaction list already contains a few transactions with meals that you ate at <em>The Deck</em>:</p>
+<div class="imageblock">
+<div class="content">
+<img src="/images/find/Step1.png" alt="Step1" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>You want to refine your search to only show transactions that contain the keywords <em>The Deck</em>. You type:
+<strong>find The Deck</strong> and press <kbd>Enter</kbd>:</p>
+<div class="imageblock">
+<div class="content">
+<img src="/images/find/Step2.png" alt="Step2" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>Your transaction list will now only contain transactions containing the words <em>The</em> or <em>Deck</em>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="/images/find/Step3.png" alt="Step3" width="550">
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ListTag"><a class="link" href="#ListTag">3.13. List expenses for the month: <code>list</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>list [m/MONTH] [t/TAG]</code></p>
 </div>
@@ -654,7 +978,7 @@ Undoable commands are commands that modify the data of THRIFT application.
 </div>
 </div>
 <div class="sect2">
-<h3 id="HelpTag"><a class="link" href="#HelpTag">3.13. Displaying help page: <code>help</code></a></h3>
+<h3 id="HelpTag"><a class="link" href="#HelpTag">3.14. Displaying help page: <code>help</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>help [COMMAND]</code></p>
 </div>
@@ -686,25 +1010,25 @@ Undoable commands are commands that modify the data of THRIFT application.
 </div>
 </div>
 <div class="sect2">
-<h3 id="ExitTag"><a class="link" href="#ExitTag">3.14. Exiting THRIFT application: <code>exit</code></a></h3>
+<h3 id="ExitTag"><a class="link" href="#ExitTag">3.15. Exiting THRIFT application: <code>exit</code></a></h3>
 <div class="paragraph">
 <p>Format: <code>exit</code></p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="generating-an-external-report-code-coming-in-v2-0-code"><a class="link" href="#generating-an-external-report-code-coming-in-v2-0-code">3.15. Generating an external report <code>[coming in v2.0]</code></a></h3>
+<h3 id="generating-an-external-report-code-coming-in-v2-0-code"><a class="link" href="#generating-an-external-report-code-coming-in-v2-0-code">3.16. Generating an external report <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>With this feature, you will be able to save your monthly budget report into an external file for your record purposes. The report will clearly state your expenditure, income and remaining budget for the month.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="recommending-dining-options-based-on-budget-code-coming-in-v2-0-code"><a class="link" href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.16. Recommending dining options based on budget <code>[coming in v2.0]</code></a></h3>
+<h3 id="recommending-dining-options-based-on-budget-code-coming-in-v2-0-code"><a class="link" href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.17. Recommending dining options based on budget <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>Depending on your remaining budget and the remaining days to the end of the month, THRIFT will recommend you dining places in NUS which will suit your budget. For example, if you are running low on funds, you might get recommended to travel to the Arts canteen to eat since there are really cheap options there.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="encrypting-thrift-data-code-coming-in-v2-0-code"><a class="link" href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.17. Encrypting THRIFT data <code>[coming in v2.0]</code></a></h3>
+<h3 id="encrypting-thrift-data-code-coming-in-v2-0-code"><a class="link" href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.18. Encrypting THRIFT data <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
 <p>If you are especially conscious about having your data spied on, this function will definitely ease your worries. With encryption enabled, your data will not be known to the intruder should they steal your THRIFT application data.</p>
 </div>
@@ -785,4 +1109,4 @@ Example: <code>help delete</code></p>
 </ul>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-28 14:59:51 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-29 02:48:50 UTC</div></div></div></body></html>
