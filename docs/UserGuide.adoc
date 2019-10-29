@@ -88,7 +88,7 @@ NOTE: If you are changing your budget for the current displayed month, you shoul
 [[ExpenseTag]]
 === Adding an expense: `add_expense`
 
-One of the most important feature of THRIFT is to allow you to track your expenses by adding them into THRIFT.
+One of the most important features of THRIFT is to allow you to track your expenses by adding them into THRIFT.
 
 ==== Command syntax:
 `add_expense n/EXPENSE_NAME v/VALUE [r/REMARK] [t/TAG]...`
