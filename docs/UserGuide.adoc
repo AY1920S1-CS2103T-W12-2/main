@@ -187,9 +187,11 @@ image::delete/Step1.png[,550]
 +
 image::delete/Step2.png[,550]
 
-. You should see that the bursary transaction has been deleted from THRIFT and your balance has been updated accordingly.
+. You should see in the result box that your budget for _October 2019_ has been set to $_2000_.
 +
-image::delete/Step3.png[,550]
+NOTE: If you are changing your budget for the current displayed month, you should see the changes on the GUI immediately.
++
+image::../images/add-budget/Step3.png[,550]
 
 // tag::update[]
 [[UpdateTag]]
