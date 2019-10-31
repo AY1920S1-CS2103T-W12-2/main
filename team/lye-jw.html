@@ -65,111 +65,168 @@
 <div class="sect2">
 <h3 id="UpdateTag"><a class="link" href="#UpdateTag">Updating a transaction’s details: <code>update</code></a></h3>
 <div class="paragraph">
-<p>Format: <code>update i/INDEX PREFIX_LETTER/UPDATED_DETAILS &#8230;&#8203;</code></p>
+<p>Made a mistake when creating a transaction? Have new details for an existing transaction? Simply utilize THRIFT&#8217;s <code>update</code> feature to make changes.</p>
+</div>
+<div class="sect3">
+<h4 id="command-syntax"><a class="link" href="#command-syntax">Command Syntax:</a></h4>
+<div class="paragraph">
+<p><code>update i/INDEX [n/NEW_NAME] [v/NEW_VALUE] [r/NEW_REMARK] [t/NEW_TAG] &#8230;&#8203;</code></p>
+</div>
+<div class="paragraph">
+<p>Here is an explanation for the <code>update</code> command:</p>
 </div>
 <div class="sidebarblock">
 <div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>Updates the transaction&#8217;s details at the specified <code>INDEX</code>.</p>
+<p>Use this command to update the fields of the transaction at the specified <code>INDEX</code>.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>INDEX</code> refers to the index number currently shown in the UI, and must be a <strong>positive integer</strong>.</p>
+<p><code>INDEX</code> refers to the index number currently shown in the displayed list, and must be a <strong>positive integer</strong>.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><code>PREFIX_LETTER</code> specifies type of detail to be updated, e.g. <code>n/</code> for name.</p>
+<p>You can update any or all of the transaction&#8217;s <strong>name</strong>, <strong>value</strong>, <strong>remark</strong> and <strong>tags</strong> fields. For information on these fields, see <a href="#TransactionDetailsTag">here</a>.</p>
 </li>
 <li>
-<p><code>UPDATED_DETAILS</code> are the new details of type corresponding to <code>PREFIX_LETTER</code> that the transaction is to be updated with.</p>
+<p>All fields are optional, but you must specify at least one field to be updated.</p>
 </li>
 <li>
-<p>Multiple detail types can be updated at once.</p>
+<p>You can update multiple fields at once.</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
-<div class="paragraph">
-<p>Examples:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>update i/1 n/Curry Laksa</code></p>
-</li>
-<li>
-<p><code>update i/1 n/Asam Laksa v/11 r/My first time trying! t/Dinner t/Food</code></p>
-</li>
-</ul>
+<div class="sect3">
+<h4 id="example-usage"><a class="link" href="#example-usage">Example Usage:</a></h4>
+<div class="paragraph">
+<p>You order a bowl of delicious Laksa and key in the details of this food expense into THRIFT. However, after your meal you realize you recorded some incorrect details - the Laksa was <em>Asam Laksa</em>, not Curry Laksa as you thought, and you paid more than the menu price (which you recorded) due to taxes. You also want to add a remark and tag.</p>
 </div>
 <div class="paragraph">
-<p>Expected output:<br></p>
+<p>Fortunately, you can easily update such details in THRIFT. Here is what you do from beginning to end:</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Assume 2nd command occurs after 1st
-</td>
-</tr>
-</table>
-</div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p><code>Updated Transaction: [-] Curry Laksa ($10.50) Date: 12/10/2019 Remarks:  Tags: [Lunch][Food]</code><br></p>
-<div class="paragraph">
-<p><code>Original: [-] Laksa ($10.50) Date: 12/10/2019 Remarks:  Tags: [Lunch][Food]</code></p>
+<p>You initially have a "Curry Laksa" expense in THRIFT. It is at index 2 in the list.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/update/updateUG/UpdateStep1.png" alt="UpdateStep1" width="550">
+</div>
 </div>
 </li>
 <li>
-<p><code>Updated Transaction: [-] Asam Laksa ($11.00) Date: 12/10/2019 Remarks: My first time trying! Tags: [Dinner][Food]</code><br></p>
-<div class="paragraph">
-<p><code>Original: [-] Curry Laksa ($10.50) Date: 12/10/2019 Remarks:  Tags: [Lunch][Food]</code></p>
+<p>When you realize the Laksa is not Curry Laksa and want to change the transaction&#8217;s name, you type <strong>update i/2 n/Laksa</strong> into the command box and press <kbd>Enter</kbd>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/update/updateUG/UpdateStep2.png" alt="UpdateStep2" width="550">
+</div>
 </div>
 </li>
-</ul>
+<li>
+<p>You should see that the "Curry Laksa" transaction&#8217;s name is updated to "Laksa". The status message also tells you what the original transaction was.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/update/updateUG/UpdateStep3.png" alt="UpdateStep3" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>Later on, you want to change the name and value, as well as add a remark and tag. You type:<br>
+<strong>update i/2 n/Asam Laksa v/12 r/My first time trying! t/Food t/Lunch</strong><br>
+and press <kbd>Enter</kbd>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/update/updateUG/UpdateStep4.png" alt="UpdateStep4" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>You can see the updated details of the transaction at index 2. The status message tells you what the original transaction was. The transaction month&#8217;s Expense and Balance trackers are also updated.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/update/updateUG/UpdateStep5.png" alt="UpdateStep5" width="550">
+</div>
+</div>
+</li>
+</ol>
+</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="CloneTag"><a class="link" href="#CloneTag">Cloning a transaction: <code>clone</code></a></h3>
 <div class="paragraph">
-<p>Format: <code>clone i/INDEX</code></p>
+<p>Occasionally, you may want to copy a transaction, or create multiple copies of a transaction for recurring incomes or expenses such as a yearly donation or monthly bills. Simply use the <code>clone</code> feature to achieve this.</p>
+</div>
+<div class="sect3">
+<h4 id="command-syntax-2"><a class="link" href="#command-syntax-2">Command syntax:</a></h4>
+<div class="paragraph">
+<p><code>clone i/INDEX [o/OCCURRENCE]</code></p>
+</div>
+<div class="paragraph">
+<p>The following is an explanation for the <code>clone</code> command:</p>
 </div>
 <div class="sidebarblock">
 <div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>Clones (creates a duplicate of) a <code>Transaction</code> entry.</p>
-</li>
-<li>
-<p>Clone produced is added to a new index at the bottom of the list.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="paragraph">
-<p>Examples:<br></p>
-</div>
+<p>Clones (creates duplicate(s) of) transaction at <code>INDEX</code>. Clone(s) produced are added to a new index at the bottom of the list.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><code>clone i/1</code></p>
+<p><code>INDEX</code> refers to the index currently shown in the displayed list, and must be a positive integer.</p>
 </li>
 </ul>
 </div>
+</li>
+<li>
+<p>If you use <code>clone i/INDEX</code> without <code>o/OCCURRENCE</code> field, one clone is created for the current day.</p>
+</li>
+<li>
+<p>Optional <code>OCCURRENCE</code> field is in the format <code>FREQUENCY:NUMBER_OF_OCCURRENCES</code>. You use it to create multiple clones,  with the 1st clone on the current day.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>FREQUENCY</code> is how often or how far apart the clones occur. Valid values are: <code>daily</code>, <code>weekly</code>, <code>monthly</code> and <code>yearly</code>.</p>
+</li>
+<li>
+<p><code>NUMBER_OF_OCCURRENCES</code> determines how many clones are produced.</p>
+</li>
+<li>
+<p>The maximum <code>NUMBER_OF_OCCURRENCES</code> is <strong>5 for <code>yearly</code></strong> and <strong>12 for <code>daily</code>, <code>weekly</code> and <code>monthly</code></strong>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>For monthly cloning, clones are created on the same day of the following months, e.g. <strong>clone i/1 o/monthly:3</strong> on 20 November 2019 creates clones on 20 November 2019, 20 December 2019 and 20 January 2020.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For special cases where following months do not have the day a transaction was cloned on, clones are created on the last day of those months, e.g. <strong>clone i/1 o/monthly:3</strong> on 31 October 2019 creates clones on 31 October 2019, 30 November 2019 and 31 December 2019.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="example-usage-br"><a class="link" href="#example-usage-br">Example usage:<br></a></h4>
 <div class="paragraph">
-<p>Expected output:<br></p>
+<p>You receive your fixed salary on the last day of every month. You don&#8217;t want to tediously add your salary to THRIFT every month, so you add clones of your salary income for the next year at one go.</p>
+</div>
+<div class="paragraph">
+<p>You do the following on 31 October 2019:</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -178,17 +235,39 @@ Assume 2nd command occurs after 1st
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Assume entry at index 1 is <code>[-] Laksa ($10.50) Date: 18/10/2019 Remarks: Unique taste Tags: [Lunch][Food]</code> and there are no other entries.
+The following example uses the displayed list of all existing transactions.
 </td>
 </tr>
 </table>
 </div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p><code>Cloned transaction: [-] Laksa ($10.50) Date: 18/10/2019 Remarks: Unique taste Tags: [Lunch][Food]</code></p>
+<p>You have the salary income entry you received on 31/10/2019 in the list. It is at index 4.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/clone/cloneUG/CloneStep1.png" alt="CloneStep1" width="550">
+</div>
+</div>
 </li>
-</ul>
+<li>
+<p>To create clones of the salary entry for 31/10/2019 and the next 11 months up to 30 September 2020, you type <strong>clone i/4 o/monthly:12</strong> and press <kbd>Enter</kbd>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/clone/cloneUG/CloneStep2.png" alt="CloneStep2" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>You can see that 12 clones of the transaction at index 4 are created.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/clone/cloneUG/CloneStep3.png" alt="CloneStep3" width="550">
+</div>
+</div>
+</li>
+</ol>
+</div>
 </div>
 </div>
 </div>
@@ -216,4 +295,4 @@ Assume entry at index 1 is <code>[-] Laksa ($10.50) Date: 18/10/2019 Remarks: Un
 <p><em>{Optionally, you may include other projects in your portfolio.}</em></p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-31 13:04:50 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-31 16:40:58 UTC</div></div></div></body></html>

@@ -835,7 +835,7 @@ instead of just its size</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User requests to update a transaction&#8217;s name, cost or tags.</p>
+<p>User requests to update a transaction&#8217;s name, value, remark or tags.</p>
 </li>
 <li>
 <p>THRIFT processes the request, updates the specified details in the transactions list and informs user of what has been changed.</p>
@@ -855,7 +855,7 @@ instead of just its size</p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. THRIFT displays an invalid parameter error to the user and does not update details for invalid parameters.</p>
+<p>1a1. THRIFT displays an invalid command format error to the user and does not update details for invalid parameters.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -872,10 +872,10 @@ instead of just its size</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User requests to clone a transaction.</p>
+<p>User requests to clone a transaction, specifying the occurrence of clones: how many clones are to be created and their frequency over a future period.</p>
 </li>
 <li>
-<p>THRIFT processes the request and adds an identical transaction to the transactions list.</p>
+<p>THRIFT processes the request and adds the specified number of identical transactions to the transactions list.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -888,11 +888,34 @@ instead of just its size</p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a. The index parameter specified by the user is not valid.</p>
+<p>1a. User does not specify the occurrence of clones.</p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. THRIFT displays an invalid parameter error to the user and does not update the transactions list.</p>
+<p><em>Use case resumes from Step 2</em></p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>1b. The index parameter specified by the user is not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1b1. THRIFT displays an invalid command format error to the user and does not update the transactions list.</p>
+<div class="paragraph">
+<p><em>Use case ends</em></p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>1b. The occurrence specified by the user is not valid.</p>
+<div class="ulist none">
+<ul class="none">
+<li>
+<p>1b1. THRIFT displays an invalid command format error to the user and does not update the transactions list.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -1426,6 +1449,26 @@ Expected: No changes. Error details shown in status message.</p>
 </li>
 <li>
 <p>Test case: <code>clone</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>clone i/1 o/daily:3</code><br>
+Expected: 3 new transactions identical to first transaction in the list added to the bottom of the list, with their dates set 1 day apart.</p>
+</li>
+<li>
+<p>Test case: <code>clone i/1 o/daily:-1</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>clone i/1 o/onceeveryday:-1</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>clone i/1 o/yearly:6</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>clone i/1 o/monthly:13</code><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 </ol>
@@ -2152,4 +2195,4 @@ The added data security will assure the user that their data is safe and allows 
 <p><em>{Optionally, you may include other projects in your portfolio.}</em></p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-31 13:04:50 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-10-31 16:40:58 UTC</div></div></div></body></html>
