@@ -110,6 +110,8 @@ public class LogicManager implements Logic {
             updateBalanceBar(balanceBar);
         } else {
             assert isRefreshingFilteredList(command) == false;
+            logger.info("[ " + command.getClass().getSimpleName()
+                    + " IS NOT UPDATING MONTHLY BALANCE OR BUDGET]");
         }
     }
 
