@@ -45,12 +45,13 @@
 <li><a href="#setting-budgets">4.2. Setting budgets</a></li>
 <li><a href="#tag-untag-feature">4.3. Tag/Untag feature</a></li>
 <li><a href="#updating-transactions">4.4. Updating transactions</a></li>
-<li><a href="#undo-redoing-undoable-commands">4.5. Undo/Redoing undoable commands</a></li>
-<li><a href="#filtering-transactions">4.6. Filtering transactions</a></li>
-<li><a href="#proposed-data-encryption">4.7. [Proposed] Data encryption</a></li>
-<li><a href="#proposed-artificial-intelligence-ai">4.8. [Proposed] Artificial Intelligence (AI)</a></li>
-<li><a href="#logging">4.9. Logging</a></li>
-<li><a href="#Implementation-Configuration">4.10. Configuration</a></li>
+<li><a href="#cloning-transactions">4.5. Cloning transactions</a></li>
+<li><a href="#undo-redoing-undoable-commands">4.6. Undo/Redoing undoable commands</a></li>
+<li><a href="#filtering-transactions">4.7. Filtering transactions</a></li>
+<li><a href="#proposed-data-encryption">4.8. [Proposed] Data encryption</a></li>
+<li><a href="#proposed-artificial-intelligence-ai">4.9. [Proposed] Artificial Intelligence (AI)</a></li>
+<li><a href="#logging">4.10. Logging</a></li>
+<li><a href="#Implementation-Configuration">4.11. Configuration</a></li>
 </ul>
 </li>
 <li><a href="#documentation">5. Documentation</a>
@@ -1398,12 +1399,12 @@ The following methods are concrete implementations for <strong>update</strong> o
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/update/updateDG/UpdateStep1.png" alt="UpdateStep1">
+<img src="images/update/updateDG/UpdateStep1.png" alt="UpdateStep1" width="650">
 </div>
 <div class="title">Example list on startup</div>
 </div>
 <div class="paragraph">
-<p>Step 2. The user inputs <strong>update i/1 n/Government Bursary v/600</strong> to update the 1st transaction&#8217;s name to "Government Bursary" and value to "600". Input is parsed by <code>UpdateCommandParser#parse</code> which creates an <code><strong>UpdateCommand</strong></code>.</p>
+<p>Step 2. The user inputs <strong>update i/1 n/Government Bursary v/600</strong> to update the 1st transaction&#8217;s name to "Government Bursary" and value to "600". Input is parsed by <code>UpdateCommandParser#parse()</code> which creates an <code><strong>UpdateCommand</strong></code>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1412,56 +1413,76 @@ The following methods are concrete implementations for <strong>update</strong> o
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The 1st transaction specified here is an <code><strong>Income</strong></code>
+The 1st transaction specified here is an <code><strong>Income</strong></code>.
 </td>
 </tr>
 </table>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/update/updateDG/UpdateStep2.png" alt="UpdateStep2">
+<img src="images/update/updateDG/UpdateStep2.png" alt="UpdateStep2" width="650">
 </div>
 <div class="title">Example user input for update command</div>
 </div>
 <div class="paragraph">
-<p>Step 3. <code>UpdateCommand#execute</code> creates a new transaction that reflects the changes and gets the index of current transaction to be updated.</p>
+<p>Step 3. <code>UpdateCommand#execute()</code> creates a new transaction that reflects the changes and gets the index of current transaction to be updated.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/update/updateDG/UpdateStep3.png" alt="UpdateStep3">
+<img src="images/update/updateDG/UpdateStep3.png" alt="UpdateStep3" width="650">
 </div>
 <div class="title">Creation of new updated transaction in <code>UpdateCommand#execute()</code></div>
 </div>
 <div class="paragraph">
-<p>Step 4. <code>UpdateCommand#execute</code> replaces original transaction in the list with the updated transaction.</p>
+<p>Step 4. <code>UpdateCommand#execute()</code> replaces original transaction in the list with the updated transaction.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/update/updateDG/UpdateStep4Part1.png" alt="UpdateStep4Part1">
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/update/updateDG/UpdateStep4Part2.png" alt="UpdateStep4Part2">
+<img src="images/update/updateDG/UpdateStep4Part1.png" alt="UpdateStep4Part1" width="650">
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/update/updateDG/UpdateStep4Part3.png" alt="UpdateStep4Part3">
+<img src="images/update/updateDG/UpdateStep4Part2.png" alt="UpdateStep4Part2" width="650">
 </div>
-<div class="title">Replacement of original transaction with updated transaction in <code>UpdateCommand#execute()</code></div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/update/updateDG/UpdateStep4Part3.png" alt="UpdateStep4Part3" width="650">
+</div>
+<div class="title">Replacement of original transaction with updated transaction by <code>UpdateCommand#execute()</code></div>
+</div>
+<div class="paragraph">
+<p>The following code snippet from <code>UpdateCommand#execute()</code> shows the creation of an updated transaction and the replacement of the original transaction with the updated one:</p>
+</div>
+<div class="listingblock">
+<div class="title">UpdateCommand#execute()</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java"><span class="comment">// updateTransactionDescriptor is a class containing details to be contained by the new updated transaction.</span>
+
+transactionToUpdate = lastShownList.get(index.getZeroBased());
+
+<span class="comment">// ...Status message code omitted...</span>
+
+updatedTransaction = createUpdatedTransaction(transactionToUpdate, updateTransactionDescriptor);
+
+<span class="comment">// ...Logging and status message code omitted...</span>
+
+actualIndex = model.getIndexInFullTransactionList(transactionToUpdate).get();
+model.setTransactionWithIndex(actualIndex, updatedTransaction);</code></pre>
+</div>
 </div>
 </div>
 <div class="sect4">
 <h5 id="execution-observed-by-user"><a class="link" href="#execution-observed-by-user">Execution observed by user</a></h5>
 <div class="paragraph">
-<p>The following activity diagram gives an overview of what the user observes when executing <strong>update</strong> comnand</p>
+<p>The following activity diagram gives an overview of what the user observes when executing <strong>update</strong> command:</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/update/updateDG/UpdateActivityDiagram.png" alt="UpdateActivityDiagram">
 </div>
-<div class="title">Figure 16. Activity Diagram for execution of update command</div>
+<div class="title">Figure 16. Activity diagram for execution of update command</div>
 </div>
 </div>
 </div>
@@ -1539,7 +1560,203 @@ The 1st transaction specified here is an <code><strong>Income</strong></code>
 </div>
 </div>
 <div class="sect2">
-<h3 id="undo-redoing-undoable-commands"><a class="link" href="#undo-redoing-undoable-commands">4.5. Undo/Redoing undoable commands</a></h3>
+<h3 id="cloning-transactions"><a class="link" href="#cloning-transactions">4.5. Cloning transactions</a></h3>
+<div class="paragraph">
+<p>The <strong>clone</strong> feature creates one or more duplicates of a specified <code><strong>Transaction</strong></code> and adds them to the end of the existing transactions list.</p>
+</div>
+<div class="sect3">
+<h4 id="implementation-6"><a class="link" href="#implementation-6">4.5.1. Implementation</a></h4>
+<div class="paragraph">
+<p>An <code><strong>Index</strong></code> and <code><strong>Occurrence</strong></code> are obtained from their representation in user input. The <code><strong>Index</strong></code> specifies which transaction to clone, while the <code><strong>Occurrence</strong></code> informs THRIFT how many clones of the transaction should be created (<code>Occurrence#numOccurrences</code>) and the time period between them (<code>Occurrence#frequency</code>).</p>
+</div>
+<div class="paragraph">
+<p>Here is a Class Diagram for the implementation of <code><strong>Occurrence</strong></code>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/clone/cloneDG/OccurrenceClassDiagram.png" alt="OccurrenceClassDiagram">
+</div>
+<div class="title">Figure 17. Implementation of <code><strong>Occurrence</strong></code> class</div>
+</div>
+<div class="paragraph">
+<p>The <strong>clone</strong> functionality is facilitated by common <a href="#Design-Logic"><strong>Logic</strong></a> operations and classes for commands, with feature-specific classes <code><strong>CloneCommand</strong></code> in place of <code><strong>Command</strong></code>, and <code><strong>CloneCommandParser</strong></code>.
+The following methods are concrete implementations unique to <strong>clone</strong>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>CloneCommandParser#parse()</code> - Parses user input to extract an <code><strong>Index</strong></code> and create an <code><strong>Occurrence</strong></code>, then passes them as parameters to a new <code><strong>CloneCommand</strong></code> for execution.</p>
+</li>
+<li>
+<p><code>CloneCommand#execute()</code> - Adds one or more identical copies of specified <code><strong>Transaction</strong></code> to <code><strong>Model</strong></code>, then returns a <code><strong>CommandResult</strong></code> (<a href="#Design-Logic">Step 4 of Logic</a>).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following Sequence Diagram illustrates <strong>clone</strong> command execution:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/clone/cloneDG/CloneSequenceDiagram.png" alt="CloneSequenceDiagram">
+</div>
+<div class="title">Figure 18. Sequence diagram for <strong>clone</strong> execution with 12 occurrences on an <code><strong>Expense</strong></code></div>
+</div>
+<div class="sect4">
+<h5 id="example-of-usage-2"><a class="link" href="#example-of-usage-2">Example of usage</a></h5>
+<div class="paragraph">
+<p>Given next is an example usage scenario for cloning a transaction and explanation of how the <strong>clone</strong> mechanism behaves at each step:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This entire scenario uses the list of all transactions.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Step 1. The user starts up the application with an initial list loaded from external storage file. The diagram here depicts the example list used throughout this scenario. In particular, this example will observe the cloning of the transaction at index 4.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/clone/cloneDG/CloneStep1.png" alt="CloneStep1" width="650">
+</div>
+<div class="title">Example list on startup</div>
+</div>
+<div class="paragraph">
+<p>Step 2 (i). The user inputs <strong>clone i/4</strong> or <strong>clone i/4 o/daily:0</strong> to create 1 copy of the transaction at index 4 on the date when command is called - for this example, current date when command is used is 02/12/2019.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/clone/cloneDG/CloneStep2Part1.png" alt="CloneStep2Part1" width="650">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/clone/cloneDG/CloneStep2Part2.png" alt="CloneStep2Part2" width="650">
+</div>
+<div class="title">Creating one copy of transaction at index 4 and adding it to the list.</div>
+</div>
+<div class="paragraph">
+<p>Step 2 (ii). The user removes the clone created in Step 2 (i) using <strong>delete i/6</strong> command.</p>
+</div>
+<div class="paragraph">
+<p>Step 3. The user inputs <strong>clone i/4 o/monthly:12</strong> to create 12 copies of the transaction at index 4 with dates one month apart from each other (30/12/2019 to 30/11/2020), and add them to the list. Input is parsed by <code>CloneCommandParser#parse()</code> which creates a <code><strong>CloneCommand</strong></code>.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/clone/cloneDG/CloneStep3.png" alt="CloneStep3" width="650">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 4. <code>CloneCommand#execute()</code> creates copies of the transaction to be cloned with their dates of occurrence set one month apart. The copies are then added to the list.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/clone/cloneDG/CloneStep4Part1.png" alt="CloneStep4Part1" width="650">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/clone/cloneDG/CloneStep4Part2.png" alt="CloneStep4Part2" width="650">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/clone/cloneDG/CloneStep4Part3.png" alt="CloneStep4Part3" width="650">
+</div>
+<div class="title">Creating copies of transaction at index 4 and adding them to the list.</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="execution-observed-by-user-2"><a class="link" href="#execution-observed-by-user-2">Execution observed by user</a></h5>
+<div class="paragraph">
+<p>The following activity diagram gives an overview of what the user observes when executing <strong>clone</strong> command:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/clone/cloneDG/CloneActivityDiagram.png" alt="CloneActivityDiagram">
+</div>
+<div class="title">Figure 19. Activity diagram for execution of <strong>clone</strong> command</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations-5"><a class="link" href="#design-considerations-5">4.5.2. Design considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-representing-occurrences-for-execution"><a class="link" href="#aspect-representing-occurrences-for-execution">Aspect: Representing occurrences for execution</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice)</strong>: Implement a new class <code><strong>Occurrence</strong></code> to represent occurrences.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Good Object-Oriented Programming design adhering to principles of abstraction and encapsulation. Utility methods to process occurrences can be kept in a single class.</p>
+</li>
+<li>
+<p>Cons: More code and memory required for entire <code><strong>Occurrence</strong></code> class.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2</strong>: Directly pass the results from parsing occurrence representation in user input as parameters to execution methods.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Quick and efficient in producing parameters for execution.</p>
+</li>
+<li>
+<p>Cons: May be complicated to trace parameters when passing between different methods. Unable to implement utility methods to process occurrences within a single class.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="aspect-maintaining-a-store-for-valid-values-of-code-occurrence-frequency-code"><a class="link" href="#aspect-maintaining-a-store-for-valid-values-of-code-occurrence-frequency-code">Aspect: Maintaining a store for valid values of <code>Occurrence#frequency</code></a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice)</strong>: Store valid <code>frequency</code> values within a static non-modifiable "final" array inside <code><strong>Occurrence</strong></code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Implementation is simple with relatively little coding needed. Values cannot be modified after initialization of array, preventing invalid values from being added later.</p>
+</li>
+<li>
+<p>Cons: An additional field of type array has to be included in <code><strong>Occurrence</strong></code> class.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2</strong>: Store valid values as <code><strong>Enum</strong></code></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Validity of values in <code><strong>Enum</strong></code> form all but assured, there will never be invalid values.</p>
+</li>
+<li>
+<p>Cons: More code and memory required for entire <code><strong>Enum</strong></code> classes.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="undo-redoing-undoable-commands"><a class="link" href="#undo-redoing-undoable-commands">4.6. Undo/Redoing undoable commands</a></h3>
 <div class="paragraph">
 <p><strong>Undo</strong> command allows the user to revert <code><strong>THRIFT</strong></code> to its previous state when they have made a mistake. <strong>Redo</strong> command does
 the opposite of <strong>undo</strong> command, useful for when the user wishes to execute the command instead.</p>
@@ -1588,7 +1805,7 @@ Undoable commands are <strong>add_expense</strong>, <strong>add_income</strong>,
 <strong>undo</strong>.</p>
 </div>
 <div class="sect3">
-<h4 id="implementation-6"><a class="link" href="#implementation-6">4.5.1. Implementation</a></h4>
+<h4 id="implementation-7"><a class="link" href="#implementation-7">4.6.1. Implementation</a></h4>
 <div class="paragraph">
 <p>The below scenario illustrates how undo and redo feature works:</p>
 </div>
@@ -1647,7 +1864,7 @@ The <code><strong>UndoCommand</strong></code> invokes the method <code>Model#get
 <div class="content">
 <img src="images/UndoAndRedo/UndoAddExpenseSequenceDiagram.png" alt="UndoAddExpenseSequenceDiagram">
 </div>
-<div class="title">Figure 17. Sequence diagram of how <strong>undo</strong> command is applied at the back-end</div>
+<div class="title">Figure 20. Sequence diagram of how <strong>undo</strong> command is applied at the back-end</div>
 </div>
 <div class="paragraph">
 <p>Step 6. The user executes <strong>redo</strong> to add Laksa back to <code><strong>TransactionList</strong></code>.
@@ -1678,7 +1895,7 @@ All commands stored in <code>RedoStack</code> are purged when the user executes 
 <div class="content">
 <img src="images/UndoAndRedo/RedoAddExpenseSequenceDiagram.png" alt="RedoAddExpenseSequenceDiagram">
 </div>
-<div class="title">Figure 18. Sequence diagram of how <strong>redo</strong> command is applied at the back-end</div>
+<div class="title">Figure 21. Sequence diagram of how <strong>redo</strong> command is applied at the back-end</div>
 </div>
 <div class="paragraph">
 <p>The following activity diagram shows what happens if the user executes a command:</p>
@@ -1687,11 +1904,11 @@ All commands stored in <code>RedoStack</code> are purged when the user executes 
 <div class="content">
 <img src="images/UndoAndRedo/RunCommandActivityDiagrams.png" alt="RunCommandActivityDiagrams">
 </div>
-<div class="title">Figure 19. Activity diagram of the command execution.</div>
+<div class="title">Figure 22. Activity diagram of the command execution.</div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-5"><a class="link" href="#design-considerations-5">4.5.2. Design considerations</a></h4>
+<h4 id="design-considerations-6"><a class="link" href="#design-considerations-6">4.6.2. Design considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-data-structure-used-to-keep-track-of-undoable-command"><a class="link" href="#aspect-data-structure-used-to-keep-track-of-undoable-command">Aspect: Data structure used to keep track of undoable command</a></h5>
 <div class="ulist">
@@ -1728,13 +1945,13 @@ All commands stored in <code>RedoStack</code> are purged when the user executes 
 </div>
 </div>
 <div class="sect2">
-<h3 id="filtering-transactions"><a class="link" href="#filtering-transactions">4.6. Filtering transactions</a></h3>
+<h3 id="filtering-transactions"><a class="link" href="#filtering-transactions">4.7. Filtering transactions</a></h3>
 <div class="paragraph">
 <p>The <strong>List</strong> command allows the user to bring up a list of <code><strong>Transactions</strong></code>, and filter it by month or by its tags.
 This feature is implemented by using a <code><strong>Predicate&lt;Transaction&gt;</strong></code> to filter the <code><strong>Transactions</strong></code> by month or tags.</p>
 </div>
 <div class="sect3">
-<h4 id="implementation-7"><a class="link" href="#implementation-7">4.6.1. Implementation</a></h4>
+<h4 id="implementation-8"><a class="link" href="#implementation-8">4.7.1. Implementation</a></h4>
 <div class="paragraph">
 <p><code><strong>ListCommand</strong></code> is instantiated by <code>ListCommandParser#parse(String args)</code>,
 which attempts to parse the various parameters supplied in <code>args</code> and return a <code><strong>ListCommand</strong></code> object.</p>
@@ -1790,11 +2007,11 @@ If the user input is incorrect due to any of the reasons above, the usage syntax
 <div class="content">
 <img src="images/list/ListActivityDiagram.png" alt="ListActivityDiagram">
 </div>
-<div class="title">Figure 20. Activity diagram of the command execution.</div>
+<div class="title">Figure 23. Activity diagram of the command execution.</div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-6"><a class="link" href="#design-considerations-6">4.6.2. Design considerations</a></h4>
+<h4 id="design-considerations-7"><a class="link" href="#design-considerations-7">4.7.2. Design considerations</a></h4>
 <div class="sect4">
 <h5 id="aspect-using-code-strong-predicate-strong-code-to-improve-extendability-of-the-feature-in-the-future"><a class="link" href="#aspect-using-code-strong-predicate-strong-code-to-improve-extendability-of-the-feature-in-the-future">Aspect: Using <code><strong>Predicate</strong></code> to improve extendability of the feature in the future</a></h5>
 <div class="ulist">
@@ -1836,7 +2053,7 @@ implement using different methods.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">4.7. [Proposed] Data encryption</a></h3>
+<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">4.8. [Proposed] Data encryption</a></h3>
 <div class="paragraph">
 <p>With the emphasis on information security these days, we are concerned about protecting the privacy of our users. We have
 discussed on how we can protect our users' data on <code><strong>THRIFT</strong></code> by making use of modern encryption schemes to protect against
@@ -1844,7 +2061,7 @@ prying eyes. The encryption will take place at the back-end with minimal disrupt
 knowledge about how the encryption work as <code><strong>THRIFT</strong></code> will handle all encryption and decryption operations for them.</p>
 </div>
 <div class="sect3">
-<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">4.7.1. Proposed implementation</a></h4>
+<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">4.8.1. Proposed implementation</a></h4>
 <div class="paragraph">
 <p>In order to ensure a seamless experience, we propose a new <code><strong>Keystore</strong></code> module, along with a <code><strong>KeystoreManager</strong></code> that will
 be interacting closely with the <code><strong>Logic</strong></code> and <code><strong>Storage</strong></code> modules. The class diagram below gives an overview of how the
@@ -1885,7 +2102,7 @@ The decryption will take place upon <code>MainApp#init()</code> while encryption
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-considerations-7"><a class="link" href="#design-considerations-7">4.7.2. Design considerations</a></h4>
+<h4 id="design-considerations-8"><a class="link" href="#design-considerations-8">4.8.2. Design considerations</a></h4>
 <div class="paragraph">
 <p>There is one factor about the way encryption should be implemented that we considered.</p>
 </div>
@@ -1931,7 +2148,7 @@ The added data security will assure the user that their data is safe and allows 
 </div>
 </div>
 <div class="sect2">
-<h3 id="proposed-artificial-intelligence-ai"><a class="link" href="#proposed-artificial-intelligence-ai">4.8. [Proposed] Artificial Intelligence (AI)</a></h3>
+<h3 id="proposed-artificial-intelligence-ai"><a class="link" href="#proposed-artificial-intelligence-ai">4.9. [Proposed] Artificial Intelligence (AI)</a></h3>
 <div class="paragraph">
 <p>Artificial intelligence (AI) is the simulation of human intelligence processes by machines such as computer systems. AI tries to mimic the learning process of humans in order to perform self-correction.
 We want <code><strong>THRIFT</strong></code> to possess the ability to make calculated decisions and provide the user with appropriate recommendations under the appropriate situations.
@@ -1941,7 +2158,7 @@ This way, we can enhance the user experience and make our application more effec
 <p>The following sections will describe how we plan to implement this feature and the possible design considerations.</p>
 </div>
 <div class="sect3">
-<h4 id="proposed-implementation-2"><a class="link" href="#proposed-implementation-2">4.8.1. Proposed Implementation</a></h4>
+<h4 id="proposed-implementation-2"><a class="link" href="#proposed-implementation-2">4.9.1. Proposed Implementation</a></h4>
 <div class="paragraph">
 <p>Adhering to the Open-Closed principle, we will not modify the existing architecture but extend it.
 The following class diagram illustrates how we propose to do it, by adding 2 new classes to the existing architecture:</p>
@@ -1969,7 +2186,7 @@ It can be modified by the <code><strong>AI</strong></code> class in the process 
 </div>
 </div>
 <div class="sect3">
-<h4 id="design-consideration"><a class="link" href="#design-consideration">4.8.2. Design consideration</a></h4>
+<h4 id="design-consideration"><a class="link" href="#design-consideration">4.9.2. Design consideration</a></h4>
 <div class="sect4">
 <h5 id="aspect-portability-of-the-learning-model"><a class="link" href="#aspect-portability-of-the-learning-model">Aspect: Portability of the learning model</a></h5>
 <div class="paragraph">
@@ -2016,14 +2233,14 @@ Regardless of what is eventually chosen, the user experience will be improved by
 </div>
 </div>
 <div class="sect2">
-<h3 id="logging"><a class="link" href="#logging">4.9. Logging</a></h3>
+<h3 id="logging"><a class="link" href="#logging">4.10. Logging</a></h3>
 <div class="paragraph">
 <p>We are using <code><strong>java.util.logging</strong></code> package for logging. The <code><strong>LogsCenter</strong></code> class is used to manage the logging levels and logging destinations:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 4.10, &#8220;Configuration&#8221;</a>)</p>
+<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 4.11, &#8220;Configuration&#8221;</a>)</p>
 </li>
 <li>
 <p>The <code><strong>Logger</strong></code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</p>
@@ -2055,7 +2272,7 @@ instead of just its size</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">4.10. Configuration</a></h3>
+<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">4.11. Configuration</a></h3>
 <div class="paragraph">
 <p>Certain properties of the application can be controlled (e.g user prefs file location, logging level) through the configuration file (default: <em>config.json</em>).</p>
 </div>
@@ -2127,7 +2344,7 @@ Alternatively, you can download the AsciiDoc plugin for IntelliJ, which allows y
 <div class="content">
 <img src="images/chrome_save_as_pdf.png" alt="chrome save as pdf" width="300">
 </div>
-<div class="title">Figure 21. Saving documentation as PDF files in Chrome</div>
+<div class="title">Figure 24. Saving documentation as PDF files in Chrome</div>
 </div>
 </div>
 <div class="sect2">
@@ -2352,7 +2569,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="content">
 <img src="images/testfx-idea-accessibility-permissions.png" alt="testfx idea accessibility permissions" width="600">
 </div>
-<div class="title">Figure 22. <code>Accessibility</code> permission is granted to <strong>IntelliJ IDEA</strong></div>
+<div class="title">Figure 25. <code>Accessibility</code> permission is granted to <strong>IntelliJ IDEA</strong></div>
 </div>
 </div>
 </div>
@@ -3496,6 +3713,14 @@ Expected: No changes. Error details shown in status message.</p>
 <p>Test case: <code>clone i/1 o/monthly:13</code><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
+<li>
+<p>Test case: <code>clone i/1 o/daily</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
+<li>
+<p>Test case: <code>clone i/1 o/monthly:5:6:fgzsfdsf:y564s:3234:</code><br>
+Expected: No changes. Error details shown in status message.</p>
+</li>
 </ol>
 </div>
 </li>
@@ -4116,4 +4341,4 @@ Expected: Syntax of the <code>delete</code> command is shown in the status messa
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-03 04:19:09 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-03 15:36:41 UTC</div></div></div></body></html>

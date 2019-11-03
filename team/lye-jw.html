@@ -167,7 +167,7 @@ and press <kbd>Enter</kbd>.</p>
 <div class="sect3">
 <h4 id="command-syntax-2"><a class="link" href="#command-syntax-2">Command syntax:</a></h4>
 <div class="paragraph">
-<p><code>clone i/INDEX [o/OCCURRENCE]</code></p>
+<p><code>clone i/INDEX [o/FREQUENCY:NUMBER_OF_OCCURRENCES]</code></p>
 </div>
 <div class="paragraph">
 <p>The following is an explanation for the <code>clone</code> command:</p>
@@ -177,7 +177,7 @@ and press <kbd>Enter</kbd>.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Clones (creates duplicate(s) of) transaction at <code>INDEX</code>. Clone(s) produced are added to a new index at the bottom of the list.</p>
+<p>Clones (creates duplicate(s) of) transaction at <code>INDEX</code>. Clones produced are added to new indices at the bottom of the list.</p>
 <div class="ulist">
 <ul>
 <li>
@@ -187,17 +187,17 @@ and press <kbd>Enter</kbd>.</p>
 </div>
 </li>
 <li>
-<p>If you use <code>clone i/INDEX</code> without <code>o/OCCURRENCE</code> field, one clone is created for the current day.</p>
+<p>If you use <code>clone i/INDEX</code> without the <code>o/FREQUENCY:NUMBER_OF_OCCURRENCES</code> field, one clone is created for the current day.</p>
 </li>
 <li>
-<p>Optional <code>OCCURRENCE</code> field is in the format <code>FREQUENCY:NUMBER_OF_OCCURRENCES</code>. You use it to create multiple clones,  with the 1st clone on the current day.</p>
+<p>You use the optional <code>FREQUENCY:NUMBER_OF_OCCURRENCES</code> field to create multiple clones spanning from the original transaction.</p>
 <div class="ulist">
 <ul>
 <li>
 <p><code>FREQUENCY</code> is how often or how far apart the clones occur. Valid values are: <code>daily</code>, <code>weekly</code>, <code>monthly</code> and <code>yearly</code>.</p>
 </li>
 <li>
-<p><code>NUMBER_OF_OCCURRENCES</code> determines how many clones are produced.</p>
+<p><code>NUMBER_OF_OCCURRENCES</code> determines how many clones are produced. If <code>NUMBER_OF_OCCURRENCES</code> is 0, the result is exactly the same as <code>clone i/INDEX</code> without the entire <code>FREQUENCT:NUMBER_OF_OCCURRENCES</code> field.</p>
 </li>
 <li>
 <p>The maximum <code>NUMBER_OF_OCCURRENCES</code> is <strong>5 for <code>yearly</code></strong> and <strong>12 for <code>daily</code>, <code>weekly</code> and <code>monthly</code></strong>.</p>
@@ -206,11 +206,21 @@ and press <kbd>Enter</kbd>.</p>
 </div>
 </li>
 <li>
-<p>For monthly cloning, clones are created on the same day of the following months, e.g. <strong>clone i/1 o/monthly:3</strong> on 20 November 2019 creates clones on 20 November 2019, 20 December 2019 and 20 January 2020.</p>
+<p>For monthly cloning, clones are created on the same day as the original transaction&#8217;s in subsequent months.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>For special cases where following months do not have the day a transaction was cloned on, clones are created on the last day of those months, e.g. <strong>clone i/1 o/monthly:3</strong> on 31 October 2019 creates clones on 31 October 2019, 30 November 2019 and 31 December 2019.</p>
+<p>For example, <strong>clone i/1 o/monthly:3</strong> on transaction at index 1 dated 20 November 2019 creates clones on 20 December 2019, 20 January 2020 and 20 February 2020.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>For special cases where subsequent months do not have the day corresponding to the original transaction&#8217;s month, clones are created on the last day of those months.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For example, <strong>clone i/1 o/monthly:5</strong> on transaction at index 1 dated 31 October 2019 creates clones on 30 November 2019, 31 December 2019, 31 January 2020 and 29 February 2020 (2020 is a leap year).</p>
 </li>
 </ul>
 </div>
@@ -223,10 +233,10 @@ and press <kbd>Enter</kbd>.</p>
 <div class="sect3">
 <h4 id="example-usage-br"><a class="link" href="#example-usage-br">Example usage:<br></a></h4>
 <div class="paragraph">
-<p>You receive your fixed salary on the last day of every month. You don&#8217;t want to tediously add your salary to THRIFT every month, so you add clones of your salary income for the next year at one go.</p>
+<p>You receive your fixed salary on the 30th of every month. You don&#8217;t want to tediously add your salary to THRIFT every month, so you add clones of your salary income for the next year at one go.</p>
 </div>
 <div class="paragraph">
-<p>You do the following on 31 October 2019:</p>
+<p>You do the following on 30 November 2019:</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -243,7 +253,7 @@ The following example uses the displayed list of all existing transactions.
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>You have the salary income entry you received on 31/10/2019 in the list. It is at index 4.</p>
+<p>You have the salary income entry you received on 30/11/2019 in the list. It is at index 4.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../images/clone/cloneUG/CloneStep1.png" alt="CloneStep1" width="550">
@@ -251,7 +261,7 @@ The following example uses the displayed list of all existing transactions.
 </div>
 </li>
 <li>
-<p>To create clones of the salary entry for 31/10/2019 and the next 11 months up to 30 September 2020, you type <strong>clone i/4 o/monthly:12</strong> and press <kbd>Enter</kbd>.</p>
+<p>To create clones of the 30 November 2019 salary income for the next 12 months from 30 December 2019 up to 30 November 2020, you type <strong>clone i/4 o/monthly:12</strong> and press <kbd>Enter</kbd>.</p>
 <div class="imageblock">
 <div class="content">
 <img src="../images/clone/cloneUG/CloneStep2.png" alt="CloneStep2" width="550">
@@ -295,4 +305,4 @@ The following example uses the displayed list of all existing transactions.
 <p><em>{Optionally, you may include other projects in your portfolio.}</em></p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-03 04:19:09 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-03 15:36:41 UTC</div></div></div></body></html>
