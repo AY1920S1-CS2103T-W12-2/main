@@ -32,7 +32,7 @@ image::UGUI.png[]
 2. Download the latest THRIFT.jar https://github.com/AY1920S1-CS2103T-W12-2/main/releases[here].
 3. Copy the file to the folder you want to use as the home folder for your THRIFT application.
 4. Double-click the file to start the app, the GUI should appear in a few seconds.
-5. Type the command in the command box and press `Enter` to execute it. e.g. typing `help` and pressing `Enter` will open the help window.
+5. Type the command in the Command Box and press `Enter` to execute it. e.g. typing `help` and pressing `Enter` will open the help window.
 6. Some example commands you can try:
 *   `add_expense n/Apple Airpods v/200`: adds an expense called `Apple Airpods` which cost $`200`.
 *   `add_income n/Bursary Award v/350`: adds an income called `Bursary Award` which incremented your budget by $`350`.
@@ -86,11 +86,11 @@ You wish to set your budget for the month _October 2019_ as $_2000_:
 +
 image::add-budget/Step1.png[,550]
 
-. You type: **budget v/2000 d/10/2019** in the command box and press kbd:[Enter].
+. You type: **budget v/2000 d/10/2019** in the Command Box and press kbd:[Enter].
 +
 image::add-budget/Step2.png[,550]
 
-. You should see in the result box that your budget for _October 2019_ has been set to $_2000_.
+. You should see in the Result Box that your budget for _October 2019_ has been set to $_2000_.
 +
 NOTE: If you are changing your budget for the current displayed month, you should see the changes on the GUI immediately.
 +
@@ -127,7 +127,7 @@ You had the famous Laksa from "The Deck" for lunch which cost $10.50 and you wis
 +
 image::add-transaction/expense/Step1.png[,550]
 
-. You type: **add_expense n/Laksa v/10.50 r/Delicious! From "The Deck" t/Lunch** into the command box and press kbd:[Enter].
+. You type: **add_expense n/Laksa v/10.50 r/Delicious! From "The Deck" t/Lunch** into the Command Box and press kbd:[Enter].
 +
 NOTE: The transaction date is automatically populated based on your system time.
 +
@@ -164,7 +164,7 @@ You studied extremely hard during the year and you were awarded a bursary incent
 +
 image::add-transaction/income/Step1.png[,550]
 
-. You type: **add_income n/Bursary v/500 r/For studying hard in the year t/Award** into the command box and press kbd:[Enter].
+. You type: **add_income n/Bursary v/500 r/For studying hard in the year t/Award** into the Command Box and press kbd:[Enter].
 +
 NOTE: The transaction date is automatically populated based on your system time.
 +
@@ -237,7 +237,7 @@ Fortunately, you can easily update such details in THRIFT. Here is what you do f
 +
 image::update/updateUG/UpdateStep1.png[,550]
 +
-. When you realize the Laksa is not Curry Laksa and want to change the transaction's name, you type **update i/2 n/Laksa** into the command box and press kbd:[Enter].
+. When you realize the Laksa is not Curry Laksa and want to change the transaction's name, you type **update i/2 n/Laksa** into the Command Box and press kbd:[Enter].
 +
 image::update/updateUG/UpdateStep2.png[,550]
 +
@@ -481,11 +481,11 @@ retrieve the deleted transaction by performing `undo`.
 
 To `undo` the `delete` command:
 
-. Type *undo* into the command box and press kbd:[Enter]:
+. Type *undo* into the Command Box and press kbd:[Enter]:
 +
 image::UndoAndRedo/undocommand.png[, 550]
 
-. You will see a success message displays in the result box, and the transaction (Chicken Rice)
+. You will see a success message displays in the Result Box, and the transaction (Chicken Rice)
 adds back to its original position in the list:
 +
 image::UndoAndRedo/undocommandresult.png[, 550]
@@ -512,11 +512,11 @@ the transaction by executing `redo`.
 
 To `redo` undone `add_expense` command:
 
-. Type *redo* into the command box and press kbd:[Enter]:
+. Type *redo* into the Command Box and press kbd:[Enter]:
 +
 image::UndoAndRedo/redocommand.png[, 550]
 
-. You will see a success message displays in the result box and the transaction (Chicken Rice) adds back to the list:
+. You will see a success message displays in the Result Box and the transaction (Chicken Rice) adds back to the list:
 +
 image::UndoAndRedo/redocommandresult.png[, 550]
 
@@ -604,7 +604,7 @@ Suppose you want to add a transaction to THRIFT, but you had forgotten about the
 
 To get the URL of this user guide:
 
-1. Type *help* in the command box and press kbd:[Enter]:
+1. Type *help* in the Command Box and press kbd:[Enter]:
 +
 image::Help-exit/helpcommand.PNG[]
 
@@ -617,14 +617,14 @@ TIP: Alternative methods: press kbd:[F1] or click on *Help* in the menu bar, and
 However, if you just want to view the usage syntax of the `add_expense` command because you had forgotten the exact format,
 you can enter *help add_expense* instead of *help*.
 
-You will see a simplified help version of the `add_expense` command displays in the result box:
+You will see a simplified help version of the `add_expense` command displays in the Result Box:
 
 image::Help-exit/specifichelpcommand.PNG[]
 
 [[ExitTag]]
 === Exiting THRIFT: `exit`
 Think about exiting THRIFT after you have added the transaction? You can enter *exit* in the
-command box or click on the close button at the top-right corner of the application.
+Command Box or click on the close button at the top-right corner of the application.
 
 image::exit/Exit.png[,550]
 
