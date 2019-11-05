@@ -646,6 +646,10 @@ If you are especially conscious about having your data spied on, this function w
 
 *A*: No, you cannot modify the size of the application's window. It is intentionally fixed.
 
+*Q*: Can I modify the data files outside of THRIFT?
+
+*A*: You should not modify any THRIFT data files with any external tools outside of THRIFT, it can cause THRIFT to function incorrectly.
+
 == Command summary
 * <<BudgetTag, *Budget*>>: `budget v/VALUE d/MONTH/YEAR` +
 Example: `budget v/1000 d/10/2019`
