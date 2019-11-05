@@ -648,7 +648,7 @@ If you are especially conscious about having your data spied on, this function w
 
 *Q*: Can I modify the data files outside of THRIFT?
 
-*A*: You should not modify any THRIFT data files with any external tools outside of THRIFT, it can cause THRIFT to function incorrectly.
+*A*: You should not modify any THRIFT data files with any external tools outside of THRIFT.
 
 == Command summary
 * <<BudgetTag, *Budget*>>: `budget v/VALUE d/MONTH/YEAR` +
