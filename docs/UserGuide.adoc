@@ -27,7 +27,7 @@ This is how THRIFT looks like:
 .The graphical user interface for THRIFT
 image::UGUI.png[]
 
-== Quick Start
+== Quick start
 1. Ensure that you have Java `11` or above installed in your Computer.
 2. Download the latest THRIFT.jar https://github.com/AY1920S1-CS2103T-W12-2/main/releases[here].
 3. Copy the file to the folder you want to use as the home folder for your THRIFT application.
@@ -643,7 +643,7 @@ Depending on your transactions, remaining budget and the remaining days to the e
 
 If you are especially conscious about having your data spied on, this function will definitely ease your worries. With encryption enabled, your data will not be known to the intruder should they steal your THRIFT application data.
 
-== FAQ
+== Frequently asked questions
 
 *Q*: How do I transfer my data to another Computer?
 
@@ -695,7 +695,7 @@ Example: `help delete`
 [[url]] URL:: Stands for "Uniform Resource Locator" which is used to access a particular website.
 
 [[TagColours]]
-=== Tag Keyword Colours
+=== Tag keyword colours
 The following table lists the tag keywords that correspond to each colour, if the tag name is not on this table, it will be **Purple** in colour.
 [%header,cols=4*]
 |===
@@ -712,7 +712,7 @@ The following table lists the tag keywords that correspond to each colour, if th
 |===
 
 [[SupportedCurrencies]]
-=== Supported Currencies
+=== Supported currencies
 
 THRIFT supports the following currencies by default:
 
