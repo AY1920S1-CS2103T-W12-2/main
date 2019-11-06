@@ -15,7 +15,7 @@
 <div id="toctitle"></div>
 <ul class="sectlevel1">
 <li><a href="#introduction">1. Introduction</a></li>
-<li><a href="#quick-start">2. Quick Start</a></li>
+<li><a href="#quick-start">2. Quick start</a></li>
 <li><a href="#features">3. Features:</a>
 <ul class="sectlevel2">
 <li><a href="#BudgetTag">3.1. Setting monthly budget: <code>budget</code></a></li>
@@ -32,15 +32,21 @@
 <li><a href="#FindTag">3.12. Finding transactions with keywords: <code>find</code></a></li>
 <li><a href="#ListTag">3.13. Listing transactions with the use of filters: <code>list</code></a></li>
 <li><a href="#HelpTag">3.14. Displaying help page: <code>help</code></a></li>
-<li><a href="#ExitTag">3.15. Exiting THRIFT application: <code>exit</code></a></li>
+<li><a href="#ExitTag">3.15. Exiting THRIFT: <code>exit</code></a></li>
 <li><a href="#generating-an-external-report-code-coming-in-v2-0-code">3.16. Generating an external report <code>[coming in v2.0]</code></a></li>
-<li><a href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.17. Recommending dining options based on budget <code>[coming in v2.0]</code></a></li>
+<li><a href="#recommending-dining-options-based-on-budget-using-artificial-intelligence-code-coming-in-v2-0-code">3.17. Recommending dining options based on budget using Artificial Intelligence <code>[coming in v2.0]</code></a></li>
 <li><a href="#encrypting-thrift-data-code-coming-in-v2-0-code">3.18. Encrypting THRIFT data <code>[coming in v2.0]</code></a></li>
 </ul>
 </li>
-<li><a href="#faq">4. FAQ</a></li>
+<li><a href="#frequently-asked-questions">4. Frequently asked questions</a></li>
 <li><a href="#command-summary">5. Command summary</a></li>
-<li><a href="#glossary">6. Glossary</a></li>
+<li><a href="#appendix">6. Appendix</a>
+<ul class="sectlevel2">
+<li><a href="#glossary">6.1. Glossary</a></li>
+<li><a href="#TagColours">6.2. Tag keyword colours</a></li>
+<li><a href="#SupportedCurrencies">6.3. Supported currencies</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -62,7 +68,7 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="quick-start"><a class="link" href="#quick-start">2. Quick Start</a></h2>
+<h2 id="quick-start"><a class="link" href="#quick-start">2. Quick start</a></h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -79,7 +85,7 @@
 <p>Double-click the file to start the app, the GUI should appear in a few seconds.</p>
 </li>
 <li>
-<p>Type the command in the command box and press <code>Enter</code> to execute it. e.g. typing <code>help</code> and pressing <code>Enter</code> will open the help window.</p>
+<p>Type the command in the Command Box and press <code>Enter</code> to execute it. e.g. typing <code>help</code> and pressing <code>Enter</code> will open the help window.</p>
 </li>
 <li>
 <p>Some example commands you can try:</p>
@@ -241,7 +247,10 @@ It is not compulsory to set a budget for each month and you can use THRIFT norma
 </table>
 </div>
 <div class="sect3">
-<h4 id="command-syntax"><a class="link" href="#command-syntax">3.1.1. Command syntax:</a></h4>
+<h4 id="command-syntax"><a class="link" href="#command-syntax">3.1.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>budget</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>budget v/VALUE d/MONTH/YEAR</code></p>
 </div>
@@ -267,7 +276,7 @@ It is not compulsory to set a budget for each month and you can use THRIFT norma
 </div>
 </div>
 <div class="sect3">
-<h4 id="example-usage"><a class="link" href="#example-usage">3.1.2. Example usage:</a></h4>
+<h4 id="example-usage"><a class="link" href="#example-usage">3.1.2. Example usage</a></h4>
 <div class="paragraph">
 <p>You wish to set your budget for the month <em>October 2019</em> as $<em>2000</em>:</p>
 </div>
@@ -282,7 +291,7 @@ It is not compulsory to set a budget for each month and you can use THRIFT norma
 </div>
 </li>
 <li>
-<p>You type: <strong>budget v/2000 d/10/2019</strong> in the command box and press <kbd>Enter</kbd>.</p>
+<p>You type: <strong>budget v/2000 d/10/2019</strong> in the Command Box and press <kbd>Enter</kbd>.</p>
 <div class="imageblock">
 <div class="content">
 <img src="images/add-budget/Step2.png" alt="Step2" width="550">
@@ -290,7 +299,7 @@ It is not compulsory to set a budget for each month and you can use THRIFT norma
 </div>
 </li>
 <li>
-<p>You should see in the result box that your budget for <em>October 2019</em> has been set to $<em>2000</em>.</p>
+<p>You should see in the Result Box that your budget for <em>October 2019</em> has been set to $<em>2000</em>.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -319,7 +328,10 @@ If you are changing your budget for the current displayed month, you should see 
 <p>One of the most important features of THRIFT is to allow you to track your expenses by adding them into THRIFT.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-2"><a class="link" href="#command-syntax-2">3.2.1. Command syntax:</a></h4>
+<h4 id="command-syntax-2"><a class="link" href="#command-syntax-2">3.2.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>add_expense</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>add_expense n/EXPENSE_NAME v/VALUE [r/REMARK] [t/TAG]&#8230;&#8203;</code></p>
 </div>
@@ -370,7 +382,7 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 </div>
 </div>
 <div class="sect3">
-<h4 id="example-usage-2"><a class="link" href="#example-usage-2">3.2.2. Example usage:</a></h4>
+<h4 id="example-usage-2"><a class="link" href="#example-usage-2">3.2.2. Example usage</a></h4>
 <div class="paragraph">
 <p>You had the famous Laksa from "The Deck" for lunch which cost $10.50 and you wish to track it in THRIFT:</p>
 </div>
@@ -385,7 +397,7 @@ The default currency is in Singapore Dollars (SGD). You are recommended to <code
 </div>
 </li>
 <li>
-<p>You type: <strong>add_expense n/Laksa v/10.50 r/Delicious! From "The Deck" t/Lunch</strong> into the command box and press <kbd>Enter</kbd>.</p>
+<p>You type: <strong>add_expense n/Laksa v/10.50 r/Delicious! From "The Deck" t/Lunch</strong> into the Command Box and press <kbd>Enter</kbd>.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -422,7 +434,10 @@ The transaction date is automatically populated based on your system time.
 <p>Being able to add an income transaction is just as important as tracking your expenses. THRIFT is able to track all of your incoming transactions as well.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-3"><a class="link" href="#command-syntax-3">3.3.1. Command syntax:</a></h4>
+<h4 id="command-syntax-3"><a class="link" href="#command-syntax-3">3.3.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>add_income</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>add_income n/INCOME_NAME v/VALUE [r/REMARK] [t/TAG]&#8230;&#8203;</code></p>
 </div>
@@ -461,7 +476,7 @@ The transaction date is automatically populated based on your system time.
 </div>
 </div>
 <div class="sect3">
-<h4 id="example-usage-3"><a class="link" href="#example-usage-3">3.3.2. Example usage:</a></h4>
+<h4 id="example-usage-3"><a class="link" href="#example-usage-3">3.3.2. Example usage</a></h4>
 <div class="paragraph">
 <p>You studied extremely hard during the year and you were awarded a bursary incentive of $500. You wish to add it to THRIFT to update your remaining balance with this reward:</p>
 </div>
@@ -476,7 +491,7 @@ The transaction date is automatically populated based on your system time.
 </div>
 </li>
 <li>
-<p>You type: <strong>add_income n/Bursary v/500 r/For studying hard in the year t/Award</strong> into the command box and press <kbd>Enter</kbd>.</p>
+<p>You type: <strong>add_income n/Bursary v/500 r/For studying hard in the year t/Award</strong> into the Command Box and press <kbd>Enter</kbd>.</p>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -513,7 +528,10 @@ The transaction date is automatically populated based on your system time.
 <p>If you find that a transaction is no longer relevant to you, you may delete it from THRIFT.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-4"><a class="link" href="#command-syntax-4">3.4.1. Command syntax:</a></h4>
+<h4 id="command-syntax-4"><a class="link" href="#command-syntax-4">3.4.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>delete</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>delete i/INDEX</code></p>
 </div>
@@ -533,7 +551,7 @@ The transaction date is automatically populated based on your system time.
 </div>
 </div>
 <div class="sect3">
-<h4 id="example-usage-4"><a class="link" href="#example-usage-4">3.4.2. Example usage:</a></h4>
+<h4 id="example-usage-4"><a class="link" href="#example-usage-4">3.4.2. Example usage</a></h4>
 <div class="paragraph">
 <p>Assume that you wish to delete a bursary income transaction from your transaction list because the bursary was mistakenly awarded to you.</p>
 </div>
@@ -573,7 +591,10 @@ The transaction date is automatically populated based on your system time.
 <p>Made a mistake when creating a transaction? Have new details for an existing transaction? Simply utilize THRIFT&#8217;s <code>update</code> feature to make changes.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-5"><a class="link" href="#command-syntax-5">3.5.1. Command Syntax:</a></h4>
+<h4 id="command-syntax-5"><a class="link" href="#command-syntax-5">3.5.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>update</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>update i/INDEX [n/NEW_NAME] [v/NEW_VALUE] [r/NEW_REMARK] [t/NEW_TAG] &#8230;&#8203;</code></p>
 </div>
@@ -609,7 +630,7 @@ The transaction date is automatically populated based on your system time.
 </div>
 </div>
 <div class="sect3">
-<h4 id="example-usage-5"><a class="link" href="#example-usage-5">3.5.2. Example Usage:</a></h4>
+<h4 id="example-usage-5"><a class="link" href="#example-usage-5">3.5.2. Example usage</a></h4>
 <div class="paragraph">
 <p>You order a bowl of delicious Laksa and key in the details of this food expense into THRIFT. However, after your meal you realize you recorded some incorrect details - the Laksa was <em>Asam Laksa</em>, not Curry Laksa as you thought, and you paid more than the menu price (which you recorded) due to taxes. You also want to add a remark and tag.</p>
 </div>
@@ -627,7 +648,7 @@ The transaction date is automatically populated based on your system time.
 </div>
 </li>
 <li>
-<p>When you realize the Laksa is not Curry Laksa and want to change the transaction&#8217;s name, you type <strong>update i/2 n/Laksa</strong> into the command box and press <kbd>Enter</kbd>.</p>
+<p>When you realize the Laksa is not Curry Laksa and want to change the transaction&#8217;s name, you type <strong>update i/2 n/Laksa</strong> into the Command Box and press <kbd>Enter</kbd>.</p>
 <div class="imageblock">
 <div class="content">
 <img src="images/update/updateUG/UpdateStep2.png" alt="UpdateStep2" width="550">
@@ -667,39 +688,78 @@ and press <kbd>Enter</kbd>.</p>
 <div class="sect2">
 <h3 id="TagTag"><a class="link" href="#TagTag">3.6. Tagging a transaction: <code>tag</code></a></h3>
 <div class="paragraph">
-<p>The <code>tag</code> command allows you to tag a <code>Transaction</code> entry.</p>
+<p>If you want to categorise your incomes and expenses, you can associate them with a custom meaningful tag using the <code>tag</code> command.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-6"><a class="link" href="#command-syntax-6">3.6.1. Command Syntax:</a></h4>
+<h4 id="command-syntax-6"><a class="link" href="#command-syntax-6">3.6.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>tag</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>tag i/INDEX t/TAG_NAME&#8230;&#8203;</code></p>
 </div>
+<div class="sidebarblock">
+<div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>Tags the transaction at the specified <code>INDEX</code> with <code>TAG_NAME</code> (can be more than one).</p>
+<p>Tags the transaction at the specified <code>INDEX</code> with <code>TAG_NAME</code> (can be more than one)</p>
 </li>
 <li>
-<p><code>INDEX</code> refers to the index number currently shown in the UI (after filtering, if any).</p>
+<p><code>INDEX</code> refers to the index number currently shown in the UI (after filtering, if any)</p>
 </li>
 <li>
-<p><code>INDEX</code> <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+<p><code>INDEX</code> must be a positive integer 1, 2, 3, &#8230;&#8203;</p>
+</li>
+<li>
+<p><code>TAG_NAME</code> must be alphanumeric and cannot contain spaces</p>
+</li>
+<li>
+<p>The tag will be coloured accordingly if <code>TAG_NAME</code> is a <a href="#TagColours">keyword</a>, else it will be in the default colour</p>
+</li>
+<li>
+<p>If a tag with <code>TAG_NAME</code> in the same case already exists in the entry, it will be ignored</p>
 </li>
 </ul>
 </div>
 </div>
+</div>
+</div>
 <div class="sect3">
-<h4 id="example"><a class="link" href="#example">3.6.2. Example:</a></h4>
+<h4 id="example-usage-6"><a class="link" href="#example-usage-6">3.6.2. Example usage</a></h4>
+<div class="paragraph">
+<p>Assume you have a few transaction entries already inside THRIFT, and one of them is not categorised yet.
+You want to tag that entry with a meaningful tag.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s how you can do that:</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>You want to tag "Credit Card" (the entry displayed at index 2) with the tag <em>Debt</em>.</p>
+<p>You want to tag "Uniqlo Jeans" (the entry displayed at index 2) with the tag <em>Shopping</em> since it&#8217;s part of your shopping.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/tag/TagStep1.png" alt="TagStep1" width="550">
+</div>
+</div>
 </li>
 <li>
-<p>You type <code>tag i/2 t/Debt</code> into the command input and press <strong>Enter</strong>..</p>
+<p>You type <strong>tag i/2 t/Shopping</strong> into the Command Box and press <kbd>Enter</kbd>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/tag/TagStep2.png" alt="TagStep2" width="550">
+</div>
+</div>
 </li>
 <li>
-<p>You now see that the entry has been tagged.</p>
+<p>You will now see that a text representation of both the updated and original entry is displayed in the Result Box and
+that the tag has appeared at the entry indicating that it has been successfully tagged.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/tag/TagStep3.png" alt="TagStep3" width="550">
+</div>
+</div>
 </li>
 </ol>
 </div>
@@ -708,39 +768,78 @@ and press <kbd>Enter</kbd>.</p>
 <div class="sect2">
 <h3 id="UntagTag"><a class="link" href="#UntagTag">3.7. Untagging a transaction: <code>untag</code></a></h3>
 <div class="paragraph">
-<p>The <code>untag</code> command allows you to un-tag a <code>Transaction</code> entry.</p>
+<p>An entry can be associated with an incorrect tag due to various reasons.
+Perhaps you made a mistake tagging the entry or perhaps the tag became invalid as it lost its meaning over time,
+you can fix that by dissociating the tag from the entry using the <code>untag</code> command.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-7"><a class="link" href="#command-syntax-7">3.7.1. Command Syntax:</a></h4>
+<h4 id="command-syntax-7"><a class="link" href="#command-syntax-7">3.7.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>untag</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>untag i/INDEX t/TAG_NAME&#8230;&#8203;</code></p>
 </div>
+<div class="sidebarblock">
+<div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>Untags <code>TAG_NAME</code> (can be more than one) from the transaction at the specified <code>INDEX</code>.</p>
+<p>Untags the transaction at the specified <code>INDEX</code> with <code>TAG_NAME</code> (can be more than one)</p>
 </li>
 <li>
-<p><code>INDEX</code> refers to the index number currently shown in the UI (after filtering, if any).</p>
+<p><code>INDEX</code> refers to the index number currently shown in the UI (after filtering, if any)</p>
 </li>
 <li>
-<p><code>INDEX</code> <strong>must be a positive integer</strong> 1, 2, 3, &#8230;&#8203;</p>
+<p><code>INDEX</code> must be a positive integer 1, 2, 3, &#8230;&#8203;</p>
+</li>
+<li>
+<p><code>TAG_NAME</code> must be alphanumeric and cannot contain spaces</p>
+</li>
+<li>
+<p>If no tag with <code>TAG_NAME</code> in the same case already exists in the entry, it will be ignored</p>
 </li>
 </ul>
 </div>
 </div>
+</div>
+</div>
 <div class="sect3">
-<h4 id="example-2"><a class="link" href="#example-2">3.7.2. Example:</a></h4>
+<h4 id="example-usage-7"><a class="link" href="#example-usage-7">3.7.2. Example usage</a></h4>
+<div class="paragraph">
+<p>Assume you have a few transaction entries already inside THRIFT, and one of them has an incorrect tag.
+You want to dissociate the incorrect tag from that entry.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s how you can do that:</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>You want to untag the tag <em>Important</em> from "Humble Bundle" (the entry displayed at index 3).</p>
+<p>You want to dissociate the tag <em>Important</em> from "Humble Bundle" (the entry displayed at index 3)
+since it is not very important.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/untag/UntagStep1.png" alt="UntagStep1" width="550">
+</div>
+</div>
 </li>
 <li>
-<p>You type <code>untag i/3 t/Important</code> into the command input and press <strong>Enter</strong>.</p>
+<p>You type <strong>untag i/3 t/Important</strong> into the Command Box and press <kbd>Enter</kbd>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/untag/UntagStep2.png" alt="UntagStep2" width="550">
+</div>
+</div>
 </li>
 <li>
-<p>You see that the entry has been been un-tagged.</p>
+<p>You will now see that a text representation of both the updated and original entry is displayed in the Result Box and
+that the tag has disappeared from the entry indicating that it has been successfully removed.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/tag-untag/untag/UntagStep3.png" alt="UntagStep3" width="550">
+</div>
+</div>
 </li>
 </ol>
 </div>
@@ -749,20 +848,26 @@ and press <kbd>Enter</kbd>.</p>
 <div class="sect2">
 <h3 id="ConvertTag"><a class="link" href="#ConvertTag">3.8. Converting currency: <code>convert</code></a></h3>
 <div class="paragraph">
-<p>The convert command allows you to convert money from one currency to another.</p>
+<p>If you want to travel overseas or go on exchange, you will definitely need foreign currencies.
+To see how much foreign currency you can get with your local currency, you can use the <code>convert</code> command to get an estimate.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-8"><a class="link" href="#command-syntax-8">3.8.1. Command Syntax</a></h4>
+<h4 id="command-syntax-8"><a class="link" href="#command-syntax-8">3.8.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>convert</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>convert [v/VALUE] c/CURRENCY&#8230;&#8203;</code></p>
 </div>
+<div class="sidebarblock">
+<div class="content">
 <div class="ulist">
 <ul>
 <li>
-<p>Converts the <code>VALUE</code> to <code>CURRENCY</code> if one of each is specified.</p>
+<p>Converts the <code>VALUE</code> in SGD to <code>CURRENCY</code> if one of each is specified.</p>
 </li>
 <li>
-<p>If no <code>VALUE</code> is specified, the value of 1.00 with be used.</p>
+<p>If no <code>VALUE</code> is specified, the value of 1.00 will be used.</p>
 </li>
 <li>
 <p>If more than one <code>CURRENCY</code> is present, the first one will be used as a base and the rest as target currencies</p>
@@ -770,21 +875,43 @@ and press <kbd>Enter</kbd>.</p>
 <li>
 <p><code>VALUE</code> must be positive.</p>
 </li>
+<li>
+<p><code>CURRENCY</code> must be a <a href="#SupportedCurrencies">supported currency</a>.</p>
+</li>
 </ul>
 </div>
 </div>
+</div>
+</div>
 <div class="sect3">
-<h4 id="example-3"><a class="link" href="#example-3">3.8.2. Example</a></h4>
+<h4 id="example-usage-8"><a class="link" href="#example-usage-8">3.8.2. Example usage</a></h4>
+<div class="paragraph">
+<p>Assume you want an estimate of how much foreign currency you can get with your local currency and
+you want to do so without leaving THRIFT.</p>
+</div>
+<div class="paragraph">
+<p>Here&#8217;s how you can do that:</p>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>You want to convert SGD1000 to USD.</p>
+<p>You want an estimate on how much <em>USD</em> you can get with SGD1000.</p>
 </li>
 <li>
-<p>You type <code>convert v/1000 c/USD</code> into the command input and press <strong>Enter</strong>.</p>
+<p>You type <strong>convert v/1000 c/SGD c/USD</strong> into the Command Box and press <kbd>Enter</kbd>.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/convert/convert/ConvertStep2.png" alt="ConvertStep2" width="550">
+</div>
+</div>
 </li>
 <li>
-<p>The conversion message is displayed on the GUI.</p>
+<p>You will now see the result of the conversion displayed in the Result Box.</p>
+<div class="imageblock">
+<div class="content">
+<img src="images/convert/convert/ConvertStep3.png" alt="ConvertStep3" width="550">
+</div>
+</div>
 </li>
 </ol>
 </div>
@@ -796,7 +923,10 @@ and press <kbd>Enter</kbd>.</p>
 <p>Occasionally, you may want to copy a transaction, or create multiple copies of a transaction for recurring incomes or expenses such as a yearly donation or monthly bills. Simply use the <code>clone</code> feature to achieve this.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-9"><a class="link" href="#command-syntax-9">3.9.1. Command syntax:</a></h4>
+<h4 id="command-syntax-9"><a class="link" href="#command-syntax-9">3.9.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>clone</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>clone i/INDEX [o/FREQUENCY:NUMBER_OF_OCCURRENCES]</code></p>
 </div>
@@ -862,7 +992,7 @@ and press <kbd>Enter</kbd>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="example-usage-br"><a class="link" href="#example-usage-br">3.9.2. Example usage:<br></a></h4>
+<h4 id="example-usage-9"><a class="link" href="#example-usage-9">3.9.2. Example usage</a></h4>
 <div class="paragraph">
 <p>You receive your fixed salary on the 30th of every month. You don&#8217;t want to tediously add your salary to THRIFT every month, so you add clones of your salary income for the next year at one go.</p>
 </div>
@@ -974,13 +1104,16 @@ You cannot undo undoable commands once the application exits.
 </ul>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-10"><a class="link" href="#command-syntax-10">3.10.1. Command syntax:</a></h4>
+<h4 id="command-syntax-10"><a class="link" href="#command-syntax-10">3.10.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>undo</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>undo</code></p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="example-usage-6"><a class="link" href="#example-usage-6">3.10.2. Example usage:</a></h4>
+<h4 id="example-usage-10"><a class="link" href="#example-usage-10">3.10.2. Example usage</a></h4>
 <div class="paragraph">
 <p>Suppose you want to delete the second transaction (Bursary) in THRIFT, but you remove the third transaction (Chicken Rice) instead!
 One possible solution is that you add the transaction manually back into THRIFT, but this is too troublesome! You can
@@ -992,7 +1125,7 @@ retrieve the deleted transaction by performing <code>undo</code>.</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Type <strong>undo</strong> into the command box and press <kbd>Enter</kbd>:</p>
+<p>Type <strong>undo</strong> into the Command Box and press <kbd>Enter</kbd>:</p>
 <div class="imageblock">
 <div class="content">
 <img src="images/UndoAndRedo/undocommand.png" alt="undocommand" width="550">
@@ -1000,7 +1133,7 @@ retrieve the deleted transaction by performing <code>undo</code>.</p>
 </div>
 </li>
 <li>
-<p>You will see a success message displays in the result box, and the transaction (Chicken Rice)
+<p>You will see a success message displays in the Result Box, and the transaction (Chicken Rice)
 adds back to its original position in the list:</p>
 <div class="imageblock">
 <div class="content">
@@ -1043,13 +1176,16 @@ You cannot redo undone commands once the application exits or new undoable comma
 </table>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-11"><a class="link" href="#command-syntax-11">3.11.1. Command syntax:</a></h4>
+<h4 id="command-syntax-11"><a class="link" href="#command-syntax-11">3.11.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>redo</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>redo</code></p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="example-usage-7"><a class="link" href="#example-usage-7">3.11.2. Example usage:</a></h4>
+<h4 id="example-usage-11"><a class="link" href="#example-usage-11">3.11.2. Example usage</a></h4>
 <div class="paragraph">
 <p>Suppose you had undone the addition of the transaction (Chicken Rice) (See: <a href="#UndoTag">Undoing the previous undoable command</a>),
 but you decide to track the transaction using THRIFT. Instead of adding the transaction manually, you can add back
@@ -1061,7 +1197,7 @@ the transaction by executing <code>redo</code>.</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Type <strong>redo</strong> into the command box and press <kbd>Enter</kbd>:</p>
+<p>Type <strong>redo</strong> into the Command Box and press <kbd>Enter</kbd>:</p>
 <div class="imageblock">
 <div class="content">
 <img src="images/UndoAndRedo/redocommand.png" alt="redocommand" width="550">
@@ -1069,7 +1205,7 @@ the transaction by executing <code>redo</code>.</p>
 </div>
 </li>
 <li>
-<p>You will see a success message displays in the result box and the transaction (Chicken Rice) adds back to the list:</p>
+<p>You will see a success message displays in the Result Box and the transaction (Chicken Rice) adds back to the list:</p>
 <div class="imageblock">
 <div class="content">
 <img src="images/UndoAndRedo/redocommandresult.png" alt="redocommandresult" width="550">
@@ -1087,7 +1223,10 @@ the transaction by executing <code>redo</code>.</p>
 the name of the transaction which you enter as <code>n/DESCRIPTION</code>.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-12"><a class="link" href="#command-syntax-12">3.12.1. Command syntax:</a></h4>
+<h4 id="command-syntax-12"><a class="link" href="#command-syntax-12">3.12.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>find</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>find SEARCH_WORD [SEARCH_WORD]</code></p>
 </div>
@@ -1104,7 +1243,7 @@ the name of the transaction which you enter as <code>n/DESCRIPTION</code>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="example-usage-8"><a class="link" href="#example-usage-8">3.12.2. Example usage:</a></h4>
+<h4 id="example-usage-12"><a class="link" href="#example-usage-12">3.12.2. Example usage</a></h4>
 <div class="paragraph">
 <p>Imagine that you wish to find all of your transactions that contain the words <em>The Deck</em> because you would like to see
 how often you visit there.</p>
@@ -1146,7 +1285,10 @@ how often you visit there.</p>
 <p>THRIFT allows you to list out all the transactions, and filter by month if you wish to as well.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-13"><a class="link" href="#command-syntax-13">3.13.1. Command syntax:</a></h4>
+<h4 id="command-syntax-13"><a class="link" href="#command-syntax-13">3.13.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>list</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>list [m/MONTH]</code></p>
 </div>
@@ -1179,7 +1321,7 @@ how often you visit there.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="example-usage-9"><a class="link" href="#example-usage-9">3.13.2. Example usage:</a></h4>
+<h4 id="example-usage-13"><a class="link" href="#example-usage-13">3.13.2. Example usage</a></h4>
 <div class="paragraph">
 <p>Imagine that you wanted to take a look at how much you spent and saved the previous month! For example, Oct 2019.</p>
 </div>
@@ -1223,13 +1365,16 @@ how often you visit there.</p>
 comprehensive user guide. It saves the trouble of saving the URL of this user guide.</p>
 </div>
 <div class="sect3">
-<h4 id="command-syntax-14"><a class="link" href="#command-syntax-14">3.14.1. Command syntax:</a></h4>
+<h4 id="command-syntax-14"><a class="link" href="#command-syntax-14">3.14.1. Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>help</code> command, you have to use the following syntax:</p>
+</div>
 <div class="paragraph">
 <p><code>help [COMMAND]</code></p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="example-usage-10"><a class="link" href="#example-usage-10">3.14.2. Example usage:</a></h4>
+<h4 id="example-usage-14"><a class="link" href="#example-usage-14">3.14.2. Example usage</a></h4>
 <div class="paragraph">
 <p>Suppose you want to add a transaction to THRIFT, but you had forgotten about the command to perform this function.</p>
 </div>
@@ -1239,7 +1384,7 @@ comprehensive user guide. It saves the trouble of saving the URL of this user gu
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Type <strong>help</strong> in the command box and press <kbd>Enter</kbd>:</p>
+<p>Type <strong>help</strong> in the Command Box and press <kbd>Enter</kbd>:</p>
 <div class="imageblock">
 <div class="content">
 <img src="images/Help-exit/helpcommand.PNG" alt="helpcommand">
@@ -1271,7 +1416,7 @@ Alternative methods: press <kbd>F1</kbd> or click on <strong>Help</strong> in th
 you can enter <strong>help add_expense</strong> instead of <strong>help</strong>.</p>
 </div>
 <div class="paragraph">
-<p>You will see a simplified help version of the <code>add_expense</code> command displays in the result box:</p>
+<p>You will see a simplified help version of the <code>add_expense</code> command displays in the Result Box:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1281,10 +1426,15 @@ you can enter <strong>help add_expense</strong> instead of <strong>help</strong>
 </div>
 </div>
 <div class="sect2">
-<h3 id="ExitTag"><a class="link" href="#ExitTag">3.15. Exiting THRIFT application: <code>exit</code></a></h3>
+<h3 id="ExitTag"><a class="link" href="#ExitTag">3.15. Exiting THRIFT: <code>exit</code></a></h3>
 <div class="paragraph">
 <p>Think about exiting THRIFT after you have added the transaction? You can enter <strong>exit</strong> in the
-command box or click on the close button at the top-right corner of the application.</p>
+Command Box or click on the close button at the top-right corner of the application.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/exit/Exit.png" alt="Exit" width="550">
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1294,9 +1444,9 @@ command box or click on the close button at the top-right corner of the applicat
 </div>
 </div>
 <div class="sect2">
-<h3 id="recommending-dining-options-based-on-budget-code-coming-in-v2-0-code"><a class="link" href="#recommending-dining-options-based-on-budget-code-coming-in-v2-0-code">3.17. Recommending dining options based on budget <code>[coming in v2.0]</code></a></h3>
+<h3 id="recommending-dining-options-based-on-budget-using-artificial-intelligence-code-coming-in-v2-0-code"><a class="link" href="#recommending-dining-options-based-on-budget-using-artificial-intelligence-code-coming-in-v2-0-code">3.17. Recommending dining options based on budget using Artificial Intelligence <code>[coming in v2.0]</code></a></h3>
 <div class="paragraph">
-<p>Depending on your remaining budget and the remaining days to the end of the month, THRIFT will recommend you dining places in NUS which will suit your budget. For example, if you are running low on funds, you might get recommended to travel to the Arts canteen to eat since there are really cheap options there.</p>
+<p>Depending on your transactions, remaining budget and the remaining days to the end of the month, THRIFT will recommend you dining places in NUS which will suit your budget. For example, if you spent too much and are running low on funds, you might get recommended to travel to the Arts canteen to eat since there are cheap options there.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1308,7 +1458,7 @@ command box or click on the close button at the top-right corner of the applicat
 </div>
 </div>
 <div class="sect1">
-<h2 id="faq"><a class="link" href="#faq">4. FAQ</a></h2>
+<h2 id="frequently-asked-questions"><a class="link" href="#frequently-asked-questions">4. Frequently asked questions</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Q</strong>: How do I transfer my data to another Computer?</p>
@@ -1320,7 +1470,13 @@ command box or click on the close button at the top-right corner of the applicat
 <p><strong>Q</strong>: How do I maximise the size of application&#8217;s window?</p>
 </div>
 <div class="paragraph">
-<p><strong>A</strong>: No, you cannot modify the size of the application&#8217;s window. It is intended to be fixed.</p>
+<p><strong>A</strong>: No, you cannot modify the size of the application&#8217;s window. It is intentionally fixed.</p>
+</div>
+<div class="paragraph">
+<p><strong>Q</strong>: Can I modify the data files outside of THRIFT?</p>
+</div>
+<div class="paragraph">
+<p><strong>A</strong>: You should not modify any THRIFT data files with any external tools outside of THRIFT, doing so might result in you losing your data.</p>
 </div>
 </div>
 </div>
@@ -1358,18 +1514,18 @@ Example: <code>clone i/1 o/monthly:12</code></p>
 Example: <code>list m/01/2019</code></p>
 </li>
 <li>
-<p><a href="#TagTag"><strong>Tag</strong></a>: <code>tag i/INDEX t/TAG_NAME</code><br>
+<p><a href="#TagTag"><strong>Tag</strong></a>: <code>tag i/INDEX t/TAG_NAME&#8230;&#8203;</code><br>
 Example: <code>tag i/8 t/Debt</code></p>
 </li>
 <li>
-<p><a href="#UntagTag"><strong>Untag</strong></a>: <code>untag i/INDEX t/TAG_NAME</code><br>
+<p><a href="#UntagTag"><strong>Untag</strong></a>: <code>untag i/INDEX t/TAG_NAME&#8230;&#8203;</code><br>
 Example: <code>untag i/7 t/Important</code></p>
 </li>
 <li>
-<p><a href="#ConvertTag"><strong>Convert</strong></a>: <code>convert to/TARGET_CURRENCY (v/VALUE|i/INDEX)</code><br>
+<p><a href="#ConvertTag"><strong>Convert</strong></a>: <code>convert [v/VALUE] c/CURRENCY…</code><br>
 Examples:<br>
- <code>convert v/USD v/1000</code><br>
- <code>convert v/JPY i/8</code></p>
+ <code>convert c/USD</code><br>
+ <code>convert v/1000 c/SGD c/JPY</code></p>
 </li>
 <li>
 <p><a href="#UndoTag"><strong>Undo</strong></a>: <code>undo</code></p>
@@ -1389,8 +1545,10 @@ Example: <code>help delete</code></p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="glossary"><a class="link" href="#glossary">6. Glossary</a></h2>
+<h2 id="appendix"><a class="link" href="#appendix">6. Appendix</a></h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="glossary"><a class="link" href="#glossary">6.1. Glossary</a></h3>
 <div class="hdlist">
 <table>
 <tr>
@@ -1412,4 +1570,177 @@ Example: <code>help delete</code></p>
 </table>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-04 06:07:27 UTC</div></div></div></body></html>
+<div class="sect2">
+<h3 id="TagColours"><a class="link" href="#TagColours">6.2. Tag keyword colours</a></h3>
+<div class="paragraph">
+<p>The following table lists the tag keywords that correspond to each colour, if the tag name is not on this table, it will be <strong>Purple</strong> in colour.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Green</th>
+<th class="tableblock halign-left valign-top">Red</th>
+<th class="tableblock halign-left valign-top">Blue</th>
+<th class="tableblock halign-left valign-top">Orange</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Allowance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Debt</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Shopping</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Breakfast</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Award</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fees</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Travel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Brunch</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Salary</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Gamble</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Transport</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dinner</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Groceries</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lunch</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Snack</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Supper</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="SupportedCurrencies"><a class="link" href="#SupportedCurrencies">6.3. Supported currencies</a></h3>
+<div class="paragraph">
+<p>THRIFT supports the following currencies by default:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>SGD</p>
+</li>
+<li>
+<p>AUD</p>
+</li>
+<li>
+<p>BGN</p>
+</li>
+<li>
+<p>BRL</p>
+</li>
+<li>
+<p>CAD</p>
+</li>
+<li>
+<p>CHF</p>
+</li>
+<li>
+<p>CNY</p>
+</li>
+<li>
+<p>DKK</p>
+</li>
+<li>
+<p>EUR</p>
+</li>
+<li>
+<p>GBP</p>
+</li>
+<li>
+<p>HKD</p>
+</li>
+<li>
+<p>HRK</p>
+</li>
+<li>
+<p>HUF</p>
+</li>
+<li>
+<p>IDR</p>
+</li>
+<li>
+<p>ILS</p>
+</li>
+<li>
+<p>ISK</p>
+</li>
+<li>
+<p>INR</p>
+</li>
+<li>
+<p>JPY</p>
+</li>
+<li>
+<p>KRW</p>
+</li>
+<li>
+<p>MXN</p>
+</li>
+<li>
+<p>MYR</p>
+</li>
+<li>
+<p>NOK</p>
+</li>
+<li>
+<p>NZD</p>
+</li>
+<li>
+<p>PHP</p>
+</li>
+<li>
+<p>PLN</p>
+</li>
+<li>
+<p>RON</p>
+</li>
+<li>
+<p>RUB</p>
+</li>
+<li>
+<p>SEK</p>
+</li>
+<li>
+<p>THB</p>
+</li>
+<li>
+<p>TRY</p>
+</li>
+<li>
+<p>USD</p>
+</li>
+<li>
+<p>ZAR</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-06 07:31:56 UTC</div></div></div></body></html>
