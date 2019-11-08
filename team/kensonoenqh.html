@@ -1,8 +1,531 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge"><![endif]--><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Asciidoctor 1.5.6.1"><title>Oen Qi Han, Kenson - Project Portfolio</title><link rel="stylesheet" href="../stylesheets/gh-pages.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="../stylesheets/coderay-asciidoctor.css"></head><body class="article"><div id="site-header"><nav class="navbar navbar-light bg-light"><div class="container"><a class="navbar-brand" href="../index.html">THRIFT</a><ul class="navbar-nav"><li class="nav-item"><a class="nav-link" href="../UserGuide.html">User Guide</a></li><li class="nav-item"><a class="nav-link" href="../DeveloperGuide.html">Developer Guide</a></li><li class="nav-item"><a class="nav-link active" href="../AboutUs.html">About Us</a></li><li class="nav-item"><a class="nav-link" href="../ContactUs.html">Contact Us</a></li><li class="navitem"><a class="nav-link" href="https://github.com/AY1920S1-CS2103T-W12-2/main"><span class="fa fa-github fa-lg" aria-hidden="true"></span>&nbsp;View on GitHub</a></li></ul></div></nav></div><div id="header"><h1>Oen Qi Han, Kenson - Project Portfolio</h1></div><div id="content"><div class="sect1">
-<h2 id="project-thrift"><a class="link" href="#project-thrift">Project: THRIFT</a></h2>
+<h2 id="1-introduction"><a class="link" href="#1-introduction">1. Introduction</a></h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>This portfolio documents my roles and contributions to the team project THRIFT. This project was part of
+the requirements of a year two software engineering module, CS2103T, that I took as an undergraduate in NUS.</p>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-07 09:05:44 UTC</div></div></div></body></html>
+<div class="sect2">
+<h3 id="1-1-about-the-team"><a class="link" href="#1-1-about-the-team">1.1 About the team</a></h3>
+<div class="paragraph">
+<p>The THRIFT team consists of a group of 5 year 2 undergraduates which includes myself. In this project, I had the role of
+Process Analyst, and I was in charge of leading and coordinating business use-case modeling by outlining and delimiting
+the organization being modeled.</p>
+</div>
+<div class="paragraph">
+<p>My team members and their various roles were: <code>Lim Jia Hao</code> (Team Lead), <code>Lee Bo Qiang</code> (User Experience Developer),
+ <code>Melvin Ang</code> (Software Architect) and <code>Lye Jian Wen</code> (Quality Assurance Manager). We had major yet different roles to
+play in creating THRIFT and we worked closely together in order to ensure that THRIFT was successful.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="1-2-project-thrift"><a class="link" href="#1-2-project-thrift">1.2 Project: THRIFT</a></h3>
+<div class="paragraph">
+<p>THRIFT is a finance tracker desktop application targeting money-conscious NUS students who wish to keep their spending
+in check.</p>
+</div>
+<div class="sect3">
+<h4 id="1-2-1-main-features-of-thrift"><a class="link" href="#1-2-1-main-features-of-thrift">1.2.1 Main features of THRIFT</a></h4>
+<div class="paragraph">
+<p>As befitting a finance tracker, THRIFT allows its users to set a budget for each month and track incoming and outgoing
+transactions by adding and deleting them. Showing the remaining budget clearly in the user interface reduces the possibility of our users overspending
+their budget.</p>
+</div>
+<div class="paragraph">
+<p>THRIFT helps our users better keep track of each transaction by allowing the transactions to be tagged. Tagging transactions
+with tags such as Food or Transport will improve visibility and help to categorise the transactions.</p>
+</div>
+<div class="paragraph">
+<p>THRIFT is able to filter transactions by month. This enhances our users' ability to keep track of their spending over
+a long period of time, and allows them to compare monthly expenses. The find command is also very helpful in locating
+specific transactions, if a user wishes to do so.</p>
+</div>
+<div class="paragraph">
+<p>Thrift is very user friendly, and users can make use of the undo and redo feature to help with any mistakes that have
+occurred when they use a command wrongly. Thus, even mistake-prone users are able to use THRIFT efficiently to track
+their finances.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="1-2-2-project-requirements"><a class="link" href="#1-2-2-project-requirements">1.2.2 Project requirements</a></h4>
+<div class="paragraph">
+<p>As part of the project requirements, we had to work under the constraint that the application required the use
+of a command line interface (CLI). As such, the user would be able to interact with our app using a single line of text to
+execute any single command.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="1-2-3-thrift-s-user-interface"><a class="link" href="#1-2-3-thrift-s-user-interface">1.2.3 THRIFT&#8217;S user interface</a></h4>
+<div class="paragraph">
+<p>The following image shows how THRIFT&#8217;s user interface looks like:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/UGUI.png" alt="UGUI" width="700">
+</div>
+<div class="title">Figure 1. Main window of THRIFT which displays the user&#8217;s balance as well as their transactions</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="1-3-background-of-thrift"><a class="link" href="#1-3-background-of-thrift">1.3 Background of THRIFT</a></h3>
+<div class="paragraph">
+<p>THRIFT is morphed from the original <a href="https://github.com/nus-cs2103-AY1920S1/addressbook-level3">AddressBook-Level3</a> application which allows users to add contacts to create a personalised list.
+My team and I have since transformed the application into a finance tracker to better suit our purposes and intended target
+audience of students.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="1-4-understanding-this-document"><a class="link" href="#1-4-understanding-this-document">1.4 Understanding this document</a></h3>
+<div class="paragraph">
+<p>There are various text styles used in this portfolio and its usages are explained below:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This symbol denotes information that you may want to take note of when using the application.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The following text styles are only applicable to the section on the Summary of Contributions:</p>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+<strong>m/MONTH</strong>
+</td>
+<td class="hdlist2">
+<p>Bold text indicates that it is a command, or a part of it.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<code><strong>Tag</strong></code>
+</td>
+<td class="hdlist2">
+<p>Bold text with mark-up indicates a class/package name.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The following text styles are only applicable to the section on the User Guide:</p>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+<code>list</code>
+</td>
+<td class="hdlist2">
+<p>Text with a grey highlight (called a mark-up) indicates that it is a command, or a part of it.</p>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The following text styles are only applicable to the section on the Developer Guide:</p>
+</div>
+<div class="hdlist">
+<table>
+<tr>
+<td class="hdlist1">
+<strong>m/MONTH</strong>
+</td>
+<td class="hdlist2">
+<p>Bold text indicates user input.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<code>parse</code>
+</td>
+<td class="hdlist2">
+<p>Text with grey highlight (called a mark-up) indicates that it is a method/variable name.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<code><strong>Predicate</strong></code>
+</td>
+<td class="hdlist2">
+<p>Bold text with mark-up indicates a class/package name.</p>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="2-summary-of-contributions"><a class="link" href="#2-summary-of-contributions">2. Summary of Contributions</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section provides a summary on the various contributions that I have made to THRIFT.
+My main role was to design and write the code for the list feature, and enhance it to allow filtering of transactions.
+In this section, these enhancements will be illustrated in detail.</p>
+</div>
+<div class="sect2">
+<h3 id="2-1-enhancements-made"><a class="link" href="#2-1-enhancements-made">2.1 Enhancements made</a></h3>
+<div class="paragraph">
+<p><strong>Major enhancements:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Added the <strong>ability to filter transactions</strong>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>What it does: The <strong>list</strong> command allows the user to filter the transaction list by a specific month.</p>
+</li>
+<li>
+<p>Justification: It is a core feature to be able to show transactions from a single month as users want to track finances
+and would likely want to compare between months or look in more detail at the transactions in a particular month.</p>
+</li>
+<li>
+<p>Highlights: I enhanced the existing list function by adding the functionality of filtering the
+transactions by using a <code><strong>Predicate</strong></code>. This implementation can be easily extended, so if there are any future plans to
+implement filtering by, for example, <code><strong>Tag</strong></code>, there will not be extra difficulties faced in implementation.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="2-2-code-contributed"><a class="link" href="#2-2-code-contributed">2.2 Code contributed</a></h3>
+<div class="paragraph">
+<p>Please follow these links to see my code: [<a href="https://github.com/AY1920S1-CS2103T-W12-2/main/commits/master?author=kensonoenqh">Commits</a>]
+ [<a href="https://github.com/AY1920S1-CS2103T-W12-2/main/pulls?utf8=%E2%9C%93&amp;q=is%3Amerged+is%3Apr+author%3Akensonoenqh">Pull requests</a>]
+  [<a href="https://nus-cs2103-ay1920s1.github.io/tp-dashboard/#search=kensonoenqh&amp;sort=groupTitle&amp;sortWithin=title&amp;since=2019-09-06&amp;timeframe=commit&amp;mergegroup=false&amp;groupSelect=groupByRepos&amp;breakdown=false&amp;tabOpen=true&amp;tabType=authorship&amp;tabAuthor=kensonoenqh&amp;tabRepo=AY1920S1-CS2103T-W12-2%2Fmain%5Bmaster%5D">RepoSense Code Contribution Dashboard</a>]</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="2-3-other-contributions"><a class="link" href="#2-3-other-contributions">2.3 Other contributions</a></h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Project management:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>There were a total of 5 releases, from version 1.0 to 1.4. I contributed to each release, starting with project planning
+in the beginning and moving on to feature enhancement and testing in the later releases.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Enhancement to existing features:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Updated the <strong>list</strong> command to be able to accept an optional prefix <strong>m/MONTH</strong> to specify which month the user wishes to filter by.
+This also served to fix bugs faced with the initial implementation, where some features such as the budget or filter icon on
+the user interface was not able to update properly. (Pull request <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/pull/206">#206</a>)</p>
+</li>
+<li>
+<p>Wrote additional tests for existing features to increase coverage. (Pull request <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/pull/214">#214</a>)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Documentation:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Contributed multiple diagrams in the developer guide to explain the execution and implementation of the <strong>list</strong> command
+in THRIFT. (Pull request <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/pull/179">#179</a>, <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/pull/272">#272</a>)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Community:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Reviewed pull requests of features and documentation: (Pull requests <a href="https://github.com/AY1920S1-CS2103T-W12-2/main/pull/81">#81</a>,
+<a href="https://github.com/AY1920S1-CS2103T-W12-2/main/pull/227">#227</a>)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="3-contributions-to-the-user-guide"><a class="link" href="#3-contributions-to-the-user-guide">3. Contributions to the User Guide</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following section illustrates my ability in writing documentation to guide end-users on using the various features of THRIFT.</p>
+</div>
+<div class="paragraph">
+<p><em>{Start of extract}</em></p>
+</div>
+<div class="sect2">
+<h3 id="listing-transactions-with-the-use-of-filters-code-list-code"><a class="link" href="#listing-transactions-with-the-use-of-filters-code-list-code">Listing transactions with the use of filters: <code>list</code></a></h3>
+<div class="paragraph">
+<p>By using the <code>list</code> command, you are able to list out all the transactions, or filter by month if you wish to do so.</p>
+</div>
+<div class="sect3">
+<h4 id="command-syntax"><a class="link" href="#command-syntax">Command syntax</a></h4>
+<div class="paragraph">
+<p>To execute the <code>list</code> command, you have to use the following syntax:</p>
+</div>
+<div class="paragraph">
+<p><code>list [m/MONTH]</code></p>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Sets the filter to the month specified in <code>MONTH</code>.</p>
+</li>
+<li>
+<p><code>MONTH</code> is in <code>MM/YYYY</code>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>MM</code> is between <code>01-12</code>.</p>
+</li>
+<li>
+<p><code>YYYY</code> is between <code>0001-9999</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>If <code>m/MONTH</code> is left out then all transactions will be shown.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="example-usage"><a class="link" href="#example-usage">Example usage</a></h4>
+<div class="paragraph">
+<p>Imagine that you wanted to take a look at how much you spent and saved the previous month! For example, you want to show
+only the transactions that occurred in Oct 2019.</p>
+</div>
+<div class="paragraph">
+<p>To <code>list</code> the transactions of Oct 2019:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The default interface shows all transactions for the current month, in this case Nov 2019.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/list/Step1.png" alt="Step1" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>You can simply type <strong>list m/10/2019</strong> into the command input and press <kbd>Enter</kbd>:</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/list/Step2.png" alt="Step2" width="550">
+</div>
+</div>
+</li>
+<li>
+<p>Your transaction list will now show all transactions that were added in Oct 2019. The income, expense, and balance
+values in the UI will be updated to reflect the correct values for the month as well! Lastly, the filter icon will update to
+show you what filter is currently in use, in case you are ever confused about the current list of transactions shown.</p>
+<div class="imageblock">
+<div class="content">
+<img src="../images/list/Step3.png" alt="Step3" width="550">
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p><em>{End of extract}</em></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="4-contributions-to-the-developer-guide"><a class="link" href="#4-contributions-to-the-developer-guide">4. Contributions to the Developer Guide</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The following section illustrates my ability in writing documentation to provide developers insights on the design of the application.
+It also showcases the technical depth of my current contributions to THRIFT, as well as an insight on a possible future extension.</p>
+</div>
+<div class="paragraph">
+<p><em>{Start of extract}</em></p>
+</div>
+<div class="sect2">
+<h3 id="filtering-transactions"><a class="link" href="#filtering-transactions">Filtering transactions</a></h3>
+<div class="paragraph">
+<p>The <strong>List</strong> command allows the user to bring up a list of <code><strong>Transactions</strong></code>, and filter it by month.
+This feature is implemented by using a <code><strong>Predicate&lt;Transaction&gt;</strong></code> to filter the <code><strong>Transactions</strong></code> by month.</p>
+</div>
+<div class="sect3">
+<h4 id="implementation"><a class="link" href="#implementation">Implementation</a></h4>
+<div class="paragraph">
+<p><code><strong>ListCommand</strong></code> is instantiated by <code>ListCommandParser#parse(String args)</code>,
+which attempts to parse the various parameters supplied in <code>args</code> and return a <code><strong>ListCommand</strong></code> object.</p>
+</div>
+<div class="paragraph">
+<p>The sequence diagram below shows how the execution of the <strong>list</strong> is like:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/list/ListSequenceDiagram.png" alt="ListSequenceDiagram">
+</div>
+<div class="title">Figure 2. Sequence diagram of how <strong>list</strong> command is applied at the back-end.</div>
+</div>
+<div class="paragraph">
+<p>The following conditions will cause a <code><strong>ParseException</strong></code> to be thrown by the parser:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Incorrect syntax (i.e. having a prefix that does not refer to month)</p>
+</li>
+<li>
+<p>Illegal values in parameters (i.e. special characters and symbols entered for a integer-only field)</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the user input is incorrect due to the reasons above, the usage or parameter syntax will be shown.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The scenario below shows an example of how the feature works:</p>
+</div>
+<div class="paragraph">
+<p>Step 1. The user executes <strong>list m/10/2019</strong> to filter the list to bring up transactions of October 2019.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/list/Step2.png" alt="Step2" width="650">
+</div>
+</div>
+<div class="paragraph">
+<p>Step 2. The <code><strong>ListCommandParser</strong></code> will parse the arguments using the method <code>ListCommandParser#parse(String args)</code>.</p>
+</div>
+<div class="paragraph">
+<p>Step 3. Since user input is correct and the arguments have been parsed, a new <code><strong>ListCommand</strong></code> object will be created by the
+<code><strong>ListCommandParser</strong></code>.</p>
+</div>
+<div class="paragraph">
+<p>Step 4. This <code><strong>ListCommand</strong></code> object will use a <code><strong>Predicate</strong></code> based on the specified month which is used to filter
+through each <code><strong>Transaction</strong></code>.</p>
+</div>
+<div class="paragraph">
+<p>Step 5. The final list of filtered transactions will be brought up. The income, expense, and balance values in the UI will
+be updated accordingly as well, to reflect the correct values for the filtered month.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/list/OctFilter.png" alt="OctFilter" width="650">
+</div>
+</div>
+<div class="paragraph">
+<p>The activity diagram below will give an overview of what is happening when the command is executed.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/list/ListActivityDiagram.png" alt="ListActivityDiagram">
+</div>
+<div class="title">Figure 3. Activity diagram of the command execution.</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="design-considerations"><a class="link" href="#design-considerations">Design considerations</a></h4>
+<div class="sect4">
+<h5 id="aspect-using-code-strong-predicate-strong-code-to-improve-extendability-of-the-feature-in-the-future"><a class="link" href="#aspect-using-code-strong-predicate-strong-code-to-improve-extendability-of-the-feature-in-the-future">Aspect: Using <code><strong>Predicate</strong></code> to improve extendability of the feature in the future</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Alternative 1 (current choice):</strong> Create a new <code><strong>Predicate</strong></code> based on the arguments each time.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: The filter feature could be added to and improved in the future to further accommodate new arguments other than
+month and tag, and still be able to filter by a combination of the different arguments.</p>
+</li>
+<li>
+<p>Cons: Not as easy to implement.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Alternative 2:</strong> Use a fixed <code><strong>Predicate</strong></code> written beforehand to filter the list for each argument.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Straightforward to implement, a specific <code><strong>Predicate</strong></code> can be used for the specific argument.</p>
+</li>
+<li>
+<p>Cons: Not easily extendable as in the future if we want to filter by new arguments, we will have to write a new
+<code><strong>Predicate</strong></code> for each argument.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Eventually we may decide to use a combination of both alternatives as it is possible that different arguments are easier to
+implement using different methods.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="proposed-extension"><a class="link" href="#proposed-extension">Proposed extension</a></h4>
+<div class="paragraph">
+<p>In the near future, we plan to enhance the filtering feature. We want to improve the list command to take in tags as a
+possible argument similar to month, and thus allow for the possible filtering by tags as well. The design considerations mentioned
+earlier was to facilitate this proposed extension, since we would require the use of a <code><strong>Predicate</strong></code> which will be
+created using the tag in the argument as well. By doing so, we reduce the difficulty of enhancing the filtering feature in
+the future. This would benefit the simplicity of the command and further enhance the user experience, for them to be able
+to filter by a combination of both months and tags.</p>
+</div>
+<div class="paragraph">
+<p>The image below shows how a possible future implementation of this feature could look like:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="../images/list/TagFilter.png" alt="TagFilter" width="550">
+</div>
+<div class="title">Figure 4. Expected result of filtering by both Nov 2019 and Transport.</div>
+</div>
+<div class="paragraph">
+<p><em>{End of extract}</em></p>
+</div>
+</div>
+</div>
+</div>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-08 12:14:18 UTC</div></div></div></body></html>
