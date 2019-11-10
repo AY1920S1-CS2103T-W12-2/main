@@ -1905,15 +1905,15 @@ These instructions only provide a starting point for testers to work on; testers
 
 .. Prerequisites: List all transactions using the **list** command. The first transaction is "1. [-] Laksa ($10.50) [Lunch][Food]".
 .. Test case: **untag i/1 t/FOOD** +
-   Expected: Details of the untagged transaction shown in status message. Listing the transaction reflects changes.
+   Expected: Details of the untagged transaction shown in Result Box. Listing the transaction reflects changes.
 .. Test case: **untag i/INVALID_INDEX t/VALID_TAG** where **INVALID_INDEX** is a number less than 1 or more than list size and **VALID_TAG** is a valid tag. +
-   Expected: No changes. Error details shown in status message.
+   Expected: No changes. Error details shown in Result Box.
 .. Test case: **untag i/VALID_INDEX t/NOT_INSIDE_TAG** where **VALID_INDEX** is a valid transaction index and **NOT_INSIDE_TAG** is not inside the transaction specified. +
-   Expected: No changes. Error details shown in status message.
+   Expected: No changes. Error details shown in Result Box.
 .. Test case: **untag secondTransaction** +
-   Expected: No changes. Error details shown in status message.
+   Expected: No changes. Error details shown in Result Box.
 .. Test case: **untag** +
-   Expected: No changes. Error details shown in status message.
+   Expected: No changes. Error details shown in Result Box.
 
 === Converting a value
 
@@ -1922,9 +1922,9 @@ These instructions only provide a starting point for testers to work on; testers
 .. Test case: **convert v/VALUE c/SGD c/USD** +
    Expected: Original value and converted value displayed to the user.
 .. Test case: **convert v/VALUE c/SGD c/INVALID_CURRENCY** where **INVALID_CURRENCY** is not a supported currency. +
-   Expected: Error details shown in status message.
+   Expected: Error details shown in Result Box.
 .. Test case: **convert v/VALUE c/INVALID_CURRENCY c/USD** where **INVALID_CURRENCY** is not a supported currency. +
-   Expected: Error details shown in status message.
+   Expected: Error details shown in Result Box.
 
 === Finding a transaction
 
