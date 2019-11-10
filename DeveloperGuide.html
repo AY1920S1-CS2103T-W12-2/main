@@ -50,8 +50,9 @@
 <li><a href="#filtering-transactions">4.7. Filtering transactions</a></li>
 <li><a href="#proposed-data-encryption">4.8. [Proposed] Data encryption</a></li>
 <li><a href="#proposed-artificial-intelligence-ai">4.9. [Proposed] Artificial Intelligence (AI)</a></li>
-<li><a href="#logging">4.10. Logging</a></li>
-<li><a href="#Implementation-Configuration">4.11. Configuration</a></li>
+<li><a href="#proposed-external-report-generation">4.10. [Proposed] External report generation</a></li>
+<li><a href="#logging">4.11. Logging</a></li>
+<li><a href="#Implementation-Configuration">4.12. Configuration</a></li>
 </ul>
 </li>
 <li><a href="#documentation">5. Documentation</a>
@@ -1349,13 +1350,15 @@ Tags that do not exist inside the specified <code><strong>Transaction</strong></
 <div class="sect2">
 <h3 id="updating-transactions"><a class="link" href="#updating-transactions">4.4. Updating transactions</a></h3>
 <div class="paragraph">
-<p>The <strong>update </strong>functionality modifies details of a specified <code><strong>Transaction</strong></code> in the existing list and saves modifications to the external storage file.</p>
+<p>The <strong>update </strong>functionality modifies details of a specified <code><strong>Transaction</strong></code> in the existing list and saves
+modifications to the external storage file.</p>
 </div>
 <div class="sect3">
 <h4 id="implementation-5"><a class="link" href="#implementation-5">4.4.1. Implementation</a></h4>
 <div class="paragraph">
-<p><strong>Update</strong> mechanism utilizes <a href="#Design-Logic"><strong>Logic</strong></a> operations with the <code><strong>UpdateCommand</strong></code> class in place of <code><strong>Command</strong></code>, and a unique <code><strong>UpdateCommandParser</strong></code> class.
-The following methods are concrete implementations for <strong>update</strong> operations:</p>
+<p><strong>Update</strong> mechanism utilizes <a href="#Design-Logic"><strong>Logic</strong></a> operations with the <code><strong>UpdateCommand</strong></code> class in place of
+<code><strong>Command</strong></code>, and a unique <code><strong>UpdateCommandParser</strong></code> class. The following methods are concrete implementations for
+<strong>update</strong> operations:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1363,14 +1366,17 @@ The following methods are concrete implementations for <strong>update</strong> o
 <p><code>UpdateCommandParser#parse()</code> - Parses the user&#8217;s input and creates an <code><strong>UpdateCommand</strong></code> to execute the command.</p>
 </li>
 <li>
-<p><code>UpdateCommand#execute()</code> - Modifies the <code><strong>Transaction</strong></code> in <code><strong>Model</strong></code> with new details and returns a <code><strong>CommandResult</strong></code> (<a href="#Design-Logic">Step 4 of Logic</a>).</p>
+<p><code>UpdateCommand#execute()</code> - Modifies the <code><strong>Transaction</strong></code> in <code><strong>Model</strong></code> with new details and returns a
+<code><strong>CommandResult</strong></code> (<a href="#Design-Logic">Step 4 of Logic</a>).</p>
 </li>
 <li>
-<p><code>TransactionList#setTransactionWithIndex()</code> - Sets the modified <code><strong>Transaction</strong></code> to its correct position in the existing <code><strong>TransactionList</strong></code>.</p>
+<p><code>TransactionList#setTransactionWithIndex()</code> - Sets the modified <code><strong>Transaction</strong></code> to its correct position in the
+existing <code><strong>TransactionList</strong></code>.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>This <code><strong>TransactionList</strong></code> is wrapped in <code><strong>Thrift</strong></code> and its <code>setTransactionWithIndex()</code> is called through <code>Thrift#setTransactionWithIndex()</code>.</p>
+<p>This <code><strong>TransactionList</strong></code> is wrapped in <code><strong>Thrift</strong></code> and its <code>setTransactionWithIndex()</code> is called through
+<code>Thrift#setTransactionWithIndex()</code>.</p>
 </li>
 <li>
 <p><code>Thrift#setTransactionWithIndex()</code> is exposed in the <code><strong>Model</strong></code> interface as <code>Model#setTransactionWithIndex()</code>.</p>
@@ -1392,10 +1398,12 @@ The following methods are concrete implementations for <strong>update</strong> o
 <div class="sect4">
 <h5 id="example-of-usage"><a class="link" href="#example-of-usage">Example of usage</a></h5>
 <div class="paragraph">
-<p>Given next is an example usage scenario for updating a transaction and explanation of how the <strong>update</strong> mechanism behaves at each step:</p>
+<p>Given next is an example usage scenario for updating a transaction and explanation of how the <strong>update</strong> mechanism
+behaves at each step:</p>
 </div>
 <div class="paragraph">
-<p>Step 1. The user starts up the application with an initial list loaded from external storage file. The diagram here depicts the example list used throughout this scenario.</p>
+<p>Step 1. The user starts up the application with an initial list loaded from external storage file. The diagram here
+depicts the example list used throughout this scenario.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1404,7 +1412,8 @@ The following methods are concrete implementations for <strong>update</strong> o
 <div class="title">Example list on startup</div>
 </div>
 <div class="paragraph">
-<p>Step 2. The user inputs <strong>update i/1 n/Government Bursary v/600</strong> to update the 1st transaction&#8217;s name to "Government Bursary" and value to "600". Input is parsed by <code>UpdateCommandParser#parse()</code> which creates an <code><strong>UpdateCommand</strong></code>.</p>
+<p>Step 2. The user inputs <strong>update i/1 n/Government Bursary v/600</strong> to update the 1st transaction&#8217;s name to "Government
+Bursary" and value to "600". Input is parsed by <code>UpdateCommandParser#parse()</code> which creates an <code><strong>UpdateCommand</strong></code>.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1425,7 +1434,8 @@ The 1st transaction specified here is an <code><strong>Income</strong></code>.
 <div class="title">Example user input for update command</div>
 </div>
 <div class="paragraph">
-<p>Step 3. <code>UpdateCommand#execute()</code> creates a new transaction that reflects the changes and gets the index of current transaction to be updated.</p>
+<p>Step 3. <code>UpdateCommand#execute()</code> creates a new transaction that reflects the changes and gets the index of current
+transaction to be updated.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1453,7 +1463,8 @@ The 1st transaction specified here is an <code><strong>Income</strong></code>.
 <div class="title">Replacement of original transaction with updated transaction by <code>UpdateCommand#execute()</code></div>
 </div>
 <div class="paragraph">
-<p>The following code snippet from <code>UpdateCommand#execute()</code> shows the creation of an updated transaction and the replacement of the original transaction with the updated one:</p>
+<p>The following code snippet from <code>UpdateCommand#execute()</code> shows the creation of an updated transaction and the
+replacement of the original transaction with the updated one:</p>
 </div>
 <div class="listingblock">
 <div class="title">UpdateCommand#execute()</div>
@@ -1474,9 +1485,9 @@ model.setTransactionWithIndex(actualIndex, updatedTransaction);</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="execution-observed-by-user"><a class="link" href="#execution-observed-by-user">Execution observed by user</a></h5>
+<h5 id="execution-shown-to-user"><a class="link" href="#execution-shown-to-user">Execution shown to user</a></h5>
 <div class="paragraph">
-<p>The following activity diagram gives an overview of what the user observes when executing <strong>update</strong> command:</p>
+<p>The following activity diagram gives an overview of what THRIFT shows the user when executing <strong>update</strong> command:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1488,6 +1499,9 @@ model.setTransactionWithIndex(actualIndex, updatedTransaction);</code></pre>
 </div>
 <div class="sect3">
 <h4 id="design-considerations-4"><a class="link" href="#design-considerations-4">4.4.2. Design considerations</a></h4>
+<div class="paragraph">
+<p>This subsection explores some alternative designs considered for certain aspects of the feature&#8217;s implementation.</p>
+</div>
 <div class="sect4">
 <h5 id="aspect-modifying-details-of-a-transaction"><a class="link" href="#aspect-modifying-details-of-a-transaction">Aspect: Modifying details of a transaction</a></h5>
 <div class="ulist">
@@ -1513,7 +1527,8 @@ model.setTransactionWithIndex(actualIndex, updatedTransaction);</code></pre>
 <p>Pros: Easy to implement and highly efficient.</p>
 </li>
 <li>
-<p>Cons: Allowing modification of transactions violates immutability principle, possibly resulting in bugs for UI or accessing modified transaction fields if there is delay in updating.</p>
+<p>Cons: Allowing modification of transactions violates immutability principle, possibly resulting in bugs for UI or
+accessing modified transaction fields if there is delay in updating.</p>
 </li>
 </ul>
 </div>
@@ -1521,7 +1536,8 @@ model.setTransactionWithIndex(actualIndex, updatedTransaction);</code></pre>
 </ul>
 </div>
 <div class="paragraph">
-<p><strong>Alternative 1 chosen</strong> to maintain better coding practices and keep transactions immutable for the entire project. Overhead of creating new <code><strong>Transaction</strong></code> object not a significant factor as it is not a very large object.</p>
+<p><strong>Alternative 1 chosen</strong> to maintain better coding practices and keep transactions immutable for the entire project.
+Overhead of creating new <code><strong>Transaction</strong></code> object not a significant factor as it is not a very large object.</p>
 </div>
 </div>
 <div class="sect4">
@@ -1529,11 +1545,13 @@ model.setTransactionWithIndex(actualIndex, updatedTransaction);</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Alternative 1 (current choice)</strong>: Get the index of original transaction in the transactions list and <code>set</code> updated transaction to that index.</p>
+<p><strong>Alternative 1 (current choice)</strong>: Get the index of original transaction in the transactions list and <code>set</code> updated
+transaction to that index.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: High level of certainty that updated transaction replaces the correct outdated transaction and occupies the correct index in the list. Highly efficient.</p>
+<p>Pros: High level of certainty that updated transaction replaces the correct outdated transaction and occupies the
+correct index in the list. Highly efficient.</p>
 </li>
 <li>
 <p>Cons: A little more coding required to get the index of original transaction.</p>
@@ -1542,14 +1560,17 @@ model.setTransactionWithIndex(actualIndex, updatedTransaction);</code></pre>
 </div>
 </li>
 <li>
-<p><strong>Alternative 2</strong>: Iterate through the transactions list and directly set the updated transaction at the first instance of original transaction found.</p>
+<p><strong>Alternative 2</strong>: Iterate through the transactions list and directly set the updated transaction at the first
+instance of original transaction found.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: Under the assumption that each <code><strong>Transaction</strong></code> is unique, index to replace can be easily found by iterating through the list with a simple loop.</p>
+<p>Pros: Under the assumption that each <code><strong>Transaction</strong></code> is unique, index to replace can be easily found by iterating
+through the list with a simple loop.</p>
 </li>
 <li>
-<p>Cons: Efficiency decreases as transactions list size increases. If transactions not unique, incorrect transaction may be replaced if a transaction identical to the one supposed to be replaced is found earlier in the list.</p>
+<p>Cons: Efficiency decreases as transactions list size increases. If transactions not unique, incorrect transaction may
+be replaced if a transaction identical to the one supposed to be replaced is found earlier in the list.</p>
 </li>
 </ul>
 </div>
@@ -1562,12 +1583,15 @@ model.setTransactionWithIndex(actualIndex, updatedTransaction);</code></pre>
 <div class="sect2">
 <h3 id="cloning-transactions"><a class="link" href="#cloning-transactions">4.5. Cloning transactions</a></h3>
 <div class="paragraph">
-<p>The <strong>clone</strong> feature creates one or more duplicates of a specified <code><strong>Transaction</strong></code> and adds them to the end of the existing transactions list.</p>
+<p>The <strong>clone</strong> feature creates one or more duplicates of a specified <code><strong>Transaction</strong></code> and adds them to the end of the
+existing transactions list.</p>
 </div>
 <div class="sect3">
 <h4 id="implementation-6"><a class="link" href="#implementation-6">4.5.1. Implementation</a></h4>
 <div class="paragraph">
-<p>An <code><strong>Index</strong></code> and <code><strong>Occurrence</strong></code> are obtained from their representation in user input. The <code><strong>Index</strong></code> specifies which transaction to clone, while the <code><strong>Occurrence</strong></code> informs THRIFT how many clones of the transaction should be created (<code>Occurrence#numOccurrences</code>) and the time period between them (<code>Occurrence#frequency</code>).</p>
+<p>An <code><strong>Index</strong></code> and <code><strong>Occurrence</strong></code> are obtained from their representation in user input. The <code><strong>Index</strong></code> specifies
+which transaction to clone, while the <code><strong>Occurrence</strong></code> informs THRIFT how many clones of the transaction should be
+created (<code>Occurrence#numOccurrences</code>) and the time period between them (<code>Occurrence#frequency</code>).</p>
 </div>
 <div class="paragraph">
 <p>Here is a Class Diagram for the implementation of <code><strong>Occurrence</strong></code>:</p>
@@ -1579,21 +1603,24 @@ model.setTransactionWithIndex(actualIndex, updatedTransaction);</code></pre>
 <div class="title">Figure 17. Implementation of <code><strong>Occurrence</strong></code> class</div>
 </div>
 <div class="paragraph">
-<p>The <strong>clone</strong> functionality is facilitated by common <a href="#Design-Logic"><strong>Logic</strong></a> operations and classes for commands, with feature-specific classes <code><strong>CloneCommand</strong></code> in place of <code><strong>Command</strong></code>, and <code><strong>CloneCommandParser</strong></code>.
+<p>The <strong>clone</strong> functionality is facilitated by common <a href="#Design-Logic"><strong>Logic</strong></a> operations and classes for commands, with
+feature-specific classes <code><strong>CloneCommand</strong></code> in place of <code><strong>Command</strong></code>, and <code><strong>CloneCommandParser</strong></code>.
 The following methods are concrete implementations unique to <strong>clone</strong>:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><code>CloneCommandParser#parse()</code> - Parses user input to extract an <code><strong>Index</strong></code> and create an <code><strong>Occurrence</strong></code>, then passes them as parameters to a new <code><strong>CloneCommand</strong></code> for execution.</p>
+<p><code>CloneCommandParser#parse()</code> - Parses user input to extract an <code><strong>Index</strong></code> and create an <code><strong>Occurrence</strong></code>, then passes
+them as parameters to a new <code><strong>CloneCommand</strong></code> for execution.</p>
 </li>
 <li>
-<p><code>CloneCommand#execute()</code> - Adds one or more identical copies of specified <code><strong>Transaction</strong></code> to <code><strong>Model</strong></code>, then returns a <code><strong>CommandResult</strong></code> (<a href="#Design-Logic">Step 4 of Logic</a>).</p>
+<p><code>CloneCommand#execute()</code> - Adds one or more identical copies of specified <code><strong>Transaction</strong></code> to <code><strong>Model</strong></code>, then
+returns a <code><strong>CommandResult</strong></code> (<a href="#Design-Logic">Step 4 of Logic</a>).</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The following Sequence Diagram illustrates <strong>clone</strong> command execution:</p>
+<p>The following sequence diagram illustrates <strong>clone</strong> command execution:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1604,7 +1631,8 @@ The following methods are concrete implementations unique to <strong>clone</stro
 <div class="sect4">
 <h5 id="example-of-usage-2"><a class="link" href="#example-of-usage-2">Example of usage</a></h5>
 <div class="paragraph">
-<p>Given next is an example usage scenario for cloning a transaction and explanation of how the <strong>clone</strong> mechanism behaves at each step:</p>
+<p>Given next is an example usage scenario for cloning a transaction and explanation of how the <strong>clone</strong> mechanism behaves
+at each step:</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1619,7 +1647,9 @@ This entire scenario uses the list of all transactions.
 </table>
 </div>
 <div class="paragraph">
-<p>Step 1. The user starts up the application with an initial list loaded from external storage file. The diagram here depicts the example list used throughout this scenario. In particular, this example will observe the cloning of the transaction at index 4.</p>
+<p>Step 1. The user starts up the application with an initial list loaded from external storage file. The diagram here
+depicts the example list used throughout this scenario. In particular, this example will observe the cloning of the
+transaction at index 4.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1628,7 +1658,8 @@ This entire scenario uses the list of all transactions.
 <div class="title">Example list on startup</div>
 </div>
 <div class="paragraph">
-<p>Step 2 (i). The user inputs <strong>clone i/4</strong> or <strong>clone i/4 o/daily:0</strong> to create 1 copy of the transaction at index 4 on the date when command is called - for this example, current date when command is used is 02/12/2019.</p>
+<p>Step 2 (i). The user inputs <strong>clone i/4</strong> or <strong>clone i/4 o/daily:0</strong> to create 1 copy of the transaction at index 4 on
+the date when command is called - for this example, current date when command is used is 02/12/2019.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1645,7 +1676,9 @@ This entire scenario uses the list of all transactions.
 <p>Step 2 (ii). The user removes the clone created in Step 2 (i) using <strong>delete i/6</strong> command.</p>
 </div>
 <div class="paragraph">
-<p>Step 3. The user inputs <strong>clone i/4 o/monthly:12</strong> to create 12 copies of the transaction at index 4 with dates one month apart from each other (30/12/2019 to 30/11/2020), and add them to the list. Input is parsed by <code>CloneCommandParser#parse()</code> which creates a <code><strong>CloneCommand</strong></code>.</p>
+<p>Step 3. The user inputs <strong>clone i/4 o/monthly:12</strong> to create 12 copies of the transaction at index 4 with dates one
+month apart from each other (30/12/2019 to 30/11/2020), and add them to the list. Input is parsed by
+<code>CloneCommandParser#parse()</code> which creates a <code><strong>CloneCommand</strong></code>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1653,7 +1686,8 @@ This entire scenario uses the list of all transactions.
 </div>
 </div>
 <div class="paragraph">
-<p>Step 4. <code>CloneCommand#execute()</code> creates copies of the transaction to be cloned with their dates of occurrence set one month apart. The copies are then added to the list.</p>
+<p>Step 4. <code>CloneCommand#execute()</code> creates copies of the transaction to be cloned with their dates of occurrence set one
+month apart. The copies are then added to the list.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1673,7 +1707,7 @@ This entire scenario uses the list of all transactions.
 </div>
 </div>
 <div class="sect4">
-<h5 id="execution-observed-by-user-2"><a class="link" href="#execution-observed-by-user-2">Execution observed by user</a></h5>
+<h5 id="execution-observed-by-user"><a class="link" href="#execution-observed-by-user">Execution observed by user</a></h5>
 <div class="paragraph">
 <p>The following activity diagram gives an overview of what the user observes when executing <strong>clone</strong> command:</p>
 </div>
@@ -1687,6 +1721,9 @@ This entire scenario uses the list of all transactions.
 </div>
 <div class="sect3">
 <h4 id="design-considerations-5"><a class="link" href="#design-considerations-5">4.5.2. Design considerations</a></h4>
+<div class="paragraph">
+<p>This subsection explores some alternative designs considered for certain aspects of the feature&#8217;s implementation.</p>
+</div>
 <div class="sect4">
 <h5 id="aspect-representing-occurrences-for-execution"><a class="link" href="#aspect-representing-occurrences-for-execution">Aspect: Representing occurrences for execution</a></h5>
 <div class="ulist">
@@ -1696,7 +1733,8 @@ This entire scenario uses the list of all transactions.
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: Good Object-Oriented Programming design adhering to principles of abstraction and encapsulation. Utility methods to process occurrences can be kept in a single class.</p>
+<p>Pros: Good Object-Oriented Programming design adhering to principles of abstraction and encapsulation. Utility methods
+to process occurrences can be kept in a single class.</p>
 </li>
 <li>
 <p>Cons: More code and memory required for entire <code><strong>Occurrence</strong></code> class.</p>
@@ -1705,14 +1743,16 @@ This entire scenario uses the list of all transactions.
 </div>
 </li>
 <li>
-<p><strong>Alternative 2</strong>: Directly pass the results from parsing occurrence representation in user input as parameters to execution methods.</p>
+<p><strong>Alternative 2</strong>: Directly pass the results from parsing occurrence representation in user input as parameters to
+execution methods.</p>
 <div class="ulist">
 <ul>
 <li>
 <p>Pros: Quick and efficient in producing parameters for execution.</p>
 </li>
 <li>
-<p>Cons: May be complicated to trace parameters when passing between different methods. Unable to implement utility methods to process occurrences within a single class.</p>
+<p>Cons: May be complicated to trace parameters when passing between different methods. Unable to implement utility
+methods to process occurrences within a single class.</p>
 </li>
 </ul>
 </div>
@@ -1725,11 +1765,13 @@ This entire scenario uses the list of all transactions.
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Alternative 1 (current choice)</strong>: Store valid <code>frequency</code> values within a static non-modifiable "final" array inside <code><strong>Occurrence</strong></code></p>
+<p><strong>Alternative 1 (current choice)</strong>: Store valid <code>frequency</code> values within a static non-modifiable "final" array inside
+<code><strong>Occurrence</strong></code></p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: Implementation is simple with relatively little coding needed. Values cannot be modified after initialization of array, preventing invalid values from being added later.</p>
+<p>Pros: Implementation is simple with relatively little coding needed. Values cannot be modified after initialization of
+array, preventing invalid values from being added later.</p>
 </li>
 <li>
 <p>Cons: An additional field of type array has to be included in <code><strong>Occurrence</strong></code> class.</p>
@@ -2273,14 +2315,53 @@ Regardless of what is eventually chosen, the user experience will be improved by
 </div>
 </div>
 <div class="sect2">
-<h3 id="logging"><a class="link" href="#logging">4.10. Logging</a></h3>
+<h3 id="proposed-external-report-generation"><a class="link" href="#proposed-external-report-generation">4.10. [Proposed] External report generation</a></h3>
+<div class="paragraph">
+<p>We plan to increase the practicality of THRIFT by enabling the user to generate an external report document that they
+can keep for recording purposes. This proposed report will display the user&#8217;s income, expenditure and budget
+information on a monthly basis. The user can also choose whether to include all transactions in the month or only
+transactions in selected tag categories in the report.</p>
+</div>
+<div class="sect3">
+<h4 id="proposed-implementation-3"><a class="link" href="#proposed-implementation-3">4.10.1. Proposed implementation</a></h4>
+<div class="paragraph">
+<p>To execute report generation, we propose a new <code><strong>ReportCommand</strong></code> that is a subclass of <code><strong>NonScrollingCommand</strong></code> and
+works with <code><strong>ModelManager</strong></code> like other commands as described in the <a href="#Design-Logic">Logic</a> section. The following
+diagram shows the dependency between <code><strong>ReportCommand</strong></code> and <code><strong>ModelManager</strong></code>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/report/ReportClassDiagram.png" alt="ReportClassDiagram">
+</div>
+</div>
+<div class="paragraph">
+<p><code>ReportCommand#execute()</code> will retrieve information needed from the existing transactions list through
+<code><strong>ModelManager</strong></code> retrieval operations, process them and generate an external report document using Java APIs.</p>
+</div>
+<div class="paragraph">
+<p>The current formats we have in mind for report documents and the relevant Java APIs to handle them are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Comma-Separated Values (CSV) with <a href="http://opencsv.sourceforge.net/apidocs/com/opencsv/CSVWriter.html">OpenCSV</a> API.</p>
+</li>
+<li>
+<p>Portable Document Format (PDF) with <a href="https://api.itextpdf.com/iText7/java/7.1.8/">PDFWriter</a> API.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="logging"><a class="link" href="#logging">4.11. Logging</a></h3>
 <div class="paragraph">
 <p>We are using <code><strong>java.util.logging</strong></code> package for logging. The <code><strong>LogsCenter</strong></code> class is used to manage the logging levels and logging destinations:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 4.11, &#8220;Configuration&#8221;</a>)</p>
+<p>The logging level can be controlled using the <code>logLevel</code> setting in the configuration file (See <a href="#Implementation-Configuration">Section 4.12, &#8220;Configuration&#8221;</a>)</p>
 </li>
 <li>
 <p>The <code><strong>Logger</strong></code> for a class can be obtained using <code>LogsCenter.getLogger(Class)</code> which will log messages according to the specified logging level</p>
@@ -2312,7 +2393,7 @@ instead of just its size</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">4.11. Configuration</a></h3>
+<h3 id="Implementation-Configuration"><a class="link" href="#Implementation-Configuration">4.12. Configuration</a></h3>
 <div class="paragraph">
 <p>Certain properties of the application can be controlled (e.g user prefs file location, logging level) through the configuration file (default: <em>config.json</em>).</p>
 </div>
@@ -4377,4 +4458,4 @@ Expected: Syntax of the <code>delete</code> command is shown in the status messa
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-08 12:14:18 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-10 02:27:23 UTC</div></div></div></body></html>
