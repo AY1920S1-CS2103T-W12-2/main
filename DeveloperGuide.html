@@ -1800,8 +1800,8 @@ array, preventing invalid values from being added later.</p>
 <div class="sect2">
 <h3 id="undo-redoing-undoable-commands"><a class="link" href="#undo-redoing-undoable-commands">4.6. Undo/Redoing undoable commands</a></h3>
 <div class="paragraph">
-<p><strong>Undo</strong> command allows the user to revert <code><strong>THRIFT</strong></code> to its previous state when they have made a mistake. <strong>Redo</strong> command does
-the opposite of <strong>undo</strong> command, useful for when the user wishes to execute the command instead.</p>
+<p><code><strong>UndoCommand</strong></code> allows the user to revert <code><strong>THRIFT</strong></code> to its previous state when they have made a mistake. <code><strong>RedoCommand</strong></code>  does
+the opposite of <code><strong>UndoCommand</strong></code>, useful for when users change their minds.</p>
 </div>
 <div class="paragraph">
 <p>The underlying data structure of the undo and redo feature is implemented in <code><strong>PastUndoableCommands</strong></code>. It consists of two stacks:
@@ -1810,19 +1810,19 @@ the opposite of <strong>undo</strong> command, useful for when the user wishes t
 <div class="ulist">
 <ul>
 <li>
-<p><code>PastUndoableCommands#addPastCommand(Undoable undoable)</code>&#8201;&#8212;&#8201;Keeps track of the undoable commands.</p>
+<p><code>PastUndoableCommands#addPastCommand(Undoable undoable)</code>&#8201;&#8212;&#8201;Keeps track of the undoable command objects.</p>
 </li>
 <li>
-<p><code>PastUndoableCommands#getCommandToUndo()</code>&#8201;&#8212;&#8201;Retrieves undoable commands from <code>UndoStack</code> for user to perform undo.</p>
+<p><code>PastUndoableCommands#getCommandToUndo()</code>&#8201;&#8212;&#8201;Retrieves undoable command object from <code>UndoStack</code> to perform undo.</p>
 </li>
 <li>
-<p><code>PastUndoableCommands#hasUndoable()</code>&#8201;&#8212;&#8201;Checks if there are any commands to perform undo.</p>
+<p><code>PastUndoableCommands#hasUndoable()</code>&#8201;&#8212;&#8201;Checks if there is any undoable command object to perform undo.</p>
 </li>
 <li>
-<p><code>PastUndoableCommands#getCommandToRedo()</code>&#8201;&#8212;&#8201;Retrieves undone commands from <code>RedoStack</code> for user to perform redo.</p>
+<p><code>PastUndoableCommands#getCommandToRedo()</code>&#8201;&#8212;&#8201;Retrieves undone command object from <code>RedoStack</code> to perform redo.</p>
 </li>
 <li>
-<p><code>PastUndoableCommands#hasRedoCommand()</code>&#8201;&#8212;&#8201;Checks if there are any commands to perform redo.</p>
+<p><code>PastUndoableCommands#hasRedoCommand()</code>&#8201;&#8212;&#8201;Checks if there is any undone command object to perform redo.</p>
 </li>
 </ul>
 </div>
@@ -1837,13 +1837,13 @@ the opposite of <strong>undo</strong> command, useful for when the user wishes t
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Undoable commands are <strong>add_expense</strong>, <strong>add_income</strong>, <strong>clone</strong>, <strong>delete</strong>, <strong>tag</strong>, <strong>untag</strong>, <strong>update</strong>.
+Undoable commands are <code><strong>AddExpenseCommand</strong></code>, <code><strong>AddIncomeCommand</strong></code>, <code><strong>CloneCommand</strong></code>, <code><strong>DeleteCommand</strong></code>, <code><strong>TagCommand</strong></code>, <code><strong>UntagCommand</strong></code>, <code><strong>UpdateCommand</strong></code>, <code><strong>BudgetCommand</strong></code>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Every undoable command will be stored in the <code>UndoStack</code> once it is executed. It will only be stored in <code>RedoStack</code> when the user executed
+<p>Every undoable command object will be stored in the <code>UndoStack</code> once it is executed. It will only be stored in <code>RedoStack</code> when the user executed
 <strong>undo</strong>.</p>
 </div>
 <div class="sect3">
@@ -1856,7 +1856,7 @@ Undoable commands are <strong>add_expense</strong>, <strong>add_income</strong>,
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/UndoAndRedo/initialUndoRedo.PNG" alt="338" width="300">
+<img src="images/UndoAndRedo/initialUndoRedo.PNG" alt="initialUndoRedo" width="250">
 </div>
 </div>
 <div class="paragraph">
@@ -1866,56 +1866,45 @@ that was used to add Laksa. This <code><strong>AddExpenseCommand</strong></code>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/UndoAndRedo/addExpense.PNG" alt="357" width="300">
+<img src="images/UndoAndRedo/addExpense.PNG" alt="addExpense" width="250">
 </div>
 </div>
 <div class="paragraph">
-<p>Step 3. The user executes <strong>update i/1 v/3.50</strong> to update the cost of the Laksa to $3.50.
-The <code><strong>LogicManager</strong></code> calls the method <code>Model#keepTrackCommands(Undoable undoable)</code> to keep track of the <code><strong>UpdateCommand</strong></code> object
-that was used to update the cost of the Laksa. This <code><strong>UpdateCommand</strong></code> object is pushed into <code>UndoStack</code>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/UndoAndRedo/updateExpense.PNG" alt="341" width="300">
-</div>
-</div>
-<div class="paragraph">
-<p>Step 4. The user executes <strong>undo</strong> to revert the cost of the Laksa to $4.00.
-The <code><strong>UndoCommand</strong></code> invokes the method <code>Model#getPreviousUndoableCommand()</code> to retrieve the <code><strong>UpdateCommand</strong></code> object.
-<code><strong>UpdateCommand</strong></code> is popped from <code>UndoStack</code> and pushed into <code>RedoStack</code> before being returned to the callee.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="images/UndoAndRedo/undo.PNG" alt="320" width="300">
-</div>
-</div>
-<div class="paragraph">
-<p>Step 5. The user executes <strong>undo</strong> to remove Laksa from <code><strong>TransactionList</strong></code>.
+<p>Step 3. The user executes <strong>undo</strong> to remove Laksa from <code><strong>TransactionList</strong></code>.
 The <code><strong>UndoCommand</strong></code> invokes the method <code>Model#getPreviousUndoableCommand()</code> to retrieve the <code><strong>AddExpenseCommand</strong></code> object.
 <code><strong>AddExpenseCommand</strong></code> is popped from <code>UndoStack</code> and pushed into <code>RedoStack</code> before being returned to the callee.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/UndoAndRedo/undo2.PNG" alt="326" width="300">
+<img src="images/UndoAndRedo/undo.PNG" alt="undo" width="250">
 </div>
 </div>
 <div class="paragraph">
-<p>The sequence diagram shows how <strong>undo</strong> work for <strong>add_expense</strong> command:</p>
+<p>The sequence diagram shows how <strong>undo</strong> works for <code><strong>AddExpenseCommand</strong></code>:</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/UndoAndRedo/UndoAddExpenseSequenceDiagram.png" alt="UndoAddExpenseSequenceDiagram">
 </div>
-<div class="title">Figure 20. Sequence diagram of how <strong>undo</strong> command is applied at the back-end</div>
+<div class="title">Figure 20. Sequence diagram of how <code><strong>UndoCommand</strong></code> is applied at the back-end</div>
+</div>
+<div id="GeneralUndoSequence" class="paragraph">
+<p>A general sequence diagram to illustrate how <strong>undo</strong> works for undoable commands:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/UndoGeneralSequenceDiagram.png" alt="UndoGeneralSequenceDiagram">
+</div>
+<div class="title">Figure 21. General sequence diagram of how <code><strong>UndoCommand</strong></code> is applied at the back-end for undoable commands</div>
 </div>
 <div class="paragraph">
-<p>Step 6. The user executes <strong>redo</strong> to add Laksa back to <code><strong>TransactionList</strong></code>.
+<p>Step 4. The user executes <strong>redo</strong> to add Laksa back to <code><strong>TransactionList</strong></code>.
 The <code><strong>RedoCommand</strong></code> invokes the method <code>Model#getUndoneCommand()</code> to retrieve the <code><strong>AddExpenseCommand</strong></code> object.
 <code><strong>AddExpenseCommand</strong></code> is popped from <code>RedoStack</code> and pushed into <code>UndoStack</code> before being returned to the callee.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/UndoAndRedo/redo.PNG" alt="325" width="300">
+<img src="images/UndoAndRedo/redo.PNG" alt="redo" width="250">
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1925,19 +1914,28 @@ The <code><strong>RedoCommand</strong></code> invokes the method <code>Model#get
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-All commands stored in <code>RedoStack</code> are purged when the user executes another undoable command.
+All undoable commands objects stored in <code>RedoStack</code> are purged when the user executes another undoable command.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The sequence diagram shows how <strong>redo</strong> work for <strong>add_expense</strong> command:</p>
+<p>The sequence diagram shows how <strong>redo</strong> works for <code><strong>AddExpenseCommand</strong></code>:</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="images/UndoAndRedo/RedoAddExpenseSequenceDiagram.png" alt="RedoAddExpenseSequenceDiagram">
 </div>
-<div class="title">Figure 21. Sequence diagram of how <strong>redo</strong> command is applied at the back-end</div>
+<div class="title">Figure 22. Sequence diagram of how <code><strong>RedoCommand</strong></code> is applied at the back-end</div>
+</div>
+<div id="GeneralRedoSequence" class="paragraph">
+<p>A general sequence diagram to illustrate how <strong>redo</strong> works for undoable commands:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/UndoAndRedo/RedoGeneralSequenceDiagram.png" alt="RedoGeneralSequenceDiagram">
+</div>
+<div class="title">Figure 23. General sequence diagram of how <code><strong>RedoCommand</strong></code> is applied at the back-end for undoable commands</div>
 </div>
 <div class="paragraph">
 <p>The following activity diagram shows what happens if the user executes a command:</p>
@@ -1946,42 +1944,86 @@ All commands stored in <code>RedoStack</code> are purged when the user executes 
 <div class="content">
 <img src="images/UndoAndRedo/RunCommandActivityDiagrams.png" alt="RunCommandActivityDiagrams">
 </div>
-<div class="title">Figure 22. Activity diagram of the command execution.</div>
+<div class="title">Figure 24. Activity diagram of the command execution.</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="design-considerations-6"><a class="link" href="#design-considerations-6">4.6.2. Design considerations</a></h4>
+<div class="paragraph">
+<p>This section shows some of the design considerations taken when implementing the undo and redo features.</p>
+</div>
+<div class="sect4">
+<h5 id="aspect-algorithm-used-to-implements-undo-and-redo-features"><a class="link" href="#aspect-algorithm-used-to-implements-undo-and-redo-features">Aspect: Algorithm used to implements undo and redo features</a></h5>
+<div class="ulist">
+<ul>
+<li>
+<p>Alternative 1 (current choice): Provides different implementations for each command so that the command knows how to undo and redo itself.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Requires less memory usage and provides better performance.</p>
+</li>
+<li>
+<p>Cons: Needs to ensure that the implementation for each command is correct.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Alternative 2: Saves the current version of the <code><strong>THRIFT</strong></code> data. When <strong>undo</strong>/<strong>redo</strong> is executed, <code><strong>THRIFT</strong></code> will use the previous version of the data.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Pros: Reuses the same implementation for the new commands.</p>
+</li>
+<li>
+<p>Cons: Requires a large amount of memory usage.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Alternative 1 was chosen because it requires less memory usage and has better performance compared to alternative 2. For example, undo
+an <code><strong>AddExpenseCommand</strong></code>, alternative 1 requires a time complexity of O(1), whereas alternative 2 requires a time complexity of O(N).</p>
+</div>
+</div>
 <div class="sect4">
 <h5 id="aspect-data-structure-used-to-keep-track-of-undoable-command"><a class="link" href="#aspect-data-structure-used-to-keep-track-of-undoable-command">Aspect: Data structure used to keep track of undoable command</a></h5>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Alternative 1 (current choice):</strong> Use two stacks. One stack stores the command to undo while the other stack stores the command to redo.</p>
+<p>Alternative 1 (current choice): Use two stacks. One stack stores the command to undo while the other stack stores the command to redo.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: Easy to implement.</p>
+<p>Pros: Makes the implementation easy to code.</p>
 </li>
 <li>
-<p>Cons: Need to carefully manage the two stacks. For example, you need to pop the command from one stack and push it into another stack.</p>
+<p>Cons:  Needs to manage the two stacks carefully. For example, you need to pop the command from one stack and push it into another stack.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>Alternative 2:</strong> Use an arraylist and a pointer to indicate the next command to undo.</p>
+<p>Alternative 2: Use a list and a pointer to indicate the next command to undo.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Pros: Easy to implement.</p>
+<p>Pros: Makes the implementation easy to code.</p>
 </li>
 <li>
-<p>Cons: Need to carefully manage the pointer. For example, you need to ensure that the pointer stays within the size of an arraylist.</p>
+<p>Cons: Needs to manage the pointer carefully. For example, you need to ensure that the pointer stays within the size of a list.</p>
 </li>
 </ul>
 </div>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Alternative 1 was chosen because it provides a higher level of abstraction.
+Alternative 2 is using a list to implement a stack.</p>
 </div>
 </div>
 </div>
@@ -2005,7 +2047,7 @@ which attempts to parse the various parameters supplied in <code>args</code> and
 <div class="content">
 <img src="images/list/ListSequenceDiagram.png" alt="ListSequenceDiagram">
 </div>
-<div class="title">Figure 23. Sequence diagram of how <strong>list</strong> command is applied at the back-end.</div>
+<div class="title">Figure 25. Sequence diagram of how <strong>list</strong> command is applied at the back-end.</div>
 </div>
 <div class="paragraph">
 <p>The following conditions will cause a <code><strong>ParseException</strong></code> to be thrown by the parser:</p>
@@ -2069,7 +2111,7 @@ be updated accordingly as well, to reflect the correct values for the filtered m
 <div class="content">
 <img src="images/list/ListActivityDiagram.png" alt="ListActivityDiagram">
 </div>
-<div class="title">Figure 24. Activity diagram of the command execution.</div>
+<div class="title">Figure 26. Activity diagram of the command execution.</div>
 </div>
 </div>
 <div class="sect3">
@@ -2130,7 +2172,7 @@ to filter by a combination of both months and tags.</p>
 <div class="content">
 <img src="images/list/TagFilter.png" alt="TagFilter" width="550">
 </div>
-<div class="title">Figure 25. Expected result of filtering by both Nov 2019 and Transport.</div>
+<div class="title">Figure 27. Expected result of filtering by both Nov 2019 and Transport.</div>
 </div>
 </div>
 </div>
@@ -2465,7 +2507,7 @@ Alternatively, you can download the AsciiDoc plugin for IntelliJ, which allows y
 <div class="content">
 <img src="images/chrome_save_as_pdf.png" alt="chrome save as pdf" width="300">
 </div>
-<div class="title">Figure 26. Saving documentation as PDF files in Chrome</div>
+<div class="title">Figure 28. Saving documentation as PDF files in Chrome</div>
 </div>
 </div>
 <div class="sect2">
@@ -2690,7 +2732,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="content">
 <img src="images/testfx-idea-accessibility-permissions.png" alt="testfx idea accessibility permissions" width="600">
 </div>
-<div class="title">Figure 27. <code>Accessibility</code> permission is granted to <strong>IntelliJ IDEA</strong></div>
+<div class="title">Figure 29. <code>Accessibility</code> permission is granted to <strong>IntelliJ IDEA</strong></div>
 </div>
 </div>
 </div>
@@ -4458,4 +4500,4 @@ Expected: Syntax of the <code>delete</code> command is shown in the status messa
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-10 03:07:24 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-10 07:28:16 UTC</div></div></div></body></html>

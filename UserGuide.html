@@ -1073,7 +1073,9 @@ of THRIFT using <code>undo</code>.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<code>Undo</code> can only apply to undoable commands. Undoable commands refers to commands that modify the data of the THRIFT application.
+<code>Undo</code> can only apply to undoable commands. Undoable commands refer to commands that modify the data of the THRIFT application.
+Undoable commands are<a id="Undoable"></a>: <code><a href="#ExpenseTag">add_expense</a></code>, <code><a href="#IncomeTag">add_income</a></code>, <code><a href="#DeleteTag">delete</a></code>,
+<code><a href="#UpdateTag">update</a></code>, <code><a href="#CloneTag">clone</a></code>, <code><a href="#TagTag">tag</a></code>, <code><a href="#UntagTag">untag</a></code>, <code><a href="#BudgetTag">budget</a></code>.
 </td>
 </tr>
 </table>
@@ -1089,37 +1091,6 @@ You cannot undo undoable commands once the application exits.
 </td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>List of undoable commands<a id="Undoable"></a>:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code><a href="#ExpenseTag">add_expense</a></code></p>
-</li>
-<li>
-<p><code><a href="#IncomeTag">add_income</a></code></p>
-</li>
-<li>
-<p><code><a href="#DeleteTag">delete</a></code></p>
-</li>
-<li>
-<p><code><a href="#UpdateTag">update</a></code></p>
-</li>
-<li>
-<p><code><a href="#CloneTag">clone</a></code></p>
-</li>
-<li>
-<p><code><a href="#TagTag">tag</a></code></p>
-</li>
-<li>
-<p><code><a href="#UntagTag">untag</a></code></p>
-</li>
-<li>
-<p><code><a href="#BudgetTag">budget</a></code></p>
-</li>
-</ul>
 </div>
 <div class="sect3">
 <h4 id="command-syntax-10"><a class="link" href="#command-syntax-10">3.10.1. Command syntax</a></h4>
@@ -1146,16 +1117,16 @@ retrieve the deleted transaction by performing <code>undo</code>.</p>
 <p>Type <strong>undo</strong> into the Command Box and press <kbd>Enter</kbd>:</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/UndoAndRedo/undocommand.png" alt="undocommand" width="550">
+<img src="images/UndoAndRedo/undocommand.png" alt="undocommand" width="500">
 </div>
 </div>
 </li>
 <li>
-<p>You will see a success message displays in the Result Box, and the transaction (Chicken Rice)
-adds back to its original position in the list:</p>
+<p>You will see that a success message displays in the Result Box, and the transaction "Chicken Rice"
+returns to its original position in the list:</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/UndoAndRedo/undocommandresult.png" alt="undocommandresult" width="550">
+<img src="images/UndoAndRedo/undocommandresult.png" alt="undocommandresult" width="500">
 </div>
 </div>
 </li>
@@ -1218,15 +1189,15 @@ the transaction by executing <code>redo</code>.</p>
 <p>Type <strong>redo</strong> into the Command Box and press <kbd>Enter</kbd>:</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/UndoAndRedo/redocommand.png" alt="redocommand" width="550">
+<img src="images/UndoAndRedo/redocommand.png" alt="redocommand" width="500">
 </div>
 </div>
 </li>
 <li>
-<p>You will see a success message displays in the Result Box and the transaction "Chicken Rice" adds back to the list:</p>
+<p>You will see that a success message displays in the Result Box and the transaction "Chicken Rice" adds back to the list:</p>
 <div class="imageblock">
 <div class="content">
-<img src="images/UndoAndRedo/redocommandresult.png" alt="redocommandresult" width="550">
+<img src="images/UndoAndRedo/redocommandresult.png" alt="redocommandresult" width="500">
 </div>
 </div>
 </li>
@@ -1767,4 +1738,4 @@ Example: <code>help delete</code></p>
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-10 03:07:24 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-10 07:28:16 UTC</div></div></div></body></html>
