@@ -99,13 +99,12 @@
 <li><a href="#listing-the-transactions">F.7. Listing the transactions</a></li>
 <li><a href="#tagging-a-transaction">F.8. Tagging a transaction</a></li>
 <li><a href="#untagging-a-transaction">F.9. Untagging a transaction</a></li>
-<li><a href="#converting-a-transaction">F.10. Converting a transaction</a></li>
-<li><a href="#converting-a-value">F.11. Converting a value</a></li>
-<li><a href="#finding-a-transaction">F.12. Finding a transaction</a></li>
-<li><a href="#undoing-the-previous-command">F.13. Undoing the previous command</a></li>
-<li><a href="#redoing-the-undone-command">F.14. Redoing the undone command</a></li>
-<li><a href="#showing-help-window">F.15. Showing help window</a></li>
-<li><a href="#saving-data">F.16. Saving data</a></li>
+<li><a href="#converting-a-value">F.10. Converting a value</a></li>
+<li><a href="#finding-a-transaction">F.11. Finding a transaction</a></li>
+<li><a href="#undoing-the-previous-command">F.12. Undoing the previous command</a></li>
+<li><a href="#redoing-the-undone-command">F.13. Redoing the undone command</a></li>
+<li><a href="#showing-help-window">F.14. Showing help window</a></li>
+<li><a href="#saving-data">F.15. Saving data</a></li>
 </ul>
 </li>
 </ul>
@@ -864,7 +863,7 @@ justifying why we chose to implement it the way we did.</p>
 <ul>
 <li>
 <p><strong>Alternative 1: (current choice):</strong> Introduce a <code><strong>Transaction</strong></code> parent class which both <code><strong>Expense</strong></code> and <code><strong>Income</strong></code>
-extends from.</p>
+extend from.</p>
 <div class="ulist">
 <ul>
 <li>
@@ -1098,29 +1097,29 @@ since <code><strong>Budget</strong></code> is not really related to <code><stron
 <div class="sect2">
 <h3 id="tag-untag-feature"><a class="link" href="#tag-untag-feature">4.3. Tag/Untag feature</a></h3>
 <div class="paragraph">
-<p>We allow the user to add and remove custom <code><strong>Tag</strong></code> objects in <code><strong>Transaction</strong></code> entries so that they can categorise and partition the entries to their own liking.
+<p>We allow the user to add and remove custom <code><strong>Tag</strong></code> objects in <code><strong>Transaction</strong></code> entries so that they can categorise the entries to their own liking.
 The following sections describe how this feature is implemented and the design considerations that led up to the solution.</p>
 </div>
 <div class="sect3">
 <h4 id="implementation-4"><a class="link" href="#implementation-4">4.3.1. Implementation</a></h4>
 <div class="paragraph">
-<p>The <strong>tag</strong>/<strong>untag</strong> command performs modifications on existing <code><strong>Transaction</strong></code> entries. Due to polymorphism, both <code><strong>Expense</strong></code> and <code><strong>Income</strong></code> objects extends the abstract class <code><strong>Transaction</strong></code>, and are treated the same way in the context of the <strong>tag</strong>/<strong>untag</strong> command.</p>
+<p>The <strong>tag</strong>/<strong>untag</strong> command performs modifications on existing <code><strong>Transaction</strong></code> entries that reside in the <code><strong>Model</strong></code>. Implemented using the concept of polymorphism , both <code><strong>Expense</strong></code> and <code><strong>Income</strong></code> objects extend the abstract class <code><strong>Transaction</strong></code>, and are treated the same way in the context of the <strong>tag</strong>/<strong>untag</strong> command.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/tag-untag/TagPolymorphism.png" alt="TagPolymorphism">
+<img src="images/tag-untag/TagPolymorphism.png" alt="TagPolymorphism" width="250">
 </div>
 <div class="title">Figure 12. A class diagram illustrating the implementation of <code><strong>Tag</strong></code> inside a <code><strong>Transaction</strong></code></div>
 </div>
 <div class="paragraph">
-<p>Due to polymorphic nature of <code><strong>Transaction</strong></code>, many of the driver functions in <code><strong>THRIFT</strong></code> uses the <code><strong>Transaction</strong></code> class for both <code><strong>Expense</strong></code>
+<p>Due to this polymorphic implementation, many of the driver functions in <code><strong>THRIFT</strong></code> use the <code><strong>Transaction</strong></code> class for both <code><strong>Expense</strong></code>
 and <code><strong>Income</strong></code> objects. For example, when tagging a new <code><strong>Expense</strong></code>/<code><strong>Income</strong></code> object, the <code><strong>TagCommandParser</strong></code> will treat them as the same object:</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/tag-untag/TagSequence.png" alt="TagSequence">
+<img src="images/tag-untag/TagSequence.png" alt="TagSequence" width="450">
 </div>
-<div class="title">Figure 13. An sequence diagram showing how the <code><strong>TagCommandParser</strong></code> is called</div>
+<div class="title">Figure 13. A sequence diagram showing how the <code><strong>TagCommandParser</strong></code> is called</div>
 </div>
 <div class="paragraph">
 <p>When a user enters a <strong>tag</strong>/<strong>untag</strong> command, it is parsed by the respective <code>TagCommandParser#parse(String args)</code> and <code>UntagCommandParser#parse(String args)</code> parsers and returns a <code><strong>TagCommand</strong></code> command object or a <code><strong>UntagCommand</strong></code> command object  respectively, which will be executed. For both commands, the following conditions will cause a <code><strong>ParseException</strong></code> to be thrown by their respective parsers:</p>
@@ -1154,18 +1153,18 @@ If the user input is incorrect due to any of the reasons above, the correspondin
 </table>
 </div>
 <div class="paragraph">
-<p>The following is an example on how a <code><strong>Tag</strong></code> is added and removed from a <code><strong>Transaction</strong></code>, with details on the processes in the backend.</p>
+<p>The following is an example on how a <code><strong>Tag</strong></code> is added and removed from a <code><strong>Transaction</strong></code>, with details on the processes done in the backend.</p>
 </div>
 <div class="paragraph">
-<p>Step 1. The user launches the application with data from previous sessions. THRIFT contains two <code><strong>Transaction</strong></code> objects and the user is going to perform tagging and un-tagging operations on one of them.</p>
+<p>Step 1. The user launches the application with data from previous sessions. THRIFT currently contains two <code><strong>Transaction</strong></code> objects and the user is going to perform tagging and un-tagging operations on one of them.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/tag-untag/TagUntag1.png" alt="TagUntag1">
+<img src="images/tag-untag/TagUntag1.png" alt="TagUntag1" width="450">
 </div>
 </div>
 <div class="paragraph">
-<p>Step 2. The user executes the command <strong>tag i/1 t/Delicious</strong> to tag the <code><strong>Transaction</strong></code> at <code><strong>Index</strong></code> 1 with the <code><strong>Tag</strong></code> "Delicious". The input is checked with a <code><strong>TagCommandParser</strong></code> parser and an attempt to parse each parameter occurs:</p>
+<p>Step 2. The user executes the command <strong>tag i/1 t/Delicious</strong> to tag the <code><strong>Transaction</strong></code> at <code><strong>Index</strong></code> 1 with the <code><strong>Tag</strong></code> "Delicious". The input is checked with the <code><strong>TagCommandParser</strong></code> parser and an attempt to parse each parameter occurs:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1206,11 +1205,11 @@ Tags that already exist inside the specified <code><strong>Transaction</strong><
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/tag-untag/TagUntag2.png" alt="TagUntag2">
+<img src="images/tag-untag/TagUntag2.png" alt="TagUntag2" width="450">
 </div>
 </div>
 <div class="paragraph">
-<p>Step 3. The user realises that the <code><strong>Tag</strong></code> added was not appropriate. The user then executes the command <strong>untag i/1 t/Delicious</strong> to untag the <code><strong>Tag</strong></code> "Delicious" from the <code><strong>Transaction</strong></code> at <code><strong>Index</strong></code> 1. The input is now checked with a <code><strong>UntagCommandParser</strong></code> parser and similarly, an attempt to parse each parameter occurs.</p>
+<p>Step 3. The user realises that the <code><strong>Tag</strong></code> added was not appropriate. The user then executes the command <strong>untag i/1 t/Delicious</strong> to untag the <code><strong>Tag</strong></code> "Delicious" from the <code><strong>Transaction</strong></code> at <code><strong>Index</strong></code> 1. The input is now checked with the <code><strong>UntagCommandParser</strong></code> parser and similarly, an attempt to parse each parameter occurs.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1239,15 +1238,15 @@ Tags that do not exist inside the specified <code><strong>Transaction</strong></
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/tag-untag/TagUntag1.png" alt="TagUntag1">
+<img src="images/tag-untag/TagUntag1.png" alt="TagUntag1" width="450">
 </div>
 </div>
 <div class="paragraph">
-<p>The following activity diagrams summarises what happens when the user executes a command to <strong>tag</strong> a <code><strong>Transaction</strong></code>.</p>
+<p>The following activity diagram summarises what happens when the user executes a command to tag a <code><strong>Transaction</strong></code>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="images/tag-untag/TagActivity.png" alt="TagActivity">
+<img src="images/tag-untag/TagActivity.png" alt="TagActivity" width="550">
 </div>
 <div class="title">Figure 14. Activity diagram of the tagging process</div>
 </div>
@@ -1321,7 +1320,7 @@ Tags that do not exist inside the specified <code><strong>Transaction</strong></
 <p>Pros: Results in a simpler implementation of <strong>tag</strong> command, as there is no need to check for potential duplicates.</p>
 </li>
 <li>
-<p>Cons: Makes each tag less meaningful as they are not longer unique.</p>
+<p>Cons: Makes each tag less meaningful as they are no longer unique.</p>
 </li>
 </ul>
 </div>
@@ -3924,23 +3923,23 @@ Expected: The list of transactions for January 2019 will be shown.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Prerequisites: List all transactions using the <code>list</code> command. The first transaction is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code>.</p>
+<p>Prerequisites: List all transactions using the <strong>list</strong> command. The first transaction is "1. [-] Laksa ($10.50) [Lunch][Food]".</p>
 </li>
 <li>
-<p>Test case: <code>tag i/1 t/EXPENSIVE</code><br>
-Expected: Details of the tagged transaction shown in status message. Listing the transaction reflects changes.</p>
+<p>Test case: <strong>tag i/1 t/EXPENSIVE</strong><br>
+Expected: Details of the tagged transaction shown in Result Box. Listing the transaction reflects changes.</p>
 </li>
 <li>
-<p>Test case: <code>tag i/INVALID_INDEX</code> t/VALID_TAG` where <code>INVALID_INDEX</code> is a number less than 1 or more than list size and VALID_TAG is a valid tag.<br>
-Expected: No changes. Error details shown in status message.</p>
+<p>Test case: <strong>tag i/INVALID_INDEX t/VALID_TAG</strong> where <strong>INVALID_INDEX</strong> is a number less than 1 or more than list size and <strong>VALID_TAG</strong> is a valid tag.<br>
+Expected: No changes. Error details shown in Result Box.</p>
 </li>
 <li>
-<p>Test case: <code>tag firstTransaction</code><br>
-Expected: No changes. Error details shown in status message.</p>
+<p>Test case: <strong>tag firstTransaction</strong><br>
+Expected: No changes. Error details shown in Result Box.</p>
 </li>
 <li>
-<p>Test case: <code>tag</code><br>
-Expected: No changes. Error details shown in status message.</p>
+<p>Test case: <strong>tag</strong><br>
+Expected: No changes. Error details shown in Result Box.</p>
 </li>
 </ol>
 </div>
@@ -3957,27 +3956,27 @@ Expected: No changes. Error details shown in status message.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Prerequisites: List all transactions using the <code>list</code> command. The first transaction is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code>.</p>
+<p>Prerequisites: List all transactions using the <strong>list</strong> command. The first transaction is "1. [-] Laksa ($10.50) [Lunch][Food]".</p>
 </li>
 <li>
-<p>Test case: <code>untag i/1 t/FOOD</code><br>
-Expected: Details of the untagged transaction shown in status message. Listing the transaction reflects changes.</p>
+<p>Test case: <strong>untag i/1 t/FOOD</strong><br>
+Expected: Details of the untagged transaction shown in Result Box. Listing the transaction reflects changes.</p>
 </li>
 <li>
-<p>Test case: <code>untag i/INVALID_INDEX t/VALID_TAG</code> where <code>INVALID_INDEX</code> is a number less than 1 or more than list size and VALID_TAG is a valid tag.<br>
-Expected: No changes. Error details shown in status message.</p>
+<p>Test case: <strong>untag i/INVALID_INDEX t/VALID_TAG</strong> where <strong>INVALID_INDEX</strong> is a number less than 1 or more than list size and <strong>VALID_TAG</strong> is a valid tag.<br>
+Expected: No changes. Error details shown in Result Box.</p>
 </li>
 <li>
-<p>Test case: <code>untag i/VALID_INDEX t/NOT_INSIDE_TAG</code> where <code>VALID_INDEX</code> is a valid transaction index and NOT_INSIDE_TAG is not inside the transaction specified.<br>
-Expected: No changes. Error details shown in status message.</p>
+<p>Test case: <strong>untag i/VALID_INDEX t/NOT_INSIDE_TAG</strong> where <strong>VALID_INDEX</strong> is a valid transaction index and <strong>NOT_INSIDE_TAG</strong> is not inside the transaction specified.<br>
+Expected: No changes. Error details shown in Result Box.</p>
 </li>
 <li>
-<p>Test case: <code>untag firstTransaction</code><br>
-Expected: No changes. Error details shown in status message.</p>
+<p>Test case: <strong>untag secondTransaction</strong><br>
+Expected: No changes. Error details shown in Result Box.</p>
 </li>
 <li>
-<p>Test case: <code>untag</code><br>
-Expected: No changes. Error details shown in status message.</p>
+<p>Test case: <strong>untag</strong><br>
+Expected: No changes. Error details shown in Result Box.</p>
 </li>
 </ol>
 </div>
@@ -3986,44 +3985,7 @@ Expected: No changes. Error details shown in status message.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="converting-a-transaction"><a class="link" href="#converting-a-transaction">F.10. Converting a transaction</a></h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Converting a transaction&#8217;s currency and reflecting changes in the list.</p>
-<div class="olist loweralpha">
-<ol class="loweralpha" type="a">
-<li>
-<p>Prerequisites: List all transactions using the <code>list</code> command. The first transaction is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code>.</p>
-</li>
-<li>
-<p>Test case: <code>convert to/USD i/1</code><br>
-Expected: Details of the converted transaction shown in status message. Listing the transaction reflects changes.</p>
-</li>
-<li>
-<p>Test case: <code>convert to/USD i/INVALID_INDEX</code> where <code>INVALID_INDEX</code> is a number less than 1 or more than list size.<br>
-Expected: No changes. Error details shown in status message.</p>
-</li>
-<li>
-<p>Test case: <code>convert to/INVALID_CURRENCY i/VALID_INDEX</code> where <code>INVALID_CURRENCY</code> is not a supported currency and <code>VALID_INDEX</code> is a valid transaction index.<br>
-Expected: No changes. Error details shown in status message.</p>
-</li>
-<li>
-<p>Test case: <code>convert firstTransaction</code><br>
-Expected: No changes. Error details shown in status message.</p>
-</li>
-<li>
-<p>Test case: <code>convert</code><br>
-Expected: No changes. Error details shown in status message.</p>
-</li>
-</ol>
-</div>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="converting-a-value"><a class="link" href="#converting-a-value">F.11. Converting a value</a></h3>
+<h3 id="converting-a-value"><a class="link" href="#converting-a-value">F.10. Converting a value</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -4031,16 +3993,16 @@ Expected: No changes. Error details shown in status message.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Test case: <code>convert from/SGD to/USD v/VALUE</code>.<br>
+<p>Test case: <strong>convert v/VALUE c/SGD c/USD</strong><br>
 Expected: Original value and converted value displayed to the user.</p>
 </li>
 <li>
-<p>Test case: <code>convert from/SGD to/INVALID_CURRENCY v/VALUE</code> where <code>INVALID_CURRENCY</code> is not a supported currency.<br>
-Expected: Error details shown in status message.</p>
+<p>Test case: <strong>convert v/VALUE c/SGD c/INVALID_CURRENCY</strong> where <strong>INVALID_CURRENCY</strong> is not a supported currency.<br>
+Expected: Error details shown in Result Box.</p>
 </li>
 <li>
-<p>Test case: <code>convert from/INVALID_CURRENCY to/USD v/VALUE</code> where <code>INVALID_CURRENCY</code> is not a supported currency.<br>
-Expected: Error details shown in status message.</p>
+<p>Test case: <strong>convert v/VALUE c/INVALID_CURRENCY c/USD</strong> where <strong>INVALID_CURRENCY</strong> is not a supported currency.<br>
+Expected: Error details shown in Result Box.</p>
 </li>
 </ol>
 </div>
@@ -4049,7 +4011,7 @@ Expected: Error details shown in status message.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="finding-a-transaction"><a class="link" href="#finding-a-transaction">F.12. Finding a transaction</a></h3>
+<h3 id="finding-a-transaction"><a class="link" href="#finding-a-transaction">F.11. Finding a transaction</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -4067,7 +4029,7 @@ Expected: Transactions with the word 'Apple' in its <code><strong>Remark</strong
 </div>
 </div>
 <div class="sect2">
-<h3 id="undoing-the-previous-command"><a class="link" href="#undoing-the-previous-command">F.13. Undoing the previous command</a></h3>
+<h3 id="undoing-the-previous-command"><a class="link" href="#undoing-the-previous-command">F.12. Undoing the previous command</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -4244,7 +4206,7 @@ Expected: Transactions with the word 'Apple' in its <code><strong>Remark</strong
 </div>
 </div>
 <div class="sect2">
-<h3 id="redoing-the-undone-command"><a class="link" href="#redoing-the-undone-command">F.14. Redoing the undone command</a></h3>
+<h3 id="redoing-the-undone-command"><a class="link" href="#redoing-the-undone-command">F.13. Redoing the undone command</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -4468,7 +4430,7 @@ Expected: Transactions with the word 'Apple' in its <code><strong>Remark</strong
 </div>
 </div>
 <div class="sect2">
-<h3 id="showing-help-window"><a class="link" href="#showing-help-window">F.15. Showing help window</a></h3>
+<h3 id="showing-help-window"><a class="link" href="#showing-help-window">F.14. Showing help window</a></h3>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
@@ -4483,7 +4445,7 @@ Expected: Syntax of the <code>delete</code> command is shown in the status messa
 </div>
 </div>
 <div class="sect2">
-<h3 id="saving-data"><a class="link" href="#saving-data">F.16. Saving data</a></h3>
+<h3 id="saving-data"><a class="link" href="#saving-data">F.15. Saving data</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -4500,4 +4462,4 @@ Expected: Syntax of the <code>delete</code> command is shown in the status messa
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-10 07:28:16 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-10 15:46:04 UTC</div></div></div></body></html>

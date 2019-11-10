@@ -151,101 +151,6 @@
 </tr>
 </tbody>
 </table>
-<div class="sect2">
-<h3 id="proposed-data-encryption"><a class="link" href="#proposed-data-encryption">[Proposed] Data encryption</a></h3>
-<div class="paragraph">
-<p>With the emphasis on information security these days, we are concerned about protecting the privacy of our users. We have
-discussed on how we can protect our users' data on <code><strong>THRIFT</strong></code> by making use of modern encryption schemes to protect against
-prying eyes. The encryption will take place at the back-end with minimal disruptions to the user. The user does not need additional
-knowledge about how the encryption work as <code><strong>THRIFT</strong></code> will handle all encryption and decryption operations for them.</p>
-</div>
-<div class="sect3">
-<h4 id="proposed-implementation"><a class="link" href="#proposed-implementation">Proposed implementation</a></h4>
-<div class="paragraph">
-<p>In order to ensure a seamless experience, we propose a new <code><strong>Keystore</strong></code> module, along with a <code><strong>KeystoreManager</strong></code> that will
-be interacting closely with the <code><strong>Logic</strong></code> and <code><strong>Storage</strong></code> modules. The class diagram below gives an overview of how the
-new <code><strong>Keystore</strong></code> would fit in:</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="../images/encryption/EncryptionClassDiagram.png" alt="EncryptionClassDiagram" width="250">
-</div>
-</div>
-<div class="paragraph">
-<p>We recommend that the <code><strong>KeystoreManager</strong></code> implements the following methods:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><code>KeystoreManager#setEncryptionScheme(Cipher)</code> - Sets the encryption scheme to be that of <code>Cipher</code>.</p>
-</li>
-<li>
-<p><code>KeystoreManager#encryptThrift(Thrift)</code> - Encrypts the current <code><strong>Thrift</strong></code> object with the encryption scheme set in <code><strong>KeystoreManager</strong></code>.</p>
-</li>
-<li>
-<p><code>KeystoreManager#decryptThrift()</code> - Decrypts the encrypted text file, restore the <code><strong>Thrift</strong></code> object and replace the current <code><strong>Thrift</strong></code>.</p>
-</li>
-</ul>
-</div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-The decryption will take place upon <code>MainApp#init()</code> while encryption will happen every time <code>LogicManager#execute()</code> is called.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="design-considerations"><a class="link" href="#design-considerations">Design considerations</a></h4>
-<div class="paragraph">
-<p>There is one factor about the way encryption should be implemented that we considered.</p>
-</div>
-<div class="sect4">
-<h5 id="aspect-allowing-the-user-to-specify-the-encryption-strength"><a class="link" href="#aspect-allowing-the-user-to-specify-the-encryption-strength">Aspect: Allowing the user to specify the encryption strength</a></h5>
-<div class="ulist">
-<ul>
-<li>
-<p>Alternative 1: The user can specify the algorithm, as well as the key size of the encryption scheme.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: Power users have the freedom to fine-tune the encryption strength to suit their needs.</p>
-</li>
-<li>
-<p>Cons: Regular users might not know which encryption scheme to use.</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>Alternative 2: Preset the encryption scheme to use AES-256, which provides one of the best protections in the market
-due to its key size.</p>
-<div class="ulist">
-<ul>
-<li>
-<p>Pros: Encrypted data will be secured even if stolen, preventing unauthorised access.</p>
-</li>
-<li>
-<p>Cons: Users with slower processor chips on their computer might experience a noticeable performance drop when using
-<code><strong>THRIFT</strong></code>.</p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>We believe that both alternatives have reasonable pros and cons and choosing either option would be beneficial to <code><strong>THRIFT</strong></code>.
-The added data security will assure the user that their data is safe and allows them to use <code><strong>THRIFT</strong></code> with a peace of mind.</p>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -256,4 +161,4 @@ The added data security will assure the user that their data is safe and allows 
 <p><em>{Optionally, you may include other projects in your portfolio.}</em></p>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-10 07:28:16 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-10 15:46:04 UTC</div></div></div></body></html>
