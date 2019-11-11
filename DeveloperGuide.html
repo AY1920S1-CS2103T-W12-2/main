@@ -3119,7 +3119,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <h2 id="use-cases"><a class="link" href="#use-cases">Appendix C: Use cases</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>(For all use cases below, the <strong>System</strong> is the <code>THRIFT</code> and the <strong>Actor</strong> is the <code>user</code>, unless specified otherwise)</p>
+<p>(For all use cases below, the <strong>System</strong> is <code><strong>THRIFT</strong></code> and the <strong>Actor</strong> is the user, unless specified otherwise)</p>
 </div>
 <h3 id="use-case-setting-monthly-budget" class="discrete">Use case: Setting monthly budget</h3>
 <div class="paragraph">
@@ -3128,10 +3128,10 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User requests to set their monthly budget to a certain amount.</p>
+<p>User requests to set the budget of a certain month to a specified amount.</p>
 </li>
 <li>
-<p>THRIFT processes the request and sets the amount as the monthly budget.</p>
+<p><code><strong>THRIFT</strong></code> processes the request and sets the specified amount as the budget for that certain month.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3148,7 +3148,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. THRIFT displays an invalid parameter error to the user and the monthly budget is not updated.</p>
+<p>1a1. <code><strong>THRIFT</strong></code> displays an invalid parameter error to the user and the monthly budget is not updated.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3165,10 +3165,10 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User requests to add a new expense or income into the records.</p>
+<p>User requests to add a new expense or income transaction into their records.</p>
 </li>
 <li>
-<p>THRIFT processes the request and adds the expense/income into the transactions list.</p>
+<p><code><strong>THRIFT</strong></code> processes the request and adds the expense/income transaction into the transactions list.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3185,7 +3185,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. THRIFT displays an invalid parameter error to the user and the transactions list is not updated.</p>
+<p>1a1. <code><strong>THRIFT</strong></code> displays an invalid parameter error to the user and the transactions list is not updated.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3202,10 +3202,10 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>User requests to delete an existing transaction from the records.</p>
+<p>User requests to delete an existing transaction from their records.</p>
 </li>
 <li>
-<p>THRIFT processes the request and removes the transaction from the transactions list.</p>
+<p><code><strong>THRIFT</strong></code> processes the request and removes the transaction from the transactions list.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3218,11 +3218,11 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a. The command or transaction specified by the user is not valid.</p>
+<p>1a. The transaction record specified by the user is not valid.</p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. THRIFT displays an invalid parameter error to the user and the transactions list is not updated.</p>
+<p>1a1. <code><strong>THRIFT</strong></code> displays an invalid parameter error to the user and the transactions list is not updated.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3242,7 +3242,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <p>User requests to update a transaction&#8217;s name, value, remark or tags.</p>
 </li>
 <li>
-<p>THRIFT processes the request, updates the specified details in the transactions list and informs user of what has been changed.</p>
+<p><code><strong>THRIFT</strong></code> processes the request, updates the specified details in the transactions list and informs user of what has been changed.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3259,7 +3259,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. THRIFT displays an invalid command format error to the user and does not update details for invalid parameters.</p>
+<p>1a1. <code><strong>THRIFT</strong></code> displays an invalid command format error to the user and does not update details for invalid parameters.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3279,7 +3279,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <p>User requests to clone a transaction, specifying the occurrence of clones: how many clones are to be created and their frequency over a future period.</p>
 </li>
 <li>
-<p>THRIFT processes the request and adds the specified number of identical transactions to the transactions list.</p>
+<p><code><strong>THRIFT</strong></code> processes the request and adds the specified number of identical transactions to the transactions list.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3306,7 +3306,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1b1. THRIFT displays an invalid command format error to the user and does not update the transactions list.</p>
+<p>1b1. <code><strong>THRIFT</strong></code> displays an invalid command format error to the user and does not update the transactions list.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3319,7 +3319,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1b1. THRIFT displays an invalid command format error to the user and does not update the transactions list.</p>
+<p>1b1. <code><strong>THRIFT</strong></code> displays an invalid command format error to the user and does not update the transactions list.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3339,7 +3339,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <p>User requests to view to syntax of a specific command.</p>
 </li>
 <li>
-<p>THRIFT displays the syntax of the requested command.</p>
+<p><code><strong>THRIFT</strong></code> displays the syntax of the requested command.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3356,7 +3356,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. THRIFT displays an invalid command error to user.</p>
+<p>1a1. <code><strong>THRIFT</strong></code> displays an invalid command error to user.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3376,7 +3376,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <p>User requests to view list of transactions for a specific month.</p>
 </li>
 <li>
-<p>THRIFT displays transactions of that month.</p>
+<p><code><strong>THRIFT</strong></code> displays transactions of that month.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3394,7 +3394,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <p>User requests to tag a specific transaction.</p>
 </li>
 <li>
-<p>THRIFT processes the request and adds the tag to the specific transaction.</p>
+<p><code><strong>THRIFT</strong></code> processes the request and adds the tag to the specific transaction.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3411,7 +3411,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. THRIFT displays an invalid command error to user.</p>
+<p>1a1. <code><strong>THRIFT</strong></code> displays an invalid command error to user.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3431,7 +3431,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <p>User requests to untag a specific transaction.</p>
 </li>
 <li>
-<p>THRIFT processes the request and removes the tag from the specific transaction.</p>
+<p><code><strong>THRIFT</strong></code> processes the request and removes the tag from the specific transaction.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3448,7 +3448,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. THRIFT displays an invalid parameter error to the user and the transaction is not updated.</p>
+<p>1a1. <code><strong>THRIFT</strong></code> displays an invalid parameter error to the user and the transaction is not updated.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3468,7 +3468,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <p>User requests to convert the currency of a specific transaction to a new currency.</p>
 </li>
 <li>
-<p>THRIFT processes the request and updates specific transaction with the new value in the new currency.</p>
+<p><code><strong>THRIFT</strong></code> processes the request and updates specific transaction with the new value in the new currency.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3485,7 +3485,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. THRIFT displays an invalid parameter error to the user and the transaction is not updated.</p>
+<p>1a1. <code><strong>THRIFT</strong></code> displays an invalid parameter error to the user and the transaction is not updated.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3505,7 +3505,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <p>User requests to convert a value in SGD to a specific currency.</p>
 </li>
 <li>
-<p>THRIFT processes the request and displays the new value in the new currency.</p>
+<p><code><strong>THRIFT</strong></code> processes the request and displays the new value in the new currency.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3522,7 +3522,7 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="ulist none">
 <ul class="none">
 <li>
-<p>1a1. THRIFT displays an invalid parameter error to the user.</p>
+<p>1a1. <code><strong>THRIFT</strong></code> displays an invalid parameter error to the user.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3542,10 +3542,10 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <p>User requests to search for a keyword in THRIFT.</p>
 </li>
 <li>
-<p>THRIFT processes its currently saved entire transaction list to look for matches.</p>
+<p><code><strong>THRIFT</strong></code> processes its currently saved entire transaction list to look for matches.</p>
 </li>
 <li>
-<p>THRIFT found matches and display the results at the <code><strong>TransactionListPanel</strong></code> screen.</p>
+<p><code><strong>THRIFT</strong></code> found matches and display the results at the <code><strong>TransactionListPanel</strong></code> screen.</p>
 <div class="paragraph">
 <p><em>Use case ends</em></p>
 </div>
@@ -3560,28 +3560,31 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>THRIFT should be able to run on any <a href="#mainstream-os">mainstream OS</a> as long as it has <code>Java 11</code> installed.</p>
+<p><code><strong>THRIFT</strong></code> should be able to run on any <a href="#mainstream-os">mainstream OS</a> as long as it has <code>Java 11</code> installed.</p>
 </li>
 <li>
-<p>THRIFT should be able to hold up to 250 transactions without a noticeable drop in performance for typical usage.</p>
+<p><code><strong>THRIFT</strong></code> should be able to hold up to 250 transactions without a noticeable drop in performance for typical usage.</p>
 </li>
 <li>
 <p>A user with above average typing speed for <a href="#regular-english-text">regular English text</a> (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.</p>
 </li>
 <li>
-<p>THRIFT should be able to run with or without internet connection.</p>
+<p><code><strong>THRIFT</strong></code> should be able to run with or without internet connection.</p>
 </li>
 <li>
-<p>THRIFT should work for a single user only.</p>
+<p><code><strong>THRIFT</strong></code> should work for a single user only.</p>
 </li>
 <li>
-<p>THRIFT should not require user to install.</p>
+<p><code><strong>THRIFT</strong></code> should not require user to install.</p>
 </li>
 <li>
 <p>Features implemented should be testable using manual testing and automated testing.</p>
 </li>
 <li>
-<p>THRIFT should support screen resolution of 1920 x 1080 or higher.</p>
+<p><code><strong>THRIFT</strong></code> should support screen resolution of 1920 x 1080 or higher.</p>
+</li>
+<li>
+<p><code><strong>THRIFT</strong></code> should support the English <a href="#locale">locale</a> only. Any locale from this <a href="https://docs.microsoft.com/en-us/cpp/c-runtime-library/language-strings?view=vs-2019">link</a> that starts with "en" will be supported.</p>
 </li>
 </ol>
 </div>
@@ -3606,6 +3609,14 @@ e.g. <code><strong>thrift.logic.LogicManagerTest</strong></code></p>
 </td>
 <td class="hdlist2">
 <p>Stands for "Application Programming Interface" which simplifies programming by abstracting the underlying implementation and only exposing objects or actions the developer needs.</p>
+</td>
+</tr>
+<tr>
+<td class="hdlist1">
+<a id="locale"></a> Locale
+</td>
+<td class="hdlist2">
+<p>Stands for a setting on the user&#8217;s computer that defines the user&#8217;s language and region.</p>
 </td>
 </tr>
 <tr>
@@ -3710,16 +3721,16 @@ Expected: Shows the GUI with empty transaction.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Test case: <code>budget v/1000 d/10/2019</code><br>
-Expected: The monthly budget for <code>10/2019</code> is now set to $<code>1000</code>. Details of the new monthly budget is shown in the status message. The monthly balance in the GUI is re-calculated to reflect the updated budget.</p>
+<p>Test case: <strong>budget v/1000 d/10/2019</strong><br>
+Expected: The monthly budget for <strong>10/2019</strong> is now set to $<strong>1000</strong>. Details of the new monthly budget is shown in the Result Box.</p>
 </li>
 <li>
-<p>Test case: <code>budget</code><br>
-Expected: The monthly budget is not updated. Error details shown in the status message (missing <code>d/MONTH</code> and <code>v/VALUE</code> parameters). Status bar remains the same.</p>
+<p>Test case: <strong>budget</strong><br>
+Expected: The monthly budget is not updated. Error details shown in the status message (missing <strong>d/MONTH</strong> and <strong>v/VALUE</strong> parameters).</p>
 </li>
 <li>
-<p>Test case: <code>budget v/10000000 d/10/2019</code><br>
-Expected: The monthly budget is not updated. Error details shown in the status message (<code>v/VALUE</code> input exceeds constraint of 1 million). Status bar remains the same.</p>
+<p>Test case: <strong>budget v/10000000000 d/10/2019</strong><br>
+Expected: The monthly budget is not updated. Error details shown in the status message (<strong>v/VALUE</strong> input exceeds constraint of 1 billion).</p>
 </li>
 </ol>
 </div>
@@ -3736,16 +3747,16 @@ Expected: The monthly budget is not updated. Error details shown in the status m
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Test case: <code>add_expense n/Bought a pair of Apple Earpods v/350</code><br>
-Expected: A new expense transaction is added into the list. Details of the expense transaction shown in the status message. The date string is automatically saved into the transaction list.</p>
+<p>Test case: <strong>add_expense n/Bought a pair of Apple Earpods v/350</strong><br>
+Expected: A new expense transaction is added into the list. Details of the expense transaction shown in the Result Box. The current system date is automatically added to this new transaction and saved into the transaction list.</p>
 </li>
 <li>
-<p>Test case: <code>add_income n/Awarded bursary prize v/500</code><br>
-Expected: A new income transaction is added into the list. Details of the income transaction shown in the status message. The date string is automatically saved into the transactions list.</p>
+<p>Test case: <strong>add_income n/Awarded bursary prize v/500</strong><br>
+Expected: A new income transaction is added into the list. Details of the income transaction shown in the Result Box. The current system date is automatically added to this new transaction and saved into the transaction list.</p>
 </li>
 <li>
-<p>Test case: <code>add_expense n/Lunch in school</code><br>
-Expected: No transaction is added. Error details shown in the status message (missing <code>v/VALUE</code> parameter). Status bar remains the same.</p>
+<p>Test case: <strong>add_expense n/Lunch in school</strong><br>
+Expected: No transaction is added. Error details shown in the Result Box (missing <strong>v/VALUE</strong> parameter).</p>
 </li>
 </ol>
 </div>
@@ -3762,19 +3773,15 @@ Expected: No transaction is added. Error details shown in the status message (mi
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Prerequisites: List all transactions using the <code>list</code> command. Multiple transactions in the list.</p>
+<p>Prerequisites: Ensure that there is at least one transactions being listed in the transaction list using either the <strong>list</strong> command or <strong>find</strong> command.</p>
 </li>
 <li>
-<p>Test case: <code>delete i/1</code><br>
-Expected: First transaction is deleted from the list. Details of the deleted transaction shown in the status message. Timestamp in the status bar is updated.</p>
+<p>Test case: <strong>delete i/1</strong><br>
+Expected: First transaction is deleted from the list. Details of the deleted transaction shown in the Result Box.</p>
 </li>
 <li>
-<p>Test case: <code>delete i/0</code><br>
-Expected: No transaction is deleted. Error details shown in the status message. Status bar remains the same.</p>
-</li>
-<li>
-<p>Other incorrect delete commands to try: <code>delete</code>, <code>delete x</code> (where x is larger than the list size) <em>{give more}</em><br>
-Expected: Similar to previous.</p>
+<p>Test case: <strong>delete i/0</strong><br>
+Expected: No transaction is deleted. Error details shown in the Result Box (invalid <strong>i/INDEX</strong> parameter).</p>
 </li>
 </ol>
 </div>
@@ -4014,12 +4021,12 @@ Expected: Error details shown in Result Box.</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Looking up transactions that have the supplied keywords in its <code><strong>Remark</strong></code> and <code><strong>Description</strong></code> fields.</p>
+<p>Looking up transactions that matches any of the supplied keywords in its <code><strong>Remark</strong></code> and <code><strong>Description</strong></code> fields.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Test case: <code>find Apple</code>.<br>
-Expected: Transactions with the word 'Apple' in its <code><strong>Remark</strong></code> or <code><strong>Description</strong></code> field will be displayed to the user.</p>
+<p>Test case: <strong>find Apple</strong><br>
+Expected: Transactions with the word <strong>Apple</strong> in its <code><strong>Remark</strong></code> or <code><strong>Description</strong></code> field will be displayed in the transaction list to the user.</p>
 </li>
 </ol>
 </div>
@@ -4589,4 +4596,4 @@ Expected: Usage of the <strong>delete</strong> command is shown in the Result Bo
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-11 07:19:23 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-11 07:23:28 UTC</div></div></div></body></html>
