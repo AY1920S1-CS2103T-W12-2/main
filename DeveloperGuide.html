@@ -3798,34 +3798,34 @@ Expected: No transaction is deleted. Error details shown in the Result Box (inva
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Prerequisites: List all transactions using the <code>list</code> command. The first transaction is <code>1. [-] Laksa ($10.50) [Lunch][Food]</code>.</p>
+<p>Prerequisites: List all transactions using the <strong>list</strong> command. The first transaction is "[-] Laksa ($10.50) Date: 02/11/2019 Remarks:  Tags: [Lunch][Food]".</p>
 </li>
 <li>
-<p>Test case: <code>update i/1 n/Fried Rice</code><br>
+<p>Test case: <strong>update i/1 n/Fried Rice</strong><br>
 Expected: Details of the updated transaction and original transaction shown in status message. Displayed list scrolls to updated item which reflects the changes.</p>
 </li>
 <li>
-<p>Test case: <code>update i/1 v/20</code><br>
+<p>Test case: <strong>update i/1 v/20</strong><br>
 Expected: Details of the updated transaction and original transaction shown in status message. Displayed list scrolls to updated item which reflects the changes.</p>
 </li>
 <li>
-<p>Test case: <code>update i/1 n/Fried Rice v/20 t/Lunch t/Food</code><br>
+<p>Test case: <strong>update i/1 n/Fried Rice v/20 t/Lunch t/Food</strong><br>
 Expected: Details of the updated transaction and original transaction shown in status message. Displayed list scrolls to updated item which reflects the changes.</p>
 </li>
 <li>
-<p>Test case: <code>update i/INVALID_INDEX</code> where <code>INVALID_INDEX</code> is a number less than 1 or more than list size.<br>
+<p>Test case: <strong>update i/INVALID_INDEX</strong> where <strong>INVALID_INDEX</strong> is a number less than 1 or more than list size.<br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 <li>
-<p>Test case: <code>update i/1 z/Calamari</code><br>
+<p>Test case: <strong>update i/1 z/Calamari</strong><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 <li>
-<p>Test case: <code>update firstTransaction</code><br>
+<p>Test case: <strong>update firstTransaction</strong><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 <li>
-<p>Test case: <code>update</code><br>
+<p>Test case: <strong>update</strong><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 </ol>
@@ -3843,50 +3843,50 @@ Expected: No changes. Error details shown in status message.</p>
 <div class="olist loweralpha">
 <ol class="loweralpha" type="a">
 <li>
-<p>Prerequisites: List all transactions using the <code>list</code> command. At least one transaction in the list.</p>
+<p>Prerequisites: List all transactions using the <strong>list</strong> command. At least one transaction is in the list.</p>
 </li>
 <li>
-<p>Test case: <code>clone i/1</code><br>
+<p>Test case: <strong>clone i/1</strong><br>
 Expected: New transaction identical to first transaction in the list added to the bottom of the list. Details of the cloned transaction shown in the status message. Date string for new transaction is automatically saved into the transaction list.</p>
 </li>
 <li>
-<p>Test case: <code>clone i/INVALID_INDEX</code> where <code>INVALID_INDEX</code> is a number less than 1 or more than list size.<br>
+<p>Test case: <strong>clone i/INVALID_INDEX</strong> where <strong>INVALID_INDEX</strong> is a number less than 1 or more than list size.<br>
 Expected: No transaction is cloned. Error details shown in status message.</p>
 </li>
 <li>
-<p>Test case: <code>clone firstTransaction</code><br>
+<p>Test case: <strong>clone firstTransaction</strong><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 <li>
-<p>Test case: <code>clone</code><br>
+<p>Test case: <strong>clone</strong><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 <li>
-<p>Test case: <code>clone i/1 o/daily:3</code><br>
+<p>Test case: <strong>clone i/1 o/daily:3</strong><br>
 Expected: 3 new transactions identical to first transaction in the list added to the bottom of the list, with their dates set 1 day apart.</p>
 </li>
 <li>
-<p>Test case: <code>clone i/1 o/daily:-1</code><br>
+<p>Test case: <strong>clone i/1 o/daily:-1</strong><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 <li>
-<p>Test case: <code>clone i/1 o/onceeveryday:-1</code><br>
+<p>Test case: <strong>clone i/1 o/onceeveryday:-1</strong><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 <li>
-<p>Test case: <code>clone i/1 o/yearly:6</code><br>
+<p>Test case: <strong>clone i/1 o/yearly:6</strong><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 <li>
-<p>Test case: <code>clone i/1 o/monthly:13</code><br>
+<p>Test case: <strong>clone i/1 o/monthly:13</strong><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 <li>
-<p>Test case: <code>clone i/1 o/daily</code><br>
+<p>Test case: <strong>clone i/1 o/daily</strong><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 <li>
-<p>Test case: <code>clone i/1 o/monthly:5:6:fgzsfdsf:y564s:3234:</code><br>
+<p>Test case: <strong>clone i/1 o/monthly:5:6:fgzsfdsf:y564s:3234:</strong><br>
 Expected: No changes. Error details shown in status message.</p>
 </li>
 </ol>
@@ -4596,4 +4596,4 @@ Expected: Usage of the <strong>delete</strong> command is shown in the Result Bo
 </div>
 </div>
 </div>
-</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-11 08:41:43 UTC</div></div></div></body></html>
+</div></div><div id="footer"><div class="container"><div id="footer-text">Last updated 2019-11-11 08:46:09 UTC</div></div></div></body></html>
